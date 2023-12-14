@@ -1,0 +1,15 @@
+body{
+    color: white;
+    background-color: gray;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .account button{
+        &:hover{
+            background-color: black;
+        }
+    }
+}

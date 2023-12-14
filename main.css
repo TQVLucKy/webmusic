@@ -1,0 +1,13 @@
+body {
+  color: white;
+  background-color: gray;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .account button:hover {
+  background-color: black;
+}/*# sourceMappingURL=main.css.map */
