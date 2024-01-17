@@ -1,5 +1,5 @@
 body {
-    color: white;
+    color: rgb(190, 182, 182);
     background-color: black;
 }
 
@@ -13,7 +13,8 @@ img {
     justify-content: space-between;
     align-items: center;
     border-radius: 15px;
-
+    margin-bottom:15px;
+    background-color: rgb(17, 17, 17);
     .h1 {
         text-decoration: none;
 
@@ -34,8 +35,33 @@ img {
     align-items: baseline;
     border-radius: 25px;
     border-right: 10px solid black;
+    .material-icons{
+        color: rgb(190, 182, 182);
+    }
+    button{
+        color: black;
+        border: none;
+        background-color: inherit;
+    }
+    
 }
-
+#create {
+    left: 215px;
+    top: 75px;
+    background-color: white;
+    color: black;
+    list-style-type: none;
+    button{
+        color: black;
+        border: none;
+        background-color: inherit;
+        text-align: left;
+        width: 130px;
+        &:hover{
+            background-color: gray;
+        }
+    }
+}
 .list {
     background: rgb(17, 17, 17);
     border-radius: 25px;
@@ -44,12 +70,24 @@ img {
     .items {
         padding-top: 10px;
         height: 250px;
-        background-color:rgb(26, 26, 26);
+        background-color: rgb(26, 26, 26);
         border-radius: 15px;
+
         &:hover {
             background-color: rgb(38, 38, 38);
-        }   
+        }
     }
+}
+
+.addmusic {
+    color: white;
+    backdrop-filter:  blur(3px);
+    top: 20%;
+    left: 0px;
+    right: 0px;
+    width: 600px;
+    padding: 50px;
+    margin: 0px auto;
 }
 
 .main {
