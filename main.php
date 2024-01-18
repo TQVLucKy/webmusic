@@ -129,9 +129,23 @@ $results = mysqli_query($conn, $sql);
 </body>
 
 <script>
+    var create = document.getElementById('create');
+    var clicked = true;
+
+    document.addEventListener("click", function() {
+        if (clicked) {
+            document.getElementById('create').style.display = "none";
+        }
+            
+    })
+
     function Show() {
         document.getElementById('create').style.display = "block";
         document.getElementById('create').style.position = "absolute";
+        if(clicked)
+            clicked=false;
+        else clicked=true;
+
     }
 
     function AddMusic() {
@@ -139,6 +153,10 @@ $results = mysqli_query($conn, $sql);
         document.getElementById('showcreate').style.position = "absolute";
         document.getElementById('showcreate').style.zIndex = "1";
     }
+    // document.addEventListener("click", function() {
+    //     document.getElementById('create').style.display = "block";
+    //     alert("Bạn đã click vào màn hình");
+    // });
 </script>
 
 </html>
