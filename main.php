@@ -61,13 +61,6 @@ $results = mysqli_query($conn, $sql);
                 <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
             </div>
         </div>
-        <form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
-            <label for="image">Chọn hình ảnh:</label>
-            <input type="file" name="image"></br>
-            <label for="artist">Tên ca sĩ:</label>
-            <input type="text" name="artist">
-            <input type="submit" name="submit" value="Tải lên">
-        </form>
         <div class="container-fluid main row">
             <div class="container-fluid library d-flex col-md-2 pt-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
@@ -87,7 +80,7 @@ $results = mysqli_query($conn, $sql);
                     <?php
                     foreach ($results as $result) {
                         echo '<div class="items col-2 mb-3 mx-3">';
-                        echo "<img src= ./img/" . $result['nameimage'] . "><br>";
+                        echo '<img style="max-width:100%;height:100%" src= ./img/' . $result['nameimage'] . '><br>';
                         echo $result['name'] . "<br>";
                         echo $result['artist'] . "<br>";
                         echo '</div>';
@@ -123,9 +116,16 @@ $results = mysqli_query($conn, $sql);
         </div>
     </div>
     <div id="create" style="display: none;">
-        <button id="ShowCreate" onclick="AddMusic()">thêm nhạc</button><br>
-        <button id="ShowCreate" onclick="AddList()">thêm danh sách</button>
+        <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
+        <button id="AddList" onclick="AddList()">thêm danh sách</button>
     </div>
+    <form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+            <label for="image">Chọn hình ảnh:</label>
+            <input type="file" name="image"></br>
+            <label for="artist">Tên ca sĩ:</label>
+            <input type="text" name="artist">
+            <input type="submit" name="submit" value="Tải lên">
+        </form>
 </body>
 
 <script>
