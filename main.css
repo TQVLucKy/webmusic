@@ -28,9 +28,11 @@ img {
 
 .library {
   background-color: rgb(17, 17, 17);
-  align-items: baseline;
   border-radius: 25px;
   border-right: 10px solid black;
+}
+.library .title {
+  align-items: baseline;
 }
 .library .material-icons {
   color: rgb(190, 182, 182);
@@ -59,7 +61,7 @@ img {
   background-color: gray;
 }
 
-.addmusic {
+.addmusic, .addlist {
   color: white;
   -webkit-backdrop-filter: blur(3px);
           backdrop-filter: blur(3px);

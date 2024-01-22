@@ -33,9 +33,12 @@ img {
 
 .library {
     background-color: rgb(17, 17, 17);
-    align-items: baseline;
     border-radius: 25px;
     border-right: 10px solid black;
+
+    .title {
+        align-items: baseline;
+    }
 
     .material-icons {
         color: rgb(190, 182, 182);
@@ -46,7 +49,6 @@ img {
         border: none;
         background-color: inherit;
     }
-
 }
 
 #create {
@@ -68,7 +70,8 @@ img {
         }
     }
 }
-.addmusic {
+
+.addmusic, .addlist {
     color: white;
     backdrop-filter: blur(3px);
     top: 20%;
@@ -85,12 +88,13 @@ img {
     border-radius: 25px;
 
     .items {
-        text-align:center;
+        text-align: center;
         padding: 10px;
         height: 100%;
         width: 100%;
         background-color: rgb(26, 26, 26);
         border-radius: 15px;
+
         &:hover {
             background-color: rgb(38, 38, 38);
         }
@@ -100,5 +104,5 @@ img {
 
 .main {
     width: auto;
-    height:  7in;
+    height: 7in;
 }
