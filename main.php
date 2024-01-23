@@ -60,7 +60,7 @@ $printlist = mysqli_query($conn, $sql);
             </div>
             <form class="header-search">
                 <div class="input-group h">
-                    <input type="text" class="form-control dropdown-toggle" placeholder="Search..." id="top-search" style="width:500px">
+                    <input type="text" class="form-control dropdown-toggle" placeholder="Search..." id="top-search" style="width:500px" onkeyup="livesearch(this.value);">
                     <span class="mdi mdi-magnify search-icon"></span>
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">Search</button>
@@ -72,6 +72,8 @@ $printlist = mysqli_query($conn, $sql);
                 <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
             </div>
         </div>
+    <div id='result'>  
+
         <div class="container-fluid main row">
             <div class="container-fluid library col-md-2 pt-1">
                 <div class="title d-flex">
@@ -152,10 +154,39 @@ $printlist = mysqli_query($conn, $sql);
         document.getElementById('showcreate').style.position = "absolute";
         document.getElementById('showcreate').style.zIndex = "1";
     }
-    function AddList(){
+
+    function AddList() {
         document.getElementById('showList').style.display = "block";
         document.getElementById('showList').style.position = "absolute";
         document.getElementById('showList').style.zIndex = "1";
+    }
+    //live search
+    function object() {
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else { // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        return xmlhttp;
+    }
+    http = object();
+
+    function livesearch(data) {
+        if (data != "") {
+            http.onreadystatechange = process;
+            http.open('GET', 'get.php?data=' + data, true);
+            http.send();
+        } else {
+            document.getElementById("result").innerHTML = "";
+        }
+    }
+
+    function process() {
+        if (http.readyState == 4 && http.status == 200) {
+            result = http.responseText;
+            document.getElementById("result").innerHTML = result;
+        }
     }
 </script>
 
