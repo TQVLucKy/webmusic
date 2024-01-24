@@ -47,9 +47,10 @@ $printlist = mysqli_query($conn, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="main.scss">
+    <link rel="stylesheet" type="text/css" href="main.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Main music</title>
+    <script type="text/javascript" src="./search/ajax.js"></script>
 </head>
 
 <body>
@@ -72,8 +73,7 @@ $printlist = mysqli_query($conn, $sql);
                 <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
             </div>
         </div>
-    <div id='result'>  
-
+    <div id='result'> </div>
         <div class="container-fluid main row">
             <div class="container-fluid library col-md-2 pt-1">
                 <div class="title d-flex">
@@ -86,7 +86,9 @@ $printlist = mysqli_query($conn, $sql);
                 <div class="listmusic">
                     <?php
                     foreach ($printlist as $print) {
-                        echo $print['NameList'] . "<br>";
+                        echo '<div class="itemslist">';
+                        echo $print['NameList']; 
+                        echo '</div>';
                     }
                     ?>
                 </div>
@@ -110,7 +112,6 @@ $printlist = mysqli_query($conn, $sql);
                 </div>
             </div>
         </div>
-    </div>
     <div id="create" style="display: none;">
         <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
         <button id="AddList" onclick="AddList()">thêm danh sách</button>
@@ -160,34 +161,7 @@ $printlist = mysqli_query($conn, $sql);
         document.getElementById('showList').style.position = "absolute";
         document.getElementById('showList').style.zIndex = "1";
     }
-    //live search
-    function object() {
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else { // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        return xmlhttp;
-    }
-    http = object();
-
-    function livesearch(data) {
-        if (data != "") {
-            http.onreadystatechange = process;
-            http.open('GET', 'get.php?data=' + data, true);
-            http.send();
-        } else {
-            document.getElementById("result").innerHTML = "";
-        }
-    }
-
-    function process() {
-        if (http.readyState == 4 && http.status == 200) {
-            result = http.responseText;
-            document.getElementById("result").innerHTML = result;
-        }
-    }
+    
 </script>
 
 </html>

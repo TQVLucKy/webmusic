@@ -1,5 +1,5 @@
 <?php
-include './connect.php';
+include '../connect.php';
 if(isset($_GET['data'])){
 $data = $_GET['data'];
 $sql = "SELECT name FROM storemusic WHERE name LIKE '$data%'";
