@@ -15,7 +15,9 @@ img {
     border-radius: 15px;
     margin-bottom: 15px;
     background-color: rgb(17, 17, 17);
-
+    .input-group{
+        align-items: baseline;
+    }
     .h1 {
         text-decoration: none;
 
@@ -49,12 +51,14 @@ img {
         border: none;
         background-color: inherit;
     }
-    .itemslist{
-        
+
+    .itemslist {
+
         border-radius: 10px;
         margin: 5px 0;
         padding-left: 5px;
-        &:hover{
+
+        &:hover {
             background-color: gray;
         }
     }
@@ -80,7 +84,8 @@ img {
     }
 }
 
-.addmusic, .addlist {
+.addmusic,
+.addlist {
     color: white;
     backdrop-filter: blur(3px);
     top: 20%;
@@ -109,23 +114,48 @@ img {
         }
     }
 }
-#result{
-    position: absolute;
-    z-index: 1;
-    left: 430px;
-    top: 45px;
-    width: 500px;
-    padding-left: 10px;
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-    &:hover{
-        background-color: gray;
-        color: rgb(190, 182, 182);
-    }
-}
+
+// .result {
+//     position: absolute;
+//     z-index: 1;
+//     left: 430px;
+//     top: 45px;
+//     width: 500px;
+//     padding-left: 10px;
+//     border-radius: 5px;
+//     background-color: white;
+//     color: black;
+// }
 
 .main {
     width: auto;
     height: 7in;
+}
+
+
+.result{
+    position: absolute;        
+    z-index: 999;
+    top: 100%;
+    left: 0;
+}
+.input-group input[type="text"], .result{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+/* Formatting result items */
+.result p{
+    color: black;
+    background-color: white;
+    margin: 0;
+    padding: 7px 10px;
+    border: 1px solid gray;
+    border-top: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.result p:hover{
+    background: gray;
+    color: white;
 }

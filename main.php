@@ -47,10 +47,11 @@ $printlist = mysqli_query($conn, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="main.scss">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Main music</title>
-    <script type="text/javascript" src="./search/ajax.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="./search/search.js"></script>
 </head>
 
 <body>
@@ -61,11 +62,12 @@ $printlist = mysqli_query($conn, $sql);
             </div>
             <form class="header-search">
                 <div class="input-group h">
-                    <input type="text" class="form-control dropdown-toggle" placeholder="Search..." id="top-search" style="width:500px" onkeyup="livesearch(this.value);">
+                    <input type="text" class="form-control dropdown-toggle" placeholder="Search..." autocomplete="off" style="width:500px">
                     <span class="mdi mdi-magnify search-icon"></span>
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </div>
+                    <div class="result"></div>
                 </div>
             </form>
             <div class="account">
@@ -73,7 +75,7 @@ $printlist = mysqli_query($conn, $sql);
                 <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
             </div>
         </div>
-    <div id='result'> </div>
+        
         <div class="container-fluid main row">
             <div class="container-fluid library col-md-2 pt-1">
                 <div class="title d-flex">
@@ -87,7 +89,7 @@ $printlist = mysqli_query($conn, $sql);
                     <?php
                     foreach ($printlist as $print) {
                         echo '<div class="itemslist">';
-                        echo $print['NameList']; 
+                        echo $print['NameList'];
                         echo '</div>';
                     }
                     ?>
@@ -112,22 +114,22 @@ $printlist = mysqli_query($conn, $sql);
                 </div>
             </div>
         </div>
-    <div id="create" style="display: none;">
-        <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
-        <button id="AddList" onclick="AddList()">thêm danh sách</button>
-    </div>
-    <form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
-        <label for="image">Chọn hình ảnh:</label>
-        <input type="file" name="image"></br>
-        <label for="artist">Tên ca sĩ:</label>
-        <input type="text" name="artist">
-        <input type="submit" name="submitmusic" value="Tải lên">
-    </form>
-    <form class="addlist" id="showList" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
-        <label for="namelist">Tên danh sách:</label>
-        <input type="text" name="namelist">
-        <input type="submit" name="submitlist" value="Tạo">
-    </form>
+        <div id="create" style="display: none;">
+            <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
+            <button id="AddList" onclick="AddList()">thêm danh sách</button>
+        </div>
+        <form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+            <label for="image">Chọn hình ảnh:</label>
+            <input type="file" name="image"></br>
+            <label for="artist">Tên ca sĩ:</label>
+            <input type="text" name="artist">
+            <input type="submit" name="submitmusic" value="Tải lên">
+        </form>
+        <form class="addlist" id="showList" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+            <label for="namelist">Tên danh sách:</label>
+            <input type="text" name="namelist">
+            <input type="submit" name="submitlist" value="Tạo">
+        </form>
 </body>
 
 <script>
@@ -161,7 +163,6 @@ $printlist = mysqli_query($conn, $sql);
         document.getElementById('showList').style.position = "absolute";
         document.getElementById('showList').style.zIndex = "1";
     }
-    
 </script>
 
 </html>
