@@ -56,6 +56,7 @@ $printlist = mysqli_query($conn, $sql);
 
 <body>
     <div class="container-fluid">
+        <!-- top -->
         <div class="container-fluid header border-0">
             <div class="header-title">
                 <a class="h1" href="./main.php">Music</a>
@@ -77,6 +78,7 @@ $printlist = mysqli_query($conn, $sql);
         </div>
         
         <div class="container-fluid main row">
+            <!-- library -->
             <div class="container-fluid library col-md-2 pt-1">
                 <div class="title d-flex">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
@@ -95,23 +97,10 @@ $printlist = mysqli_query($conn, $sql);
                     ?>
                 </div>
             </div>
-
-            <div class="list col-md-10">
-                <div class="top d-flex justify-content-between mt-2">
-                    <h2>Danh sách phát</h2>
-                    <p class="text-secondary">Hiện tất cả</p>
-                </div>
-                <div class="list-music row">
-                    <?php
-                    foreach ($results as $result) {
-                        echo '<div class="items col-2 mb-3 mx-3">';
-                        echo '<img style="max-width:100%;height:100%" src= ./img/' . $result['nameimage'] . '><br>';
-                        echo $result['name'] . "<br>";
-                        echo $result['artist'] . "<br>";
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
+            <!-- main -->
+            <div class="menu col-md-10">
+                <!-- list music -->
+                <?php include "./listmusic/listmusic.php" ?>
             </div>
         </div>
         <div id="create" style="display: none;">
@@ -130,6 +119,7 @@ $printlist = mysqli_query($conn, $sql);
             <input type="text" name="namelist">
             <input type="submit" name="submitlist" value="Tạo">
         </form>
+    </div>
 </body>
 
 <script>

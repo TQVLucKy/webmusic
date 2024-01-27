@@ -1,0 +1,15 @@
+.menu {
+  background: rgb(17, 17, 17);
+  border-radius: 25px;
+}
+.menu .items {
+  text-align: center;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(26, 26, 26);
+  border-radius: 15px;
+}
+.menu .items:hover {
+  background-color: rgb(38, 38, 38);
+}/*# sourceMappingURL=listmusic.css.map */

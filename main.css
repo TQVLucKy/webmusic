@@ -85,11 +85,11 @@ img {
   margin: 0px auto;
 }
 
-.list {
+.menu {
   background: rgb(17, 17, 17);
   border-radius: 25px;
 }
-.list .items {
+.menu .items {
   text-align: center;
   padding: 10px;
   height: 100%;
@@ -97,7 +97,7 @@ img {
   background-color: rgb(26, 26, 26);
   border-radius: 15px;
 }
-.list .items:hover {
+.menu .items:hover {
   background-color: rgb(38, 38, 38);
 }
 
