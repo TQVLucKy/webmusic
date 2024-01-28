@@ -52,6 +52,7 @@ $printlist = mysqli_query($conn, $sql);
     <title>Main music</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="./search/search.js"></script>
+
 </head>
 
 <body>
@@ -100,7 +101,7 @@ $printlist = mysqli_query($conn, $sql);
             <!-- main -->
             <div class="menu col-md-10">
                 <!-- list music -->
-                <?php include "./listmusic/listmusic.php" ?>
+                <?php include "playmusic.php" ?>
             </div>
         </div>
         <div id="create" style="display: none;">
