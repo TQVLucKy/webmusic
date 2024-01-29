@@ -1,9 +1,12 @@
 .music-slider {
   background-color: gray;
   border-radius: 5px;
-  left: 35%;
-  top: 90%;
+  left: 45%;
+  top: 75%;
   position: fixed;
+  height: auto;
+  width: 310px;
+  padding: 0 5px;
 }
 .music-slider .seek-bar {
   width: 300px;
@@ -22,23 +25,28 @@
   box-shadow: -400px 0 0 400px white;
 }
 .music-slider .current-time,
-.music-slider .music-time {
+.music-slider .music-time, .music-slider .current-artist {
   font-size: 15px;
 }
 .music-slider .music-time {
   position: absolute;
   float: left;
-  right: 0;
+  right: 5px;
 }
-
-.controls {
-  width: 100px;
+.music-slider .current-music {
+  font-size: 20px;
+}
+.music-slider .current-music, .music-slider .current-artist {
   display: flex;
   justify-content: center;
-  margin: auto;
-  margin-top: 50px;
 }
-.controls .btn-play {
+.music-slider .controls {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+.music-slider .controls .btn-play {
   position: relative;
   width: 50px;
   height: 50px;
@@ -47,7 +55,12 @@
   cursor: pointer;
   border: none;
 }
-.controls .btn-play span {
+.music-slider .controls .btn-play:hover {
+  background-color: black;
+  opacity: 0.5;
+  transition: 1s;
+}
+.music-slider .controls .btn-play span {
   position: absolute;
   top: 20%;
   left: 25%;
@@ -60,14 +73,14 @@
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.controls .btn-play span:nth-child(2) {
+.music-slider .controls .btn-play span:nth-child(2) {
   left: 55%;
   transform-origin: center;
 }
-.controls .btn-play.pause span:nth-child(2) {
+.music-slider .controls .btn-play.pause span:nth-child(2) {
   transform: translateY(-50%) scaleY(0);
 }
-.controls .btn-play.pause span:nth-child(1) {
+.music-slider .controls .btn-play.pause span:nth-child(1) {
   width: 35%;
   top: 47%;
   left: 53%;
@@ -76,6 +89,20 @@
   -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
           clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
 }
-.controls .btn-play.pause {
-  animation: pulse 2s linear infinite;
+.music-slider .controls .btn {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 5px;
+  color: white;
+}
+.music-slider .controls .btn:hover {
+  background-color: black;
+  opacity: 0.5;
+  transition: 1s;
 }/*# sourceMappingURL=playmusic.css.map */

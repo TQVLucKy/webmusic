@@ -1,10 +1,12 @@
 .music-slider {
     background-color: gray;
     border-radius: 5px;
-    left: 35%;
-    top: 90%;
+    left: 45%;
+    top: 75%;
     position: fixed;
-
+    height: auto;
+    width: 310px;
+    padding: 0 5px;
     .seek-bar {
         width: 300px;
         height: 5px;
@@ -13,7 +15,6 @@
         cursor: pointer;
         -webkit-appearance: none;
         overflow: hidden;
-
         &::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 1px;
@@ -24,66 +25,94 @@
     }
 
     .current-time,
-    .music-time {
+    .music-time, .current-artist {
         font-size: 15px;
     }
 
     .music-time {
         position: absolute;
         float: left;
-        right: 0;
+        right: 5px;
     }
-}
+    .current-music{
+        font-size: 20px;
+    }
+    .current-music, .current-artist{
+        display: flex;
+        justify-content:center;
+    }
+    .controls {
+        width: 150px;
+        display: flex;
+        justify-content: space-between;
+        margin: auto;
 
-.controls {
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    margin: auto;
-    margin-top: 50px;
+        .btn-play {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: gray;
+            cursor: pointer;
+            border: none;
 
-    .btn-play {
-        position: relative;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: gray;
-        cursor: pointer;
-        border: none;
+            &:hover {
+                background-color: black;
+                opacity: 0.5;
+                transition: 1s;
+            }
 
-        span {
-            position: absolute;
-            top: 20%;
-            left: 25%;
-            transform: translateY(-50);
-            width: 10px;
-            height: 30px;
-            border-radius: 2px;
-            background: white;
-            transition: .5s;
-            clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
-            &:nth-child(2) {
-                left: 55%;
-                transform-origin: center;
+            span {
+                position: absolute;
+                top: 20%;
+                left: 25%;
+                transform: translateY(-50);
+                width: 10px;
+                height: 30px;
+                border-radius: 2px;
+                background: white;
+                transition: .5s;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+                &:nth-child(2) {
+                    left: 55%;
+                    transform-origin: center;
+                }
+            }
+
+        }
+
+        .btn-play.pause span:nth-child(2) {
+            transform: translateY(-50%) scaleY(0);
+        }
+
+        .btn-play.pause span:nth-child(1) {
+            width: 35%;
+            top: 47%;
+            left: 53%;
+            transform: translate(-50%, -50%);
+            border-radius: 0;
+            clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+        }
+
+        .btn {
+            width: 40px;
+            height: 40px;
+            background: gray;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 5px;
+            color: white;
+
+            &:hover {
+                background-color: black;
+                opacity: 0.5;
+                transition: 1s;
             }
         }
-        
+
     }
-    .btn-play.pause span:nth-child(2){
-        transform:translateY(-50%) scaleY(0);
-    }
-    .btn-play.pause span:nth-child(1){
-        width: 35%;
-        top: 47%;
-        left: 53%;
-        transform: translate(-50%,-50%);
-        border-radius: 0;
-        clip-path: polygon(0 0,100% 50%,100% 50%,0 100%);
-    }
-    
-    .btn-play.pause{
-        animation: pulse 2s linear infinite;
-    }
-   
-    
 }
