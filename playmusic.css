@@ -1,3 +1,36 @@
+.container .box-disk {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  position: relative;
+  background: url(img/1702540579.jpg) no-repeat center;
+  background-size: cover;
+  animation: rotate 20s linear infinite;
+  animation-play-state: paused;
+}
+.container .box-disk.play {
+  animation-play-state: running;
+}
+.container .box-disk::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .music-slider {
   background-color: gray;
   border-radius: 5px;
@@ -25,7 +58,8 @@
   box-shadow: -400px 0 0 400px white;
 }
 .music-slider .current-time,
-.music-slider .music-time, .music-slider .current-artist {
+.music-slider .music-time,
+.music-slider .current-artist {
   font-size: 15px;
 }
 .music-slider .music-time {
@@ -36,7 +70,8 @@
 .music-slider .current-music {
   font-size: 20px;
 }
-.music-slider .current-music, .music-slider .current-artist {
+.music-slider .current-music,
+.music-slider .current-artist {
   display: flex;
   justify-content: center;
 }
@@ -103,6 +138,28 @@
 }
 .music-slider .controls .btn:hover {
   background-color: black;
+  opacity: 0.5;
+  transition: 1s;
+}
+
+.detail .backnext {
+  display: flex;
+}
+.detail .backnext .btn {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 5px;
+  color: white;
+  margin-left: 5px;
+}
+.detail .backnext .btn:hover {
+  background-color: blue;
   opacity: 0.5;
   transition: 1s;
 }/*# sourceMappingURL=playmusic.css.map */

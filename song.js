@@ -1,7 +1,7 @@
 let songs = [
     {
         name:'Mở mắt - LilWuyn & Đen',
-        path:'MoMat-LilWuynDen-9760819.mp3',
+        path:'/MoMat-LilWuynDen-9760819.mp3',
         artist:'LilWuyn & Đen'
     },
     {
