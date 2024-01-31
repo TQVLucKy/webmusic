@@ -21,7 +21,7 @@
 <div class="music-slider">
     <span class="current-time">00:00</span>
     <span class="music-time">00:00</span>
-    <input type="range" value="0" class="seek-bar" />
+    <input type="range" value="0" class="seek-bar"/>
     <span class="current-music">tên bài</span>
     <span class="current-artist">ca sĩ</span>
     <div class="controls">
@@ -75,11 +75,13 @@
         updateCurrentMusicInfo();
         music.src = song.path;
         boxdisk.style.backgroundImage = 'url(img/1702540579.jpg)';
-        setTimeout(() => {
-            currenttimes.innerHTML = '00:00';
+        
+        currenttimes.innerHTML = '00:00';
+        setTimeout(()=>{
             seekbar.max = music.duration;
-            musictime.innerHTML = formatTimes(music.duration);
-        }, 300);
+            musictime.innerHTML=formatTimes(music.duration);
+        },300);
+            
     }
     setSong(0);
 
