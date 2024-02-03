@@ -80,9 +80,6 @@
                 justify-content: center;
             }
 
-            .seek-bar {
-                width: 100%;
-            }
 
             .seek-bar {
                 width: 100%;
@@ -98,7 +95,7 @@
                     width: 1px;
                     height: 5px;
                     background: white;
-                    box-shadow: -400px 0 0 400px white;
+                    box-shadow: -1000px 0 0 1000px white;
                 }
             }
 
@@ -180,6 +177,7 @@
 
     }
 }
+
 
 @keyframes rotate {
     0% {

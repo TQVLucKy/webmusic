@@ -45,7 +45,6 @@
         <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
     </div>
 </div>
-
 <img src="img/1702540579.jpg" width="100%" height="100%"></br>
 <img src="img/1702540579.jpg" width="100%" height="100%"></br>
 <img src="img/1702540579.jpg" width="100%" height="100%"></br>
@@ -67,11 +66,11 @@
     const artist = document.querySelectorAll('.current-artist');
     const songname = document.querySelectorAll('.current-music');
     const boxdisk = document.querySelector('.box-disk');
-    const currenttimes = document.querySelector('.current-time');
-    const musictime = document.querySelector('.music-time');
+    const currenttimes = document.querySelectorAll('.current-time');
+    const musictime = document.querySelectorAll('.music-time');
     const btnplay = document.querySelectorAll('.btn-play');
-    const btnback = document.querySelector('.btnback');
-    const btnnext = document.querySelector('.btnnext');
+    const btnback = document.querySelectorAll('.btnback');
+    const btnnext = document.querySelectorAll('.btnnext');
 
     // window.addEventListener("scroll", () => {
     //     if (document.body.scrollTop>200)
@@ -102,6 +101,9 @@
         })
     });
 
+
+
+    //media
     const updateCurrentMusicInfo = () => {
         songname.forEach(element => {
             element.innerHTML = songs[currentSong].name;
@@ -121,10 +123,13 @@
 
         currenttimes.innerHTML = '00:00';
         setTimeout(() => {
-            seekbar.max = music.duration;
-            musictime.innerHTML = formatTimes(music.duration);
+            seekbar.forEach(element => {
+                element.max = music.duration;
+            })
+            musictime.forEach(element => {
+                element.innerHTML = formatTimes(music.duration);
+            })
         }, 300);
-
     }
     setSong(0);
 
@@ -139,27 +144,30 @@
         return `${min}:${sec}`;
     }
 
-    //set seek bar
+    // set seek bar
     seekbar.forEach(element => {
-        setInterval(() => {
-            element.value = music.currentTime;
-            currenttimes.innerHTML = formatTimes(music.currentTime)
-            if (Math.floor(music.currentTime) == Math.floor(element.max))
-                btnnext.click();
-        }, 500);
-        element.addEventListener('change', () => {
-            music.currentTime = element.value;
+        currenttimes.forEach(element1 => {
+            setInterval(() => {
+                element.value = music.currentTime;
+                element1.innerHTML = formatTimes(music.currentTime)
+                if (Math.floor(music.currentTime) == Math.floor(seekbar.max))
+                    btnnext.click();
+            }, 500);
+            element.addEventListener('change', () => {
+                music.currentTime = element.value;
+            })
         })
+
     });
 
     // setInterval(() => {
-    //     seekbar.value = music.currentTime;
+    //     seekbar[0].value = music.currentTime;
     //     currenttimes.innerHTML = formatTimes(music.currentTime)
-    //     if (Math.floor(music.currentTime) == Math.floor(seekbar.max))
+    //     if (Math.floor(music.currentTime) == Math.floor(seekbar[0].max))
     //         btnnext.click();
     // }, 500);
-    // seekbar.addEventListener('change', () => {
-    //     music.currentTime = seekbar.value;
+    // seekbar[0].addEventListener('change', () => {
+    //     music.currentTime = seekbar[0].value;
     // })
 
     const PlayMusic = () => {
