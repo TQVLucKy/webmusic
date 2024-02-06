@@ -1,11 +1,11 @@
-<link rel="stylesheet" type="text/css" href="playmusic.css">
+<link rel="stylesheet" type="text/css" href="playmusic.scss">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 
 
 <div class="detail">
     <div class="backnext">
-        <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
-        <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
+        <button class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
+        <button class="btn btncont"><i class="fa fa-chevron-right"></i></button>
     </div>
     <div class="container">
         <div class="box-disk">
@@ -55,10 +55,9 @@
 <img src="img/1702540579.jpg" width="100%" height="100%"></br>
 <img src="img/1702540579.jpg" width="100%" height="100%"></br>
 
-
-
 <script src="song.js"></script>
 <script>
+
     let currentSong = 0;
 
     const music = document.querySelector('#audio');
@@ -119,7 +118,7 @@
         currentSong = i;
         updateCurrentMusicInfo();
         music.src = song.path;
-        boxdisk.style.backgroundImage = 'url(img/1702540579.jpg)';
+        boxdisk.style.backgroundImage = 'url('+ song.image +')';
 
         currenttimes.innerHTML = '00:00';
         setTimeout(() => {

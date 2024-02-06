@@ -3,16 +3,27 @@
 // $images= glob($dirname."*.jpg");
 include './connect.php';
 if (isset($_POST["submitmusic"])) {
+    //đường dẫn tạm thời của tệp nhạc được gửi lên
+    $msName = addslashes($_FILES["music"]["name"]);
+    $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
+    $folder_m= 'music/';
+    $music=$_FILES['music'];
+    $file_extension = explode('.', $music['name'])[1];
+    $file_name_m = time(). '.' . $file_extension;
+    $path_file_m = $folder_m . $file_name_m;
+    move_uploaded_file($music["tmp_name"],$path_file_m);
     //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
     $imageName = addslashes($_FILES["image"]["name"]);
     $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
-    $folder = 'img/';
+    $folder_i = 'img/';
     $photo = $_FILES['image'];
     $file_extension = explode('.', $photo['name'])[1];
-    $file_name = time() . '.' . $file_extension;
-    $path_file = $folder . $file_name;
-    move_uploaded_file($photo["tmp_name"], $path_file);
-    $sql = "INSERT INTO storemusic ( name,nameimage, artist) VALUES ('$imageName', '$file_name','$_POST[artist]')";
+    $file_name_i = time() . '.' . $file_extension;
+    $path_file_i = $folder_i . $file_name_i;
+    move_uploaded_file($photo["tmp_name"], $path_file_i);
+
+    
+    $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
     if (mysqli_query($conn, $sql) === TRUE) {
         echo "Hình ảnh đã được tải lên thành công.";
     } else {
@@ -77,7 +88,7 @@ $printlist = mysqli_query($conn, $sql);
                 <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
             </div>
         </div>
-        
+
         <div class="container-fluid main row">
             <!-- library -->
             <div class="container-fluid library col-md-2 pt-1">
@@ -109,6 +120,8 @@ $printlist = mysqli_query($conn, $sql);
             <button id="AddList" onclick="AddList()">thêm danh sách</button>
         </div>
         <form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+            <label for="music">Chọn nhạc:</label>
+            <input type="file" name="music"></br>
             <label for="image">Chọn hình ảnh:</label>
             <input type="file" name="image"></br>
             <label for="artist">Tên ca sĩ:</label>

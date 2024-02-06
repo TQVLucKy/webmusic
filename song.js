@@ -2,7 +2,8 @@ let songs = [
     {
         name:'Mở mắt - LilWuyn & Đen',
         path:'MoMat-LilWuynDen-9760819.mp3',
-        artist:'LilWuyn & Đen'
+        artist:'LilWuyn & Đen',
+        image:'img/1702540646.jpg'
     },
     {
         name:'Arp Bounce - Geographer',
