@@ -6,12 +6,12 @@ if (isset($_POST["submitmusic"])) {
     //đường dẫn tạm thời của tệp nhạc được gửi lên
     $msName = addslashes($_FILES["music"]["name"]);
     $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
-    $folder_m= 'music/';
-    $music=$_FILES['music'];
+    $folder_m = 'music/';
+    $music = $_FILES['music'];
     $file_extension = explode('.', $music['name'])[1];
-    $file_name_m = time(). '.' . $file_extension;
+    $file_name_m = time() . '.' . $file_extension;
     $path_file_m = $folder_m . $file_name_m;
-    move_uploaded_file($music["tmp_name"],$path_file_m);
+    move_uploaded_file($music["tmp_name"], $path_file_m);
     //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
     $imageName = addslashes($_FILES["image"]["name"]);
     $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
@@ -22,7 +22,7 @@ if (isset($_POST["submitmusic"])) {
     $path_file_i = $folder_i . $file_name_i;
     move_uploaded_file($photo["tmp_name"], $path_file_i);
 
-    
+
     $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
     if (mysqli_query($conn, $sql) === TRUE) {
         echo "Hình ảnh đã được tải lên thành công.";
@@ -112,7 +112,10 @@ $printlist = mysqli_query($conn, $sql);
             <!-- main -->
             <div class="menu col-md-10">
                 <!-- list music -->
-                <?php include "playmusic.php" ?>
+                <?php
+                include "./listmusic/listmusic.php";
+                // include "playmusic.php"
+                ?>
             </div>
         </div>
         <div id="create" style="display: none;">
@@ -135,7 +138,22 @@ $printlist = mysqli_query($conn, $sql);
         </form>
     </div>
 </body>
-
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const itemList = document.getElementById('item-list');
+        itemList.addEventListener('click', () => {
+            const itemId = event.target.dataset.id;
+            if (itemId) {
+                fetch('song.js?id=${itemId}')
+                    .then(Response => Response.text())
+                    .then(data => {
+                        document.getElementsByClassName('detail').innerHTML = data;
+                    })
+                    .catch(Error => console.error('Error:', error));
+            }
+        });
+    });
+</script>
 <script>
     var create = document.getElementById('create');
     var clicked = true;

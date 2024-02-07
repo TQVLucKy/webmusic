@@ -8,7 +8,7 @@
 <div class="list-music row">
     <?php
     foreach ($results as $result) {
-        echo '<div class="items col-2 mb-3 mx-3">';
+        echo '<div id="item-list" class="items col-2 mb-3 mx-3">';
         echo '<img style="max-width:100%;height:100%" src= ./img/' . $result['nameimage'] . '><br>';
         echo $result['name'] . "<br>";
         echo $result['artist'] . "<br>";
