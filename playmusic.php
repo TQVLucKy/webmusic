@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 
 
-<div class="detail">
+<div id="detail1" class="detail">
     <div class="backnext">
         <button class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
         <button class="btn btncont"><i class="fa fa-chevron-right"></i></button>

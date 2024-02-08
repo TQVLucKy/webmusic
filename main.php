@@ -140,18 +140,22 @@ $printlist = mysqli_query($conn, $sql);
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const itemList = document.getElementById('item-list');
-        itemList.addEventListener('click', () => {
-            const itemId = event.target.dataset.id;
-            if (itemId) {
-                fetch('song.js?id=${itemId}')
-                    .then(Response => Response.text())
-                    .then(data => {
-                        document.getElementsByClassName('detail').innerHTML = data;
-                    })
-                    .catch(Error => console.error('Error:', error));
-            }
+        const itemList = document.querySelectorAll('.items');
+        itemList.forEach(item => {
+            item.addEventListener('click', () => {
+                const itemId = item.dataset.id;
+                if (itemId) {
+                    fetch(`song.js?id=${itemId}`)
+                        .then(Response => Response.text())
+                        .then(data => {
+                            document.getElementsByClassName('detail1')[0].innerHTML = data;
+                            alert('cc');
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
         });
+        
     });
 </script>
 <script>
