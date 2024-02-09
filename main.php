@@ -63,7 +63,6 @@ $printlist = mysqli_query($conn, $sql);
     <title>Main music</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="./search/search.js"></script>
-
 </head>
 
 <body>
@@ -114,7 +113,7 @@ $printlist = mysqli_query($conn, $sql);
                 <!-- list music -->
                 <?php
                 include "./listmusic/listmusic.php";
-                // include "playmusic.php"
+                // include "playmusic.php";
                 ?>
             </div>
         </div>
@@ -144,8 +143,9 @@ $printlist = mysqli_query($conn, $sql);
         itemList.forEach(item => {
             item.addEventListener('click', () => {
                 const itemId = item.dataset.id;
+                
                 if (itemId) {
-                    fetch(`song.js?id=${itemId}`)
+                    fetch(`get_product_details.php?id=${itemId}`)
                         .then(Response => Response.text())
                         .then(data => {
                             document.getElementsByClassName('detail1')[0].innerHTML = data;
