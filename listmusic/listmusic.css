@@ -1,15 +1,15 @@
-.menu {
-  background: rgb(17, 17, 17);
-  border-radius: 25px;
+.menu .list-music .items {
+  display: flex;
+  flex-wrap: wrap;
 }
-.menu .items {
+.menu .list-music .item {
   text-align: center;
   padding: 10px;
   height: 100%;
-  width: 100%;
-  background-color: rgb(26, 26, 26);
+  width: 20%;
+  float: left;
   border-radius: 15px;
 }
-.menu .items:hover {
+.menu .list-music .item:hover {
   background-color: rgb(38, 38, 38);
 }/*# sourceMappingURL=listmusic.css.map */

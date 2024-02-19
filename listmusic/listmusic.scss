@@ -1,18 +1,20 @@
-
 .menu {
-    background: rgb(17, 17, 17);
-    border-radius: 25px;
-
-    .items {
-        text-align: center;
-        padding: 10px;
-        height: 100%;
-        width: 100%;
-        background-color: rgb(26, 26, 26);
-        border-radius: 15px;
-
-        &:hover {
-            background-color: rgb(38, 38, 38);
+    .list-music {
+        .items {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .item {
+            text-align: center;
+            padding: 10px;
+            height: 100%;
+            width: 20%;
+            float: left;
+            border-radius: 15px;
+            &:hover {
+                background-color: rgb(38, 38, 38);
+            }
         }
     }
+
 }
