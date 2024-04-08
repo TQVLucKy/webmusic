@@ -1,0 +1,58 @@
+.library {
+  background-color: rgb(17, 17, 17);
+  border-radius: 25px;
+  border-right: 10px solid black;
+}
+.library .title {
+  align-items: baseline;
+}
+.library .material-icons {
+  color: rgb(190, 182, 182);
+}
+.library button {
+  color: black;
+  border: none;
+  background-color: inherit;
+}
+.library .itemslist {
+  border-radius: 10px;
+  margin: 5px 0;
+  padding-left: 5px;
+}
+.library .itemslist:hover {
+  background-color: gray;
+}
+
+#create {
+  left: 215px;
+  top: 75px;
+  background-color: white;
+  color: black;
+  width: 150px;
+  padding: 0;
+  z-index: 1;
+}
+#create button {
+  color: black;
+  border: none;
+  background-color: inherit;
+  text-align: left;
+  margin: 0px;
+  width: 100%;
+}
+#create button:hover {
+  background-color: gray;
+}
+
+.addmusic,
+.addlist {
+  color: white;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  top: 20%;
+  left: 0px;
+  right: 0px;
+  width: 600px;
+  padding: 50px;
+  margin: 0px auto;
+}/*# sourceMappingURL=library.css.map */

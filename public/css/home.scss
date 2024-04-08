@@ -3,18 +3,27 @@
         .items {
             display: flex;
             flex-wrap: wrap;
-        }
-        .item {
             text-align: center;
             padding: 10px;
             height: 100%;
-            width: 20%;
+            border-radius: 15px;
+        }
+
+        .item {
+            text-align: center;
+            padding: 10px;
             float: left;
             border-radius: 15px;
+
             &:hover {
                 background-color: rgb(38, 38, 38);
             }
         }
     }
 
+}
+
+body {
+    color: rgb(190, 182, 182);
+    background-color: black;
 }

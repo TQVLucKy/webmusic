@@ -1,0 +1,20 @@
+body {
+    color: rgb(190, 182, 182);
+    background-color: black;
+}
+
+.menu {
+    background: rgb(17, 17, 17);
+    border-radius: 25px;
+    .items{
+        text-align: center;
+        padding: 10px;
+        height: 100%;
+        border-radius: 15px;
+    }
+}
+
+.main {
+    width: auto;
+    height: 7in;
+}

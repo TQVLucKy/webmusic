@@ -5,7 +5,7 @@ $productId = isset($_GET['id']) ? $_GET['id'] : null;
 
 if ($productId) {
     // Chuẩn bị câu lệnh truy vấn
-    $sql = "SELECT * FROM products WHERE id = ?";
+    $sql = "SELECT * FROM storemusic WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     // Bind tham số

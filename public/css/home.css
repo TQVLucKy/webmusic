@@ -1,15 +1,22 @@
 .menu .list-music .items {
   display: flex;
   flex-wrap: wrap;
+  text-align: center;
+  padding: 10px;
+  height: 100%;
+  border-radius: 15px;
 }
 .menu .list-music .item {
   text-align: center;
   padding: 10px;
-  height: 100%;
-  width: 20%;
   float: left;
   border-radius: 15px;
 }
 .menu .list-music .item:hover {
   background-color: rgb(38, 38, 38);
-}/*# sourceMappingURL=listmusic.css.map */
+}
+
+body {
+  color: rgb(190, 182, 182);
+  background-color: black;
+}/*# sourceMappingURL=home.css.map */

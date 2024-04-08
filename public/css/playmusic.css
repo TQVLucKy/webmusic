@@ -1,0 +1,274 @@
+.detail {
+  background-color: rgb(17, 17, 17);
+}
+.detail .backnext {
+  display: flex;
+}
+.detail .backnext .btn {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 5px;
+  color: white;
+  margin-left: 5px;
+}
+.detail .backnext .btn:hover {
+  background-color: blue;
+  opacity: 0.5;
+  transition: 1s;
+}
+.detail .container {
+  display: flex;
+}
+.detail .container .box-disk {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  position: relative;
+  background: no-repeat center;
+  background-size: cover;
+  animation: rotate 20s linear infinite;
+  animation-play-state: paused;
+}
+.detail .container .box-disk.play {
+  animation-play-state: running;
+}
+.detail .container .box-disk::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+}
+.detail .container .title {
+  width: 100%;
+  margin-left: 5%;
+}
+.detail .container .title .current-time,
+.detail .container .title .music-time,
+.detail .container .title .current-artist {
+  font-size: 15px;
+}
+.detail .container .title .music-time {
+  position: absolute;
+  float: left;
+  right: 130px;
+}
+.detail .container .title .current-music {
+  font-size: 20px;
+}
+.detail .container .title .current-music,
+.detail .container .title .current-artist {
+  display: flex;
+  justify-content: center;
+}
+.detail .container .title .seek-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 15px;
+  background: grey;
+  cursor: pointer;
+  -webkit-appearance: none;
+  overflow: hidden;
+}
+.detail .container .title .seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1px;
+  height: 5px;
+  background: white;
+  box-shadow: -1000px 0 0 1000px white;
+}
+.detail .container .title .controls {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  margin: 15px auto;
+}
+.detail .container .title .controls .btn-play {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: gray;
+  cursor: pointer;
+  border: none;
+}
+.detail .container .title .controls .btn-play:hover {
+  background-color: gray;
+  opacity: 0.5;
+  transition: 1s;
+}
+.detail .container .title .controls .btn-play span {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  transform: translateY(-50);
+  width: 10px;
+  height: 30px;
+  border-radius: 2px;
+  background: white;
+  transition: 0.5s;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.detail .container .title .controls .btn-play span:nth-child(2) {
+  left: 55%;
+  transform-origin: center;
+}
+.detail .container .title .btn-play.pause span:nth-child(2) {
+  transform: translateY(-50%) scaleY(0);
+}
+.detail .container .title .btn-play.pause span:nth-child(1) {
+  width: 35%;
+  top: 47%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  border-radius: 0;
+  -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+          clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+}
+.detail .container .title .btn {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 5px;
+  color: white;
+}
+.detail .container .title .btn:hover {
+  background-color: black;
+  opacity: 0.5;
+  transition: 1s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.music-slider {
+  background-color: gray;
+  border-radius: 5px;
+  left: 45%;
+  top: 75%;
+  position: fixed;
+  height: auto;
+  width: 310px;
+  padding: 0 5px;
+}
+.music-slider .seek-bar {
+  width: 100%;
+  height: 5px;
+  border-radius: 15px;
+  background: black;
+  cursor: pointer;
+  -webkit-appearance: none;
+  overflow: hidden;
+}
+.music-slider .seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1px;
+  height: 5px;
+  background: white;
+  box-shadow: -400px 0 0 400px white;
+}
+.music-slider .current-time,
+.music-slider .music-time,
+.music-slider .current-artist {
+  font-size: 15px;
+}
+.music-slider .music-time {
+  position: absolute;
+  float: left;
+  right: 5px;
+}
+.music-slider .current-music {
+  font-size: 20px;
+}
+.music-slider .current-music,
+.music-slider .current-artist {
+  display: flex;
+  justify-content: center;
+}
+.music-slider .controls {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+.music-slider .controls .btn-play {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: gray;
+  cursor: pointer;
+  border: none;
+}
+.music-slider .controls .btn-play:hover {
+  background-color: black;
+  opacity: 0.5;
+  transition: 1s;
+}
+.music-slider .controls .btn-play span {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  transform: translateY(-50);
+  width: 10px;
+  height: 30px;
+  border-radius: 2px;
+  background: white;
+  transition: 0.5s;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.music-slider .controls .btn-play span:nth-child(2) {
+  left: 55%;
+  transform-origin: center;
+}
+.music-slider .controls .btn-play.pause span:nth-child(2) {
+  transform: translateY(-50%) scaleY(0);
+}
+.music-slider .controls .btn-play.pause span:nth-child(1) {
+  width: 35%;
+  top: 47%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  border-radius: 0;
+  -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+          clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+}
+.music-slider .controls .btn {
+  width: 40px;
+  height: 40px;
+  background: gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 5px;
+  color: white;
+}
+.music-slider .controls .btn:hover {
+  background-color: black;
+  opacity: 0.5;
+  transition: 1s;
+}/*# sourceMappingURL=playmusic.css.map */

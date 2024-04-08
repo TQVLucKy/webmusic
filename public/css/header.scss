@@ -1,0 +1,52 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    background-color: rgb(17, 17, 17);
+    height: 50px;
+    .input-group{
+        display: flex;
+        align-items: baseline;
+    }
+    .h1 {
+        text-decoration: none;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    .account button {
+        &:hover {
+            background-color: black;
+        }
+    }
+}
+.result{
+    position: absolute;        
+    z-index: 999;
+    top: 100%;
+    left: 0;
+}
+.input-group input[type="text"], .result{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+/* Formatting result items */
+.result p{
+    color: black;
+    background-color: white;
+    margin: 0;
+    padding: 7px 10px;
+    border: 1px solid gray;
+    border-top: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.result p:hover{
+    background: gray;
+    color: white;
+}
