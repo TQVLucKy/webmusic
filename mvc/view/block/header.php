@@ -17,8 +17,8 @@
         </div>
     </form>
     <div class="account">
-        <a class="DangKy btn btn-secondary" href="../account/sign.php">Đăng Ký</a>
-        <a class="DangNhap btn btn-secondary" href="../account/login.php">Đăng Nhập</a>
+        <a class="DangKy btn btn-secondary" href="./account/sign.php">Đăng Ký</a>
+        <a class="DangNhap btn btn-secondary" href="./account/login.php">Đăng Nhập</a>
     </div>
 </div>
 <script>

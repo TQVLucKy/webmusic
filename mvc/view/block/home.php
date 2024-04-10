@@ -32,7 +32,7 @@
             // Chuyển hướng người dùng đến trang khác với ID
 
             //xem lại cái nhảy trang
-            window.location.href = '.   /playmusic.php?id=' + id;
+            window.location.href = './Play?'+ id;
         });
     });
 </script>

@@ -20,7 +20,8 @@
             $this->view("master1",[
                 "page"=>"playmusic",
                 "MS" => $this->a->Music(),
-                "Lib"=> $this->a->Library()
+                "Lib"=> $this->a->Library(),
+                "g"=> $this->a->getall()
                 ]);
         }
     }

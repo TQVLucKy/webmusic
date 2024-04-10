@@ -1,15 +1,15 @@
 let songs = [
     {
         name:'Mở mắt - LilWuyn & Đen',
-        path:'MoMat-LilWuynDen-9760819.mp3',
+        path:'../MoMat-LilWuynDen-9760819.mp3',
         artist:'LilWuyn & Đen',
-        image:'img/1702540646.jpg'
+        image:'../img/1702540646.jpg'
     },
     {
         name:'Arp Bounce - Geographer',
-        path:'music/Arp Bounce - Geographer.mp3',
+        path:'Arp Bounce - Geographer.mp3',
         artist:'Artist Y01',
-        image:'images/Arp Bounce - Geographer.jpg'
+        image:'img/Arp Bounce - Geographer.jpg'
     },
     {
         name:'BLAAM - Gunnar Olsen HipHop',

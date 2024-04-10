@@ -22,7 +22,7 @@
         <div class="container-fluid main row">
             <?php require_once './mvc/view/block/library.php' ?>
             <div class="menu col-md-10">
-                <?php require_once './mvc/view/block/' . $data["page"] . '.php' ?>
+                <?php require_once './mvc/view/block/'.$data["page"] . '.php' ?>
             </div>
         </div>
     </div>

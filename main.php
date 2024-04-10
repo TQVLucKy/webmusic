@@ -112,8 +112,8 @@ $printlist = mysqli_query($conn, $sql);
             <div class="menu col-md-10">
                 <!-- list music -->
                 <?php 
-                include "./listmusic/listmusic.php";
-                // include "playmusic.php";
+                // include "./listmusic/listmusic.php";
+                include "playmusic.php";
                 ?>
             </div>
         </div>
