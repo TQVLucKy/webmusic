@@ -5,10 +5,6 @@
 <!-- <script type="text/javascript" src="./song.js"></script> -->
 </head>
 
-<?php
-if(isset($_GET['id']))
-    $id = $_GET['id'];
-?>
 
 <div id="detail1" class="detail">
     <div class="backnext">
@@ -59,9 +55,10 @@ if(isset($_GET['id']))
 <img src="img/1702540579.jpg" width="50%" height="50%"></br>
 <img src="img/1702540579.jpg" width="50%" height="50%"></br>
 <img src="img/1702540579.jpg" width="50%" height="50%"></br> -->
-<script src="../song.js"></script>
 <script>
-    let currentSong = 0;
+let songs = <?php echo json_encode($data["g"]); ?>;
+console.log(<?php echo json_encode($data["g"]); ?>);
+let currentSong = 0;
 
 const music = document.querySelector('#audio');
 const seekbar = document.querySelectorAll('.seek-bar');
@@ -121,7 +118,7 @@ const setSong = (i) => {
     currentSong = i;
     updateCurrentMusicInfo();
     music.src = song.path;
-    boxdisk.style.backgroundImage = 'url('+ song.image + ')';
+    boxdisk.style.backgroundImage = 'url(../img/'+song.image+')';
 
     currenttimes.innerHTML = '00:00';
     setTimeout(() => {

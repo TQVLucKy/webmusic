@@ -38,3 +38,5 @@
     <input type="text" name="namelist">
     <input type="submit" name="submitlist" value="Tạo">
 </form>
+<!--1.sửa lại thông tin khi thêm nhạc vào (cụ thể là xóa đuôi jpg,thêm nhạc) \
+    2. lấy địa chỉ để dẫn nhạc ra-->

@@ -30,7 +30,7 @@ class MusicModel extends DB{
                 array_push($songs, $song);
             }
         }
-        return $song;
+        return $songs;
     }
 
 }
