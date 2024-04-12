@@ -32,7 +32,7 @@
             // Chuyển hướng người dùng đến trang khác với ID
 
             //xem lại cái nhảy trang
-            window.location.href = './Play?'+ id;
+            window.location.href = './Play?id='+ id;
         });
     });
 </script>

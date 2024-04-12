@@ -4,7 +4,11 @@
 <!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
 <!-- <script type="text/javascript" src="./song.js"></script> -->
 </head>
-
+<?php
+// print_r($_GET);
+// echo "ID: ".$_GET['id'];
+    $id= 69;
+?>
 
 <div id="detail1" class="detail">
     <div class="backnext">
@@ -57,7 +61,6 @@
 <img src="img/1702540579.jpg" width="50%" height="50%"></br> -->
 <script>
 let songs = <?php echo json_encode($data["g"]); ?>;
-console.log(<?php echo json_encode($data["g"]); ?>);
 let currentSong = 0;
 
 const music = document.querySelector('#audio');
@@ -111,6 +114,12 @@ const updateCurrentMusicInfo = () => {
         element.innerHTML = songs[currentSong].artist;
     })
 };
+const setSongById = (id)=>{
+    let index= songs.findIndex(song => song.id == id);
+    if(index !== -1) {
+        setSong(index);
+    }
+}
 
 const setSong = (i) => {
     seekbar.value = 0;
@@ -130,7 +139,9 @@ const setSong = (i) => {
         })
     }, 300);
 }
-setSong(0);
+//cố gắng tìm cách lấy được ?id
+var isId= <?php echo $id ?>;
+setSongById(isId);
 
 const formatTimes = (time) => {
     let min = Math.floor(time / 60);
