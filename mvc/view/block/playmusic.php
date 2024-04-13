@@ -4,11 +4,10 @@
 <!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
 <!-- <script type="text/javascript" src="./song.js"></script> -->
 </head>
-<?php
-// print_r($_GET);
-// echo "ID: ".$_GET['id'];
-    $id= 69;
-?>
+<!-- <?php
+// print_r($_GET);     
+// echo "ID: ".$_GET['url'];
+?> -->
 
 <div id="detail1" class="detail">
     <div class="backnext">
@@ -140,8 +139,10 @@ const setSong = (i) => {
     }, 300);
 }
 //cố gắng tìm cách lấy được ?id
-var isId= <?php echo $id ?>;
-setSongById(isId);
+var url = new URL(window.location.href);
+console.log(url);
+var id = url.searchParams.get("id");
+setSongById(id);
 
 const formatTimes = (time) => {
     let min = Math.floor(time / 60);
