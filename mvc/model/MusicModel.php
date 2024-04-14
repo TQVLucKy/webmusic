@@ -24,14 +24,18 @@ class MusicModel extends DB{
                     "id" => $row["id"],
                     "name" => $row["name"],
                     "artist" => $row["artist"],
-                    "path" => "../MoMat-LilWuynDen-9760819.mp3",
-                    "image" => $row["nameimage"]
+                    "path" => "../music/MoMat-LilWuynDen-9760819.mp3",
+                    "image" => $row["nameimage"],
+                    "favorite" => $row["state"]
                 );
                 array_push($songs, $song);
             }
         }
         return $songs;
     }
-
+    // public function UpdateFavorite($id) {
+    //     $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE id = $id";
+    //     return mysqli_query($this->con,$sql);
+    // }
 }
 ?>
