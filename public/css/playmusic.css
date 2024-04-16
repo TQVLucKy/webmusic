@@ -270,6 +270,9 @@
   transition: 1s;
 }
 
+.contact {
+  display: flex;
+}
 .contact .btn {
   font-size: 1.5em;
   width: 50px;
@@ -287,4 +290,54 @@
 }
 .contact .favorited {
   color: red;
+}
+.contact .material-icons {
+  color: rgb(190, 182, 182);
+}
+.contact button {
+  color: black;
+  border: none;
+  background-color: inherit;
+}
+.contact .itemslist {
+  border-radius: 10px;
+  margin: 5px 0;
+  padding-left: 5px;
+}
+.contact .itemslist:hover {
+  background-color: gray;
+}
+
+#List {
+  left: 100px;
+  top: 235px;
+  background-color: white;
+  color: black;
+  width: 150px;
+  padding: 0;
+  z-index: 1;
+}
+#List .itemslist {
+  color: black;
+  border: none;
+  background-color: inherit;
+  text-align: left;
+  margin: 0px;
+  width: 100%;
+}
+#List .itemslist:hover {
+  background-color: gray;
+}
+
+.addmusic,
+.addlist {
+  color: white;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  top: 20%;
+  left: 0px;
+  right: 0px;
+  width: 600px;
+  padding: 50px;
+  margin: 0px auto;
 }/*# sourceMappingURL=playmusic.css.map */

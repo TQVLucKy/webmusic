@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../public/css/playmusic.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+<script type="text/javascript" src="../public/js/playmusic.js"></script>
 
 <head>
     <!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
@@ -36,17 +37,13 @@
     </div>
 </div>
 <div class="contact">
-    <!-- <button id="favorite" data-favorite="$print['favorite']" 
-class="<?php 1 ? 'btn favorited' : 'btn favorite'; ?>" onclick=UpdateFavorite()>
-<i class="fa fa-heart"></i></button> -->
     <?php
-    $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"],'favorite'));
+    $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
     echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "' onclick='UpdateFavorite()'>";
     echo "<i class='fa fa-heart'></i></button>";
     ?>
-    <div class="create">
+    <button class="material-icons" onclick="AddMusicToLibrary()">add</button>
 
-    </div>
 </div>
 <!-- mini music -->
 <audio src="" id="audio"></audio>
@@ -64,6 +61,17 @@ class="<?php 1 ? 'btn favorited' : 'btn favorite'; ?>" onclick=UpdateFavorite()>
         </button>
         <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
     </div>
+</div>
+
+<!-- add song to library -->
+<div id="List" style="display: none;">
+    <?php
+    foreach ($data["Lib"] as $print) {
+        echo '<div class="itemslist" id="IDList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
+        echo $print['NameList'];
+        echo '</div>';
+    }
+    ?>
 </div>
 
 <script>
@@ -88,14 +96,29 @@ class="<?php 1 ? 'btn favorited' : 'btn favorite'; ?>" onclick=UpdateFavorite()>
     //         document.getElementById('1').style.display = 'none';
     // });
 
+    //xử lý thêm nhạc vào library
+    function AddToLibrary(IdList) {
+        // var Ma = document.getElementById('Ma').getAttribute('data-id');
 
+        $.ajax({
+            type: "GET",
+            url: "./model/test?action=AddMusicToLibrary",
+            data: {
+                idList: IdList,
+                idMusic: <?php echo $_GET["id"] ?>
+            },
+            success: function(response) {
+                console.log(response);
+            }
+        });
+    }
     //xử lý favorite
     function UpdateFavorite() {
         var isFavorite = document.getElementById('favorite').getAttribute('data-favorite');
         // console.log(isFavorite);
         $.ajax({
             type: "GET",
-            url: './model/test?action=UpdateFavorite&id='+<?php echo $_GET['id']?>,
+            url: './model/test?action=UpdateFavorite&id=' + <?php echo $_GET['id'] ?>,
             data: {
                 favorite: isFavorite
             },

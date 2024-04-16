@@ -7,9 +7,11 @@ class MusicModel extends DB{
     }
 
     public function Library(){
-        $qr="select * from listmusic";
+        $qr="select * from library";
         return mysqli_query($this->con,$qr);
     }
+
+    
     public function getall(){
         $sql = "SELECT * FROM storemusic";
         $result = mysqli_query($this->con,$sql);
@@ -33,9 +35,13 @@ class MusicModel extends DB{
         }
         return $songs;
     }
-    // public function UpdateFavorite($id) {
-    //     $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE id = $id";
-    //     return mysqli_query($this->con,$sql);
-    // }
+
+    public function AddMusicToLibrary($IdList,$id){
+
+        //quét trường hợp khi music đã thêm vào nhưng vẫn tiếp tục thêm
+        //làm view show library
+        $sql= "INSERT INTO listmusic (IdList,id) values('$IdList','$id')";
+        return mysqli_query($this->con,$sql);
+    }
 }
 ?>
