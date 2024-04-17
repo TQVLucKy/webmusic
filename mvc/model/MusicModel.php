@@ -1,27 +1,30 @@
 <?php
-class MusicModel extends DB{
-    public function Music(){
-        $qr="select * from storemusic";
-        return mysqli_query($this->con,$qr);
-       
+class MusicModel extends DB
+{
+    public function Music()
+    {
+        $qr = "select * from storemusic";
+        return mysqli_query($this->con, $qr);
     }
 
-    public function Library(){
-        $qr="select * from library";
-        return mysqli_query($this->con,$qr);
+    public function Library()
+    {
+        $qr = "select * from library";
+        return mysqli_query($this->con, $qr);
     }
 
-    
-    public function getall(){
+
+    public function getall()
+    {
         $sql = "SELECT * FROM storemusic";
-        $result = mysqli_query($this->con,$sql);
+        $result = mysqli_query($this->con, $sql);
 
         // Kiểm tra và xử lý kết quả trả về
 
         //sử dụng cái này và rồi get id rồi trả về như cái song.js
         $songs = array();
         if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
                 $song = array(
                     "id" => $row["id"],
                     "name" => $row["name"],
@@ -36,12 +39,38 @@ class MusicModel extends DB{
         return $songs;
     }
 
-    public function AddMusicToLibrary($IdList,$id){
+    public function AddMusicToLibrary($IdList, $id)
+    {
 
-        //quét trường hợp khi music đã thêm vào nhưng vẫn tiếp tục thêm
+        //Sau này sẽ thay đổi lại: khi đã lưu ở trong library nào đó
+        //thì khi nhấn vào lại sẽ chuyển sang hủy thêm nào library đó
+        //or đã tồn tại trong 1 library thì chuyển nút thêm thành hủy (1 trong 2 cách)
+        
+        //chỉnh sửa khi thêm music và xem lại add music
+
+
+
         //làm view show library
-        $sql= "INSERT INTO listmusic (IdList,id) values('$IdList','$id')";
-        return mysqli_query($this->con,$sql);
+        // Kiểm tra xem IdList và id đã tồn tại chưa
+        $query = "SELECT COUNT(*) AS count FROM listmusic WHERE IdList = '$IdList' AND id = '$id'";
+        $result = mysqli_query($this->con, $query);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $count = $row['count'];
+            mysqli_free_result($result);
+
+            // Nếu đã tồn tại, xử lý lỗi hoặc thông báo cho người dùng
+            if ($count > 0) {
+                echo "da ton tai";
+            } else {
+                // Thực hiện lệnh INSERT vào cơ sở dữ liệu
+                $sql = "INSERT INTO listmusic (IdList, id) VALUES ('$IdList', '$id')";
+                mysqli_query($this->con, $sql);
+            }
+        } else {
+            echo "da ton tai id";
+        }
+        
     }
 }
-?>

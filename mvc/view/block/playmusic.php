@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../public/css/playmusic.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-<script type="text/javascript" src="../public/js/playmusic.js"></script>
+<!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
 
 <head>
     <!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
@@ -42,7 +42,7 @@
     echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "' onclick='UpdateFavorite()'>";
     echo "<i class='fa fa-heart'></i></button>";
     ?>
-    <button class="material-icons" onclick="AddMusicToLibrary()">add</button>
+    <button class="material-icons" onclick=AddMusicToLibrary()>add</button>
 
 </div>
 <!-- mini music -->
@@ -73,7 +73,27 @@
     }
     ?>
 </div>
+<script>
+    var List = document.getElementById('List');
+    var clickedList = true;
 
+    function handleListClick() {
+        if (clickedList) {
+            document.getElementById('List').style.display = "none";
+        }
+    }
+    document.addEventListener("click", handleListClick);
+
+    function AddMusicToLibrary() {
+        document.getElementById('List').style.display = "block";
+        document.getElementById('List').style.position = "absolute";
+        if (clickedList)
+            clickedList = false;
+        else clickedList = true;
+        
+
+    };
+</script>
 <script>
     let songs = <?php echo json_encode($data["g"]); ?>;
     let currentSong = 0;
@@ -98,8 +118,6 @@
 
     //xử lý thêm nhạc vào library
     function AddToLibrary(IdList) {
-        // var Ma = document.getElementById('Ma').getAttribute('data-id');
-
         $.ajax({
             type: "GET",
             url: "./model/test?action=AddMusicToLibrary",
@@ -111,6 +129,8 @@
                 console.log(response);
             }
         });
+        clickedList=true;
+        handleListClick();
     }
     //xử lý favorite
     function UpdateFavorite() {
@@ -140,6 +160,7 @@
             document.getElementById('music-slider').style.display = 'none';
         }
     }
+
     btnplay.forEach(element => {
         element.addEventListener('click', () => {
             if (element.className.includes('pause')) {
