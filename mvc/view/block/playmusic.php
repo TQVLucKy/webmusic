@@ -73,6 +73,7 @@
     }
     ?>
 </div>
+
 <script>
     var List = document.getElementById('List');
     var clickedList = true;
@@ -90,8 +91,6 @@
         if (clickedList)
             clickedList = false;
         else clickedList = true;
-        
-
     };
 </script>
 <script>
@@ -129,7 +128,7 @@
                 console.log(response);
             }
         });
-        clickedList=true;
+        clickedList = true;
         handleListClick();
     }
     //xử lý favorite
@@ -150,7 +149,7 @@
     }
 
     window.onscroll = function() {
-        myFunction()
+        myFunction();
     };
 
     function myFunction() {
@@ -168,7 +167,9 @@
             } else {
                 music.pause();
             }
-            element.classList.toggle('pause');
+            btnplay.forEach(element1 => {
+                element1.classList.toggle('pause');
+            })
             boxdisk.classList.toggle('play');
         })
     });
@@ -251,52 +252,43 @@
     //     music.currentTime = seekbar[0].value;
     // })
 
-    const PlayMusic = () => {
-        music.play();
-        btnplay.classList.remove('pause');
-        boxdisk.classList.add('play');
-    }
+    // const PlayMusic = () => {
+    //     music.play();
+    //     btnplay.classList.remove('pause');
+    //     boxdisk.classList.add('play');
+    // }
 
     //Next and PreView
     btnnext.forEach(element => {
         element.addEventListener('click', () => {
+            boxdisk.classList.remove('play');
+            console.log(boxdisk);
             if (currentSong >= songs.length - 1) {
                 currentSong = 0;
             } else {
                 currentSong++;
             }
+            btnplay.forEach(btn => {
+                btn.classList.add('pause');
+            });
             setSong(currentSong);
         })
     })
-    // btnnext.addEventListener('click', () => {
-    //     if (currentSong >= songs.length - 1) {
-    //         currentSong = 0;
-    //     } else {
-    //         currentSong++;
-    //     }
 
-    //     setSong(currentSong);
-    // })
     btnback.forEach(element => {
         element.addEventListener('click', () => {
+            boxdisk.classList.remove('play');
             if (currentSong <= 0) {
                 currentSong = songs.length + 1;
             } else {
                 currentSong--;
             }
-
+            btnplay.forEach(btn => {
+                btn.classList.add('pause');
+            });
             setSong(currentSong);
         })
     });
-    // btnback.addEventListener('click', () => {
-    //     if (currentSong <= 0) {
-    //         currentSong = songs.length + 1;
-    //     } else {
-    //         currentSong--;
-    //     }
-
-    //     setSong(currentSong);
-    // })
 
     //random music
     // btnrandom.addEventListener('click', () => {
