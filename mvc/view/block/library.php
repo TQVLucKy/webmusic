@@ -2,6 +2,41 @@
     <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
+
+<?php
+
+//will fix it someday, the day I can
+include './connect.php';
+if (isset($_POST["submitmusic"])) {
+    //đường dẫn tạm thời của tệp nhạc được gửi lên
+    $msName = addslashes($_FILES["music"]["name"]);
+    $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
+    $folder_m = 'music/';
+    $music = $_FILES['music'];
+    $file_extension = explode('.', $music['name'])[1];
+    $file_name_m = time() . '.' . $file_extension;
+    $path_file_m = $folder_m . $file_name_m;
+    move_uploaded_file($music["tmp_name"], $path_file_m);
+    //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
+    $imageName = addslashes($_FILES["image"]["name"]);
+    $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+    $folder_i = 'img/';
+    $photo = $_FILES['image'];
+    $file_extension = explode('.', $photo['name'])[1];
+    $file_name_i = time() . '.' . $file_extension;
+    $path_file_i = $folder_i . $file_name_i;
+    move_uploaded_file($photo["tmp_name"], $path_file_i);
+
+
+    $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
+    if (mysqli_query($conn, $sql) === TRUE) {
+        echo "Hình ảnh đã được tải lên thành công.";
+    } else {
+        echo "Lỗi: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+?>
 <div class="container-fluid library col-md-2 pt-1">
     <div class="title d-flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
@@ -24,7 +59,7 @@
     <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
     <button id="AddList" onclick="AddList()">thêm danh sách</button>
 </div>
-<form class="addmusic" id="showcreate" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+<form class="container-fluid addmusic" id="showcreate" style="display:none;" class="container-fluid" action="library.php" method="post" enctype="multipart/form-data">
     <label for="music">Chọn nhạc:</label>
     <input type="file" name="music"></br>
     <label for="image">Chọn hình ảnh:</label>

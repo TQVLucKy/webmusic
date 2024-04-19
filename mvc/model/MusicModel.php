@@ -45,7 +45,7 @@ class MusicModel extends DB
         //Sau này sẽ thay đổi lại: khi đã lưu ở trong library nào đó
         //thì khi nhấn vào lại sẽ chuyển sang hủy thêm nào library đó
         //or đã tồn tại trong 1 library thì chuyển nút thêm thành hủy (1 trong 2 cách)
-        
+
         //chỉnh sửa khi thêm music và xem lại add music
 
 
@@ -71,6 +71,39 @@ class MusicModel extends DB
         } else {
             echo "da ton tai id";
         }
-        
     }
+
+    //Add music 
+    // public function AddMusic()
+    // {
+    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //         // Lấy dữ liệu từ form
+    //         $dataField = $_POST["data_field"];
+    //         // Xử lý dữ liệu ở đây
+    //         $msName = addslashes($_FILES["music"]["name"]);
+    //         $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
+    //         $folder_m = 'music/';
+    //         $music = $_FILES['music'];
+    //         $file_extension = explode('.', $music['name'])[1];
+    //         $file_name_m = time() . '.' . $file_extension;
+    //         $path_file_m = $folder_m . $file_name_m;
+    //         move_uploaded_file($music["tmp_name"], $path_file_m);
+    //         //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
+    //         $imageName = addslashes($_FILES["image"]["name"]);
+    //         $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+    //         $folder_i = 'img/';
+    //         $photo = $_FILES['image'];
+    //         $file_extension = explode('.', $photo['name'])[1];
+    //         $file_name_i = time() . '.' . $file_extension;
+    //         $path_file_i = $folder_i . $file_name_i;
+    //         move_uploaded_file($photo["tmp_name"], $path_file_i);
+            
+    //         $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
+    //         if (mysqli_query($this->con, $sql) === TRUE) {
+    //             echo "Hình ảnh đã được tải lên thành công.";
+    //         } else {
+    //             echo "Lỗi: " . $sql . "<br>" . $this->con->error;
+    //         }
+    //     }
+    // }
 }
