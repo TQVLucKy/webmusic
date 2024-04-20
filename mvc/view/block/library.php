@@ -3,40 +3,6 @@
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
 
-<?php
-
-//will fix it someday, the day I can
-include './connect.php';
-if (isset($_POST["submitmusic"])) {
-    //đường dẫn tạm thời của tệp nhạc được gửi lên
-    $msName = addslashes($_FILES["music"]["name"]);
-    $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
-    $folder_m = 'music/';
-    $music = $_FILES['music'];
-    $file_extension = explode('.', $music['name'])[1];
-    $file_name_m = time() . '.' . $file_extension;
-    $path_file_m = $folder_m . $file_name_m;
-    move_uploaded_file($music["tmp_name"], $path_file_m);
-    //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
-    $imageName = addslashes($_FILES["image"]["name"]);
-    $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
-    $folder_i = 'img/';
-    $photo = $_FILES['image'];
-    $file_extension = explode('.', $photo['name'])[1];
-    $file_name_i = time() . '.' . $file_extension;
-    $path_file_i = $folder_i . $file_name_i;
-    move_uploaded_file($photo["tmp_name"], $path_file_i);
-
-
-    $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
-    if (mysqli_query($conn, $sql) === TRUE) {
-        echo "Hình ảnh đã được tải lên thành công.";
-    } else {
-        echo "Lỗi: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-?>
 <div class="container-fluid library col-md-2 pt-1">
     <div class="title d-flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
@@ -59,7 +25,7 @@ if (isset($_POST["submitmusic"])) {
     <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
     <button id="AddList" onclick="AddList()">thêm danh sách</button>
 </div>
-<form class="container-fluid addmusic" id="showcreate" style="display:none;" class="container-fluid" action="library.php" method="post" enctype="multipart/form-data">
+<form class="container-fluid addmusic" id="showcreate" style="display:none;" method="post" enctype="multipart/form-data">
     <label for="music">Chọn nhạc:</label>
     <input type="file" name="music"></br>
     <label for="image">Chọn hình ảnh:</label>
@@ -68,10 +34,45 @@ if (isset($_POST["submitmusic"])) {
     <input type="text" name="artist">
     <input type="submit" name="submitmusic" value="Tải lên">
 </form>
-<form class="addlist" id="showList" style="display:none;" class="container-fluid" action="main.php" method="post" enctype="multipart/form-data">
+<form class="container-fluid addlist" id="showList" style="display:none;" method="post" enctype="multipart/form-data">
     <label for="namelist">Tên danh sách:</label>
     <input type="text" name="namelist">
     <input type="submit" name="submitlist" value="Tạo">
 </form>
-<!--1.sửa lại thông tin khi thêm nhạc vào (cụ thể là xóa đuôi jpg,thêm nhạc) \
-    2. lấy địa chỉ để dẫn nhạc ra-->
+
+<script>
+    document.getElementById('showList').addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', './model/test', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function() {
+            if (this.status == 200) {
+                console.log(this.responseText);
+                // Xử lý kết quả trả về từ server ở đây
+            }
+        };
+
+        xhr.send(new URLSearchParams(new FormData(this)).toString());
+    });
+    document.getElementById('showcreate').addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
+
+        var formData = new FormData(this);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', './model/test', true);
+        xhr.setRequestHeader('X-Requested-With', 'application/x-www-form-urlencoded'); // Đặt header để xác định là AJAX request
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+                // Xử lý kết quả trả về từ server ở đây
+            }
+        };
+
+        xhr.send(formData);
+    });
+</script>

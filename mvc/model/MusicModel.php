@@ -73,10 +73,52 @@ class MusicModel extends DB
         }
     }
 
+    public function addList($name)
+    {
+        // Thêm danh sách mới vào database
+        $sql = "insert into library(NameList) values ('$_POST[namelist]')";
+        if (mysqli_query($this->con, $sql)) {
+            echo "danh sách tạo thành công.";
+        } else {
+            echo "Lỗi: " . $sql . "<br>" . $this->con->error;
+        }
+    }
+
+    public function saveMusic($music, $image, $artist)
+    {   
+        // echo $music;
+        // echo $image;
+        // echo $artist;
+        // $msName = addslashes($_FILES["music"]["name"]);
+        // $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
+        $folder_m = 'music/';
+        $file_extension = explode('.', $music['name'])[1];
+        $file_name_m = time() . '.' . $file_extension;
+        $path_file_m = $folder_m . $file_name_m;
+        move_uploaded_file($music["tmp_name"], $path_file_m);
+        // //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
+        // $imageName = addslashes($image["name"]);
+        // $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+        $folder_i = 'img/';
+        $imagename=explode('.', $image['name'])[0];
+        $file_extension = explode('.', $image['name'])[1];
+        $file_name_i = time() . '.' . $file_extension;
+        $path_file_i = $folder_i . $file_name_i;
+        move_uploaded_file($image["tmp_name"], $path_file_i);
+
+
+        $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES 
+        ('$imagename', '$file_name_i','$file_name_m','$_POST[artist]')";
+        if (mysqli_query($this->con, $sql) === TRUE) {
+            echo "Hình ảnh đã được tải lên thành công.";
+        } else {
+            echo "Lỗi: " . $sql . "<br>" . $this->con->error;
+        }
+    }
+
     //Add music 
-    // public function AddMusic()
+    // public function addMusic($music, $image, $artist)
     // {
-    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //         // Lấy dữ liệu từ form
     //         $dataField = $_POST["data_field"];
     //         // Xử lý dữ liệu ở đây
@@ -97,13 +139,13 @@ class MusicModel extends DB
     //         $file_name_i = time() . '.' . $file_extension;
     //         $path_file_i = $folder_i . $file_name_i;
     //         move_uploaded_file($photo["tmp_name"], $path_file_i);
-            
-    //         $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
+
+    //         $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES
+    //         ('$imageName', '$file_name_i','$file_name_m','$_POST[artist]')";
     //         if (mysqli_query($this->con, $sql) === TRUE) {
     //             echo "Hình ảnh đã được tải lên thành công.";
     //         } else {
     //             echo "Lỗi: " . $sql . "<br>" . $this->con->error;
     //         }
-    //     }
     // }
 }

@@ -1,7 +1,6 @@
 <?php
 include 'C:\xampp\htdocs\webmusic\mvc\model\FavoriteModel.php';
 
-die("cc");
 if (isset($_GET['action'])) {
     $favoriteModel = new test();
     $action = trim($_GET['action']);
@@ -17,10 +16,17 @@ if (isset($_GET['action'])) {
     }
 }
 
-// if (isset($_POST['action'])) {
-//     $musicModel =  new MusicModel();
-//     $action = trim($_POST['action']);
-//     if ($action == "AddMusic") {
-//         $musicModel->AddMusic($_GET["idList"],$_GET["idMusic"]);
-//     }
-// }
+    // Khởi tạo controller và gọi hàm xử lý
+    $controller = new Home();
+    $controller->uploadMusic($_FILES, $_POST['artist']);
+// test.php
+// Hàm xử lý form
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitlist'])) {
+    // Khởi tạo controller và gọi hàm xử lý 
+
+    $controller = new Home();
+    $controller->createList($_POST['namelist']);
+}
+
+
+?>

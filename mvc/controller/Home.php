@@ -23,5 +23,17 @@
                 "g"=> $this->a->getall()
                 ]);
         }
+
+        public function createList($name) {
+            // Gọi model để xử lý dữ liệu
+            $listModel = new MusicModel();
+            $listModel->addList($name);
+        }
+
+        public function uploadMusic($files, $artist) {
+            // Gọi model để xử lý tải lên
+            $musicModel = new MusicModel();
+            $musicModel->saveMusic($files['music'], $files['image'], $artist);
+        }
     }
 ?>

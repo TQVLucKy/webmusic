@@ -72,7 +72,7 @@
         echo '</div>';
     }
     ?>
-</div>
+</div>  
 
 <script>
     var List = document.getElementById('List');
