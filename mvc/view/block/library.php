@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
 
@@ -15,7 +15,7 @@
         <?php
         foreach ($data["Lib"] as $print) {
             echo '<div class="itemslist">';
-            echo $print['NameList'];
+            echo '<a href="./List?id='. $print['IdList'].'">'. $print['NameList'].'</a>';
             echo '</div>';
         }
         ?>

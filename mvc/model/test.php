@@ -16,9 +16,12 @@ if (isset($_GET['action'])) {
     }
 }
 
+// need fix: it not work t think isset($_POST['submitmusic']) false
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
     // Khởi tạo controller và gọi hàm xử lý
     $controller = new Home();
     $controller->uploadMusic($_FILES, $_POST['artist']);
+}
 // test.php
 // Hàm xử lý form
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitlist'])) {

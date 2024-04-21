@@ -24,6 +24,14 @@
                 ]);
         }
 
+        function List(){
+            $this->view("master1",[
+                "page"=>"list",
+                "MS" => $this->a->Music(),
+                "Lib"=> $this->a->Library(),
+                "g"=> $this->a->getall()
+                ]);
+        }
         public function createList($name) {
             // Gọi model để xử lý dữ liệu
             $listModel = new MusicModel();

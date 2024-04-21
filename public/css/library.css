@@ -22,6 +22,11 @@
 .library .itemslist:hover {
   background-color: gray;
 }
+.library .itemslist a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
 
 #create {
   left: 215px;
