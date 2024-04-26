@@ -331,9 +331,13 @@
     }
     .favorite{
         color: white;
+        
     }
     .favorited{
         color: red;
+        .button-clicked {
+            background-color: blue; 
+          }
     }
 
     //add

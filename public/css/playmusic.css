@@ -291,6 +291,9 @@
 .contact .favorited {
   color: red;
 }
+.contact .favorited .button-clicked {
+  background-color: blue;
+}
 .contact .material-icons {
   color: rgb(190, 182, 182);
 }

@@ -72,7 +72,24 @@
         echo '</div>';
     }
     ?>
-</div>  
+</div>
+<!-- <h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1>
+<h1>CC</h1> -->
 
 <script>
     var List = document.getElementById('List');
@@ -147,6 +164,15 @@
 
         })
     }
+    
+    document.getElementById('favorite').addEventListener('click', function() {
+  // Kiểm tra màu hiện tại và thay đổi nó
+  if (this.style.color === 'red') {
+    this.style.color = 'white'; // Nếu màu đỏ, chuyển sang trắng
+  } else {
+    this.style.color = 'red'; // Nếu không phải màu đỏ, chuyển sang đỏ
+  }
+});
 
     window.onscroll = function() {
         myFunction();

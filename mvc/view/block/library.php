@@ -15,7 +15,7 @@
         <?php
         foreach ($data["Lib"] as $print) {
             echo '<div class="itemslist">';
-            echo '<a href="./List?id='. $print['IdList'].'">'. $print['NameList'].'</a>';
+            echo '<a href="./List?id=' . $print['IdList'] . '">' . $print['NameList'] . '</a>';
             echo '</div>';
         }
         ?>
@@ -34,29 +34,66 @@
     <input type="text" name="artist">
     <input type="submit" name="submitmusic" value="Tải lên">
 </form>
-<form class="container-fluid addlist" id="showList" style="display:none;" method="post" enctype="multipart/form-data">
+<form class="container-fluid addlist" id="showList" style="display:none;" method="get">
     <label for="namelist">Tên danh sách:</label>
     <input type="text" name="namelist">
     <input type="submit" name="submitlist" value="Tạo">
 </form>
 
 <script>
-    document.getElementById('showList').addEventListener('submit', function(e) {
-        e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', './model/test', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        xhr.onload = function() {
-            if (this.status == 200) {
-                console.log(this.responseText);
-                // Xử lý kết quả trả về từ server ở đây
-            }
-        };
-
-        xhr.send(new URLSearchParams(new FormData(this)).toString());
+    $(document).ready(function() {
+        // Sử dụng id của form để xác định form cụ thể
+        $('#showList').on('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+            var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
+            formData += '&submitlist=' + encodeURIComponent('submitlist');
+            alert(formData);    
+            $.ajax({
+                type: 'GET',
+                url: './model/test', // File xử lý dữ liệu
+                data: formData,
+                success: function(response) {
+                    // Xử lý kết quả trả về từ server ở đây
+                    console.log('Kết quả:', response);
+                },
+                error: function() {
+                    // Xử lý lỗi ở đây
+                    console.log('Có lỗi xảy ra');
+                }
+            });
+        });
     });
+
+
+
+    $(document).ready(function(){
+    $('#showcreate').on('submit', function(e){
+        e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+        var formData = new FormData(this); // Sử dụng FormData để xử lý file
+
+        // Thêm giá trị của nút submit vào formData
+        formData.append('submitmusic', 'submitmusic');
+
+        $.ajax({
+            type: 'POST',
+            url: './model/test', // File xử lý dữ liệu tải lên
+            data: formData,
+            contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
+            processData: false, // Không xử lý dữ liệu vì sử dụng FormData
+            success: function(response){
+                // Xử lý kết quả trả về từ server ở đây
+                console.log('Kết quả:', response);
+            },
+            error: function(xhr, status, error){
+                // Xử lý lỗi ở đây
+                console.log('Có lỗi xảy ra:', xhr.responseText);
+            }
+        });
+    });
+});
+
+
+
     document.getElementById('showcreate').addEventListener('submit', function(e) {
         e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
 

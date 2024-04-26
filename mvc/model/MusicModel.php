@@ -76,7 +76,7 @@ class MusicModel extends DB
     public function addList($name)
     {
         // Thêm danh sách mới vào database
-        $sql = "insert into library(NameList) values ('$_POST[namelist]')";
+        $sql = "insert into library(NameList) values ('$_GET[namelist]')";
         if (mysqli_query($this->con, $sql)) {
             echo "danh sách tạo thành công.";
         } else {

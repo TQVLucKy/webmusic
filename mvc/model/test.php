@@ -16,7 +16,8 @@ if (isset($_GET['action'])) {
     }
 }
 
-// need fix: it not work t think isset($_POST['submitmusic']) false
+
+// need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
     // Khởi tạo controller và gọi hàm xử lý
     $controller = new Home();
@@ -24,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
 }
 // test.php
 // Hàm xử lý form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitlist'])) {
-    // Khởi tạo controller và gọi hàm xử lý 
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
+    // Khởi tạo controller và gọi hàm xử lý 
     $controller = new Home();
-    $controller->createList($_POST['namelist']);
+    $controller->createList($_GET['namelist']);
 }
 
 
