@@ -1,0 +1,32 @@
+.ListLibrary {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .itemsList {
+        display: flex;
+        width: 100%;
+    }
+
+    .itemList {
+        padding: 10px 10px;
+        white-space: nowrap;
+    }
+
+    .stt {
+        width: 100px;
+    }
+
+    .name {
+        flex-grow: 1;
+    }
+
+     .artist {
+        width: 40%;
+    }
+
+    .play,
+    .remove {
+        width: 100px;
+    }
+}

@@ -26,10 +26,11 @@
 
         function List(){
             $this->view("master1",[
-                "page"=>"list",
+                "page"=>"List",
                 "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
-                "g"=> $this->a->getall()
+                "g"=> $this->a->getall(),
+                "getlist" => $this->a->getListMusic()
                 ]);
         }
         public function createList($name) {

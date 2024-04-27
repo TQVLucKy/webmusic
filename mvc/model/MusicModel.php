@@ -38,6 +38,14 @@ class MusicModel extends DB
         }
         return $songs;
     }
+    // get list from library
+    public function getListMusic() {
+        $sql = "select library.NameList, storemusic.name,storemusic.id,library.IdList,storemusic.artist
+        from listmusic join library on listmusic.IdList = library.IdList
+        join storemusic on listmusic.id = storemusic.id";
+        return mysqli_query($this->con, $sql);
+    }
+
 
     public function AddMusicToLibrary($IdList, $id)
     {
