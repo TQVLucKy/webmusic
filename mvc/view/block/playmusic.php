@@ -39,7 +39,8 @@
 <div class="contact">
     <?php
     $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
-    echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "' onclick='UpdateFavorite()'>";
+    echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "'";
+    echo " onclick='" . ($favorites[$_GET['id']] == 1 ? "AddFavorite()" : "DelFavorite()") . "'>";
     echo "<i class='fa fa-heart'></i></button>";
     ?>
     <button class="material-icons" onclick=AddMusicToLibrary()>add</button>
@@ -164,15 +165,15 @@
 
         })
     }
-    
+
     document.getElementById('favorite').addEventListener('click', function() {
-  // Kiểm tra màu hiện tại và thay đổi nó
-  if (this.style.color === 'red') {
-    this.style.color = 'white'; // Nếu màu đỏ, chuyển sang trắng
-  } else {
-    this.style.color = 'red'; // Nếu không phải màu đỏ, chuyển sang đỏ
-  }
-});
+        // Kiểm tra màu hiện tại và thay đổi nó
+        if (this.style.color === 'red') {
+            this.style.color = 'white'; // Nếu màu đỏ, chuyển sang trắng
+        } else {
+            this.style.color = 'red'; // Nếu không phải màu đỏ, chuyển sang đỏ
+        }
+    });
 
     window.onscroll = function() {
         myFunction();

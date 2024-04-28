@@ -28,7 +28,7 @@
         </div>
     </div>
     <?php
-    $stt = 1; // Bắt đầu từ 1 thay vì 0
+    $stt = 1; 
     foreach ($data["getlist"] as $print) {
         if ($print['IdList'] == $_GET['id']) {
             echo '<div class="itemsList">';
@@ -41,7 +41,7 @@
             echo '<div class="itemList artist">';
             echo $print['artist'];
             echo '</div>';
-            echo '<div class="itemList play">';
+            echo '<div class="itemList playMusic" data-id="'.$print['id'].'">';
             echo 'Play'; // Đặt nút Play ở đây
             echo '</div>';
             echo '<div class="itemList remove">';
@@ -53,3 +53,12 @@
     }
     ?>
 </div>
+<script>
+    var playMusic=document.querySelectorAll('.itemsList .playMusic');
+    playMusic.forEach(function(item) {
+        item.addEventListener('click', function(){
+            var id = this.getAttribute('data-id');
+            window.location.href='./Play?id='+id;
+        })
+    })
+</script>

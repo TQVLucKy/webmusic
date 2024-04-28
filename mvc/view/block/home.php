@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/home.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/home.css">
 </head>
 <div class="menu col-md-12">
     <div class="top d-flex justify-content-between mt-2">

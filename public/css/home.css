@@ -11,6 +11,7 @@
   padding: 10px;
   float: left;
   border-radius: 15px;
+  cursor: pointer;
 }
 .menu .list-music .item:hover {
   background-color: rgb(38, 38, 38);

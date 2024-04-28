@@ -21,6 +21,7 @@
   width: 40%;
 }
 .ListLibrary .play,
-.ListLibrary .remove {
+.ListLibrary .remove, .ListLibrary .playMusic {
   width: 100px;
+  cursor: pointer;
 }/*# sourceMappingURL=List.css.map */

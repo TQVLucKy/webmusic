@@ -26,7 +26,8 @@
     }
 
     .play,
-    .remove {
+    .remove,.playMusic {
         width: 100px;
+        cursor: pointer;
     }
 }
