@@ -33,6 +33,16 @@
                 "getlist" => $this->a->getListMusic()
                 ]);
         }
+        function ShowSearch(){
+            $this->view("master1",[
+                "page"=>"ShowSearch",
+                "MS" => $this->a->Music(),
+                "Lib"=> $this->a->Library(),
+                "g"=> $this->a->getall(),
+                "getlist" => $this->a->getListMusic()
+                ]);
+        }
+
         public function createList($name) {
             // Gọi model để xử lý dữ liệu
             $listModel = new MusicModel();

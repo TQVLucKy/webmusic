@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.css"> 
+    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -23,4 +23,33 @@
     </div>
 </div>
 
-<!-- Thanh tìm kiếm bị lỗi -->
+<script>
+    $(document).ready(function() {
+        // Khi nhấn vào nút "Search"
+        $('.btn-primary').on('click', function(event) {
+            // Ngăn chặn hành động mặc định của nút submit
+            event.preventDefault();
+            // Lấy giá trị của phần tử input
+            var inputVal = $('.input-group input[type="text"]').val();
+            window.location.href='./ShowSearch?name='+ inputVal;
+            // // Kiểm tra nếu có giá trị trong input
+            // if (inputVal.length) {
+            //     // Thực hiện AJAX request để gửi dữ liệu đi
+            //     $.ajax({
+            //         url: "./model/test",
+            //         type: "GET",
+            //         data: {
+            //             InputVal: inputVal
+            //         },
+            //         success: function(data) {
+            //             // alert(data);
+            //             window.location.href= './ShowSearch/name=' +data;
+            //         },
+            //         error: function(xhr, status, error) {
+            //             console.error(xhr.responseText);
+            //         }
+            //     });
+            // } 
+        });
+    });
+</script>

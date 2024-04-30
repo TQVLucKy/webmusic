@@ -4,21 +4,29 @@ $(document).ready(function () {
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
         if (inputVal.length) {
-            $.get("../search/backend-search.php", {
-                term: inputVal
-            }).done(function (data) {
-                // Display the returned data in browser
-                console.log(data);
-                resultDropdown.html(data);
+            $.ajax({
+                url: "../search/backend-search.php",
+                type: "GET",
+                data: { term: inputVal },
+                success: function (data) {
+                    // Hiển thị dữ liệu trả về trong trình duyệt
+                    console.log(data);
+                    resultDropdown.html(data);
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(xhr.responseText);
+                }
             });
         } else {
             resultDropdown.empty();
         }
     });
 
-    // Set search input value on click of result item
+    // Tiến hành tìm kiếm khi nhấn vào gợi ý
     $(document).on("click", ".result p", function () {
-        $(this).parents(".input-group").find('input[type="text"]').val($(this).text());
-        $(this).parent(".result").empty();
+        var id = $(this).data('id');
+        window.location.href='./Play?id=' +id;
     });
+    
 });

@@ -39,7 +39,8 @@ class MusicModel extends DB
         return $songs;
     }
     // get list from library
-    public function getListMusic() {
+    public function getListMusic()
+    {
         $sql = "select library.NameList, storemusic.name,storemusic.id,library.IdList,storemusic.artist
         from listmusic join library on listmusic.IdList = library.IdList
         join storemusic on listmusic.id = storemusic.id";
@@ -81,6 +82,20 @@ class MusicModel extends DB
         }
     }
 
+
+    public function SearchText($val)
+    {
+        $sql = "select name from storemusic where name like '%" . $val . "%'";
+        $result = mysqli_query($this->con, $sql);
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return json_encode($data);
+    }
+
+
     public function addList($name)
     {
         // Thêm danh sách mới vào database
@@ -93,7 +108,7 @@ class MusicModel extends DB
     }
 
     public function saveMusic($music, $image, $artist)
-    {   
+    {
         // echo $music;
         // echo $image;
         // echo $artist;
@@ -108,7 +123,7 @@ class MusicModel extends DB
         // $imageName = addslashes($image["name"]);
         // $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
         $folder_i = 'img/';
-        $imagename=explode('.', $image['name'])[0];
+        $imagename = explode('.', $image['name'])[0];
         $file_extension = explode('.', $image['name'])[1];
         $file_name_i = time() . '.' . $file_extension;
         $path_file_i = $folder_i . $file_name_i;

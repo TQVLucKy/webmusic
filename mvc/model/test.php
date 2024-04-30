@@ -12,7 +12,7 @@ if (isset($_GET['action'])) {
     $musicModel =  new MusicModel();
     $action = trim($_GET['action']);
     if ($action == "AddMusicToLibrary") {
-        $musicModel->AddMusicToLibrary($_GET["idList"],$_GET["idMusic"]);
+        $musicModel->AddMusicToLibrary($_GET["idList"], $_GET["idMusic"]);
     }
 }
 
@@ -32,5 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
     $controller->createList($_GET['namelist']);
 }
 
-
+//search theo val
+if (isset($_GET['InputVal'])) {
+    $musicModel =  new MusicModel();
+    echo $musicModel->SearchText($_GET["InputVal"]);
+}
 ?>

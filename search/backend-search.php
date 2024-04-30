@@ -33,7 +33,7 @@
                 if(mysqli_num_rows($result) > 0){
                     // Fetch result rows as an associative array
                     while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                        echo "<p>" . $row["name"] . "</p>";
+                        echo "<p data-id='" . $row["id"] . "'>" . $row["name"] . "</p>";
                     }
                 } else{
                     echo "<p>No matches found</p>";
