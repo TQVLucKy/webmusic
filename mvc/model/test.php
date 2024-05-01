@@ -35,6 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
 //search theo val
 if (isset($_GET['InputVal'])) {
     $musicModel =  new MusicModel();
-    echo $musicModel->SearchText($_GET["InputVal"]);
+    $musicList = $musicModel->SearchText($_GET["InputVal"]);
+    $stt=1;
+    foreach ($musicList as $print) {
+        echo '<div class="itemsList">';
+        echo '<div class="itemList stt">';
+        echo $stt;
+        echo '</div>';
+        echo '<div class="itemList name">';
+        echo $print['name'];
+        echo '</div>';
+        echo '<div class="itemList artist">';
+        echo $print['artist'];
+        echo '</div>';
+        echo '<div class="itemList playMusic" data-id="' . $print['id'] . '">';
+        echo 'Play'; // Đặt nút Play ở đây
+        echo '</div>';
+        echo '<div class="itemList remove">';
+        echo 'Remove'; // Đặt nút Remove ở đây
+        echo '</div>';
+        echo '</div>';
+        $stt++;
+    }
 }
-?>

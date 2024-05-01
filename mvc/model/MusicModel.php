@@ -56,9 +56,6 @@ class MusicModel extends DB
         //or đã tồn tại trong 1 library thì chuyển nút thêm thành hủy (1 trong 2 cách)
 
         //chỉnh sửa khi thêm music và xem lại add music
-
-
-
         //làm view show library
         // Kiểm tra xem IdList và id đã tồn tại chưa
         $query = "SELECT COUNT(*) AS count FROM listmusic WHERE IdList = '$IdList' AND id = '$id'";
@@ -85,14 +82,14 @@ class MusicModel extends DB
 
     public function SearchText($val)
     {
-        $sql = "select name from storemusic where name like '%" . $val . "%'";
+        $sql = "select * from storemusic where name like '%" . $val . "%'";
         $result = mysqli_query($this->con, $sql);
         $data = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $data[] = $row;
         }
 
-        return json_encode($data);
+        return ($data);
     }
 
 
