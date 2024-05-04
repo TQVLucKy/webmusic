@@ -13,10 +13,10 @@
             Nghệ sĩ
         </div>
         <div class="itemList play">
-            Play
+            
         </div>
         <div class="itemList remove">
-            Remove
+            
         </div>
     </div>
     <div id="searchResults"><!-- Đây là nơi hiển thị kết quả tìm kiếm --></div>

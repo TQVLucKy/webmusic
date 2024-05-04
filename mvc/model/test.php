@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
 if (isset($_GET['InputVal'])) {
     $musicModel =  new MusicModel();
     $musicList = $musicModel->SearchText($_GET["InputVal"]);
-    $stt=1;
+    $stt = 1;
     foreach ($musicList as $print) {
         echo '<div class="itemsList">';
         echo '<div class="itemList stt">';
@@ -58,3 +58,4 @@ if (isset($_GET['InputVal'])) {
         $stt++;
     }
 }
+
