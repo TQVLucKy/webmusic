@@ -9,14 +9,24 @@ class UserModel extends DB{
         return json_decode($result);
     }
 
-    public function checkUsername($un){
-        $sql="select id from users where username='.$un'";
-        $rows= mysqli_query($this->con,$sql);
-        $kq=false;
-        if(mysqli_num_rows($rows)>0){
-            $kq=true;
-        }
-        return json_decode($kq);
+    public function checkUsername($username){
+        $sql="select id from registration where username=?";
+        $stmt= mysqli_prepare($this->con,$sql);
+       if ($stmt){
+        mysqli_stmt_bind_param($stmt,"s",$username);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+
+        $num_rows=mysqli_stmt_num_rows($stmt);
+
+        mysqli_stmt_close($stmt);
+
+        return $num_rows>0;
+       }
+       else{
+        false;
+       }
+        // return mysqli_query($this->con,$sql);
     }
 }
 ?>

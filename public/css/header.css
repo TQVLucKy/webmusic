@@ -28,7 +28,8 @@
   left: 0;
 }
 
-.input-group input[type=text], .result {
+.input-group input[type=text],
+.result {
   width: 100%;
   box-sizing: border-box;
   border-radius: 5px;
@@ -49,4 +50,25 @@
 .result p:hover {
   background: gray;
   color: white;
+}
+
+.login {
+  position: absolute;
+  color: white;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  left: 0;
+  right: 0;
+  width: 500px;
+  padding: 50px;
+  margin: 0 auto;
+  z-index: 1;
+}
+.login input {
+  margin-top: 10px;
+}
+.login .login-button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
 }/*# sourceMappingURL=header.css.map */

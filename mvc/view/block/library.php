@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
 

@@ -18,12 +18,64 @@
         </div>
     </form>
     <div class="account">
-        <a class="DangKy btn btn-secondary" href="../account/sign.php">Đăng Ký</a>
-        <a class="DangNhap btn btn-secondary" href="../account/login.php">Đăng Nhập</a>
+        <a class="DangKy btn btn-secondary" onclick="Sign()">Đăng Ký</a>
+        <a class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</a>
     </div>
 </div>
-
+<div class="login" id="login" style="display:none">
+    <h2 class="text-center">Login my website</h2>
+    <form id="loginForm" method="POST">
+        <label for="name">Tên đăng nhập:</label>
+        <input type="text" name="name" placeholder="Nhập tên đăng nhập"></br>
+        <laber for="passWord">Nhập mật khẩu:</laber>
+        <input type="password" name="passWord" placeholder="Nhập mật khẩu">
+        <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
+    </form>
+</div>
 <script>
+    function Login() {
+        var form = document.getElementById("login");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+    //
+    $(document).ready(function() {
+        $('#loginForm').submit(function(event) {
+            // Ngăn chặn form gửi đi mặc định
+            event.preventDefault();
+
+            // Lấy dữ liệu từ form
+            var name = $('input[name="name"]').val();
+            var password =  $('input[name="passWord"]').val();
+
+            // Gửi dữ liệu lên server bằng AJAX
+            $.ajax({
+                type: 'POST',
+                url: './model/test',
+                data: {
+                    name: name,
+                    password: password,
+                    submitLogin: 'submitLogin'
+                },
+                success: function(response) {
+                    // Xử lý kết quả trả về từ server
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi (nếu có)
+                    console.error(xhr.responseText);
+                    alert('Đăng nhập thất bại. Vui lòng thử lại!');
+                }
+            });
+        });
+    });
+
+    function Sign() {
+        alert("sign");
+    }
     $(document).ready(function() {
         // Khi nhấn vào nút "Search"
         $('.btn-primary').on('click', function(event) {
@@ -31,7 +83,7 @@
             event.preventDefault();
             // Lấy giá trị của phần tử input
             var inputVal = $('.input-group input[type="text"]').val();
-            window.location.href='./ShowSearch?name='+ inputVal;
+            window.location.href = './ShowSearch?name=' + inputVal;
             // // Kiểm tra nếu có giá trị trong input
             // if (inputVal.length) {
             //     // Thực hiện AJAX request để gửi dữ liệu đi

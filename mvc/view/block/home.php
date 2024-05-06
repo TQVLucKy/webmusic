@@ -9,12 +9,18 @@
     <div class="list-music row">
         <div class="items col" >
             <?php
+            //use ajax control $all
+            $all=false;
+            $count=0;
             foreach ($data["MS"] as $print) {
+                if($count<=9 || $all){
                     echo '<div class="item col-2 mb-3 mx-3 clickable" data-id="' . $print['id'] . '">';
                     echo '<img style="max-width:180px;height:180px" src= ../img/' . $print['nameimage'] . '><br>';
                     echo $print['name'] . "<br>";
                     echo $print['artist'] . "<br>";
                     echo '</div>';
+                    $count++;
+                }
             }
             ?>
         </div>

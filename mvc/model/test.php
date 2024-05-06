@@ -1,6 +1,6 @@
 <?php
 include 'C:\xampp\htdocs\webmusic\mvc\model\FavoriteModel.php';
-
+include 'C:\xampp\htdocs\webmusic\mvc\model\UserModel.php';
 if (isset($_GET['action'])) {
     $favoriteModel = new test();
     $action = trim($_GET['action']);
@@ -14,6 +14,16 @@ if (isset($_GET['action'])) {
     if ($action == "AddMusicToLibrary") {
         $musicModel->AddMusicToLibrary($_GET["idList"], $_GET["idMusic"]);
     }
+}
+if (isset($_POST['submitLogin'])) {
+    print_r($_POST);
+    $userModel = new UserModel();
+    $result = $userModel->checkUsername($_POST['name']);
+
+    //sử dụng session để kiểm tra và trả về trang chủ.
+    if ($result)
+        echo "ngon";
+    else echo ("dellon");
 }
 
 
@@ -58,4 +68,3 @@ if (isset($_GET['InputVal'])) {
         $stt++;
     }
 }
-
