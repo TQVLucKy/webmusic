@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -17,9 +17,17 @@
             <div class="result"></div>
         </div>
     </form>
-    <div class="account">
+    <?php if (isset($_SESSION["loginedin"]) && $_SESSION['loginedin'] == true)
+                echo "success";
+            else echo "false";
+            ?>
+            <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
+    <div class="account" style="<?php if (!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
         <a class="DangKy btn btn-secondary" onclick="Sign()">Đăng Ký</a>
         <a class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</a>
+    </div>
+    <div class="accountlogin" style="<?php if(!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
+        <img style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
     </div>
 </div>
 <div class="login" id="login" style="display:none">
@@ -49,8 +57,7 @@
 
             // Lấy dữ liệu từ form
             var name = $('input[name="name"]').val();
-            var password =  $('input[name="passWord"]').val();
-
+            var password = $('input[name="passWord"]').val();
             // Gửi dữ liệu lên server bằng AJAX
             $.ajax({
                 type: 'POST',
@@ -62,7 +69,8 @@
                 },
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
-                    console.log(response);
+                    Login();
+                    // else alert("Đăng nhập thất bại!");
                 },
                 error: function(xhr, status, error) {
                     // Xử lý lỗi (nếu có)

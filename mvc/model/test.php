@@ -15,15 +15,18 @@ if (isset($_GET['action'])) {
         $musicModel->AddMusicToLibrary($_GET["idList"], $_GET["idMusic"]);
     }
 }
+
 if (isset($_POST['submitLogin'])) {
-    print_r($_POST);
     $userModel = new UserModel();
-    $result = $userModel->checkUsername($_POST['name']);
+    $result = $userModel->checkUsername($_POST['name'],$_POST['password']);
 
     //sử dụng session để kiểm tra và trả về trang chủ.
-    if ($result)
-        echo "ngon";
-    else echo ("dellon");
+    unset($_SESSION);
+    if ($result){
+        $_SESSION["loginedin"]= true;
+        $_SESSION["username"]= $_POST['name'];
+    }
+    else  echo false;
 }
 
 

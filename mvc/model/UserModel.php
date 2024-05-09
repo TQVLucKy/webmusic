@@ -9,11 +9,11 @@ class UserModel extends DB{
         return json_decode($result);
     }
 
-    public function checkUsername($username){
-        $sql="select id from registration where username=?";
+    public function checkUsername($username,$password){
+        $sql="select id from registration where username=? and password=?";
         $stmt= mysqli_prepare($this->con,$sql);
        if ($stmt){
-        mysqli_stmt_bind_param($stmt,"s",$username);
+        mysqli_stmt_bind_param($stmt,"ss",$username,$password);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
 

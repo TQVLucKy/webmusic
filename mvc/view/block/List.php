@@ -1,7 +1,4 @@
 <link rel="stylesheet" type="text/css" href="../public/css/List.css">
-
-
-
 <!-- STT         Name        Artist      play        remove -->
 
 <h1>Danh sách <?php foreach ($data["getlist"] as $print) {
