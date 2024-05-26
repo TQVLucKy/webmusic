@@ -21,7 +21,7 @@ if (isset($_POST['submitLogin'])) {
     $result = $userModel->checkUsername($_POST['name'],$_POST['password']);
 
     //sử dụng session để kiểm tra và trả về trang chủ.
-    unset($_SESSION);
+    // unset($_SESSION);
     if ($result){
         $_SESSION["loginedin"]= true;
         $_SESSION["username"]= $_POST['name'];
@@ -29,6 +29,9 @@ if (isset($_POST['submitLogin'])) {
     else  echo false;
 }
 
+if(isset($_GET["logout"])){
+    session_unset();
+}
 
 // need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {

@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -17,22 +17,36 @@
             <div class="result"></div>
         </div>
     </form>
-    <?php if (isset($_SESSION["loginedin"]) && $_SESSION['loginedin'] == true)
+    <!-- <?php if (isset($_SESSION["loginedin"]) && $_SESSION['loginedin'] == true)
                 echo "success";
             else echo "false";
-            ?>
-            <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
+            ?> -->
+    <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
     <div class="account" style="<?php if (!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
-        <a class="DangKy btn btn-secondary" onclick="Sign()">Đăng Ký</a>
+        <a class="DangKy btn btn-secondary" onclick="Register()">Đăng Ký</a>
         <a class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</a>
     </div>
-    <div class="accountlogin" style="<?php if(!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
-        <img style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
+    <div class="accountlogin" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
+        <img onclick="Info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
+        <div class="info" id="info" style="display: none;">
+            <a class="DangXuat" onclick="Logout()">Đăng Xuất</a>
+        </div>
     </div>
 </div>
 <div class="login" id="login" style="display:none">
     <h2 class="text-center">Login my website</h2>
     <form id="loginForm" method="POST">
+        <label for="name">Tên đăng nhập:</label>
+        <input type="text" name="name" placeholder="Nhập tên đăng nhập"></br>
+        <laber for="passWord">Nhập mật khẩu:</laber>
+        <input type="password" name="passWord" placeholder="Nhập mật khẩu">
+        <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
+    </form>
+</div>
+<!-- làm tiếp register và sau đó tối ưu lại đn, đk, đx.  -->
+<div class="register" id="register" style="display:none">
+    <h2 class="text-center">Register my website</h2>
+    <form id="registerForm" method="POST">
         <label for="name">Tên đăng nhập:</label>
         <input type="text" name="name" placeholder="Nhập tên đăng nhập"></br>
         <laber for="passWord">Nhập mật khẩu:</laber>
@@ -70,6 +84,7 @@
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
                     Login();
+                    window.location.href="";
                     // else alert("Đăng nhập thất bại!");
                 },
                 error: function(xhr, status, error) {
@@ -82,7 +97,7 @@
     });
 
     function Sign() {
-        alert("sign");
+        
     }
     $(document).ready(function() {
         // Khi nhấn vào nút "Search"
@@ -112,4 +127,28 @@
             // } 
         });
     });
+
+    function Logout(){
+        alert("logout");
+        $.ajax({
+            url: './model/test', 
+            method: "GET",
+            data:{logout:"logout"}, 
+            success: function(response) {
+                window.location.href = "";
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi (nếu có)
+                console.error("Lỗi khi gọi Ajax: " + error);
+            }
+        });
+    }
+    function Info(){
+        var form = document.getElementById("info");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
 </script>
