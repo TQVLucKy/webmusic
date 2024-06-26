@@ -36,8 +36,13 @@ if(isset($_GET["logout"])){
 // need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
     // Khởi tạo controller và gọi hàm xử lý
+    if(!empty($_POST['artist']))
+        foreach ($_POST['artist'] as $artist) {
+            echo "Tên ca sĩ:".htmlspecialchars($artist)."<br>";
+    }
+    //print_r($_post['artist[]']);
     $controller = new Home();
-    $controller->uploadMusic($_FILES, $_POST['artist']);
+    $controller->uploadMusic($_FILES);
 }
 // test.php
 // Hàm xử lý form

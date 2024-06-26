@@ -26,12 +26,17 @@
     <button id="AddList" onclick="AddList()">thêm danh sách</button>
 </div>
 <form class="container-fluid addmusic" id="showcreate" style="display:none;" method="post" enctype="multipart/form-data">
+    <label for="musicname">Tên bài hát:</label>
+    <input type="text" name="musicname"><br>
     <label for="music">Chọn nhạc:</label>
     <input type="file" name="music"></br>
     <label for="image">Chọn hình ảnh:</label>
     <input type="file" name="image"></br>
-    <label for="artist">Tên ca sĩ:</label>
-    <input type="text" name="artist">
+    <button type="button" id="addArtistButton">Thêm ca sĩ</button><br>
+    <div id="artistContainer">
+        <label for="artist">Tên ca sĩ:</label>
+        <input type="text" name="artist[]"><br>
+    </div>
     <input type="submit" name="submitmusic" value="Tải lên">
 </form>
 <form class="container-fluid addlist" id="showList" style="display:none;" method="get">
@@ -47,7 +52,7 @@
             e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
             var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
             formData += '&submitlist=' + encodeURIComponent('submitlist');
-            alert(formData);    
+            alert(formData);
             $.ajax({
                 type: 'GET',
                 url: './model/test', // File xử lý dữ liệu
@@ -66,33 +71,53 @@
 
 
 
-    $(document).ready(function(){
-    $('#showcreate').on('submit', function(e){
-        e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-        var formData = new FormData(this); // Sử dụng FormData để xử lý file
+    $(document).ready(function() {
+        $('#showcreate').on('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+            var formData = new FormData(this); // Sử dụng FormData để xử lý file
 
-        // Thêm giá trị của nút submit vào formData
-        formData.append('submitmusic', 'submitmusic');
-
-        $.ajax({
-            type: 'POST',
-            url: './model/test', // File xử lý dữ liệu tải lên
-            data: formData,
-            contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
-            processData: false, // Không xử lý dữ liệu vì sử dụng FormData
-            success: function(response){
-                // Xử lý kết quả trả về từ server ở đây
-                console.log('Kết quả:', response);
-            },
-            error: function(xhr, status, error){
-                // Xử lý lỗi ở đây
-                console.log('Có lỗi xảy ra:', xhr.responseText);
-            }
+            // Thêm giá trị của nút submit vào formData
+            formData.append('submitmusic', 'submitmusic');
+            $.ajax({
+                type: 'POST',
+                url: './model/test', // File xử lý dữ liệu tải lên
+                data: formData,
+                contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
+                processData: false, // Không xử lý dữ liệu vì sử dụng FormData
+                success: function(response) {
+                    // Xử lý kết quả trả về từ server ở đây
+                    console.log('Kết quả:', response);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi ở đây
+                    console.log('Có lỗi xảy ra:', xhr.responseText);
+                }
+            });
         });
     });
-});
 
+    document.getElementById('addArtistButton').addEventListener('click', function() {
+        var artistContainer = document.getElementById('artistContainer');
 
+        // Tạo phần tử div mới
+        var newArtistDiv = document.createElement('div');
+
+        // Tạo nhãn và phần nhập tên ca sĩ mới
+        var newLabel = document.createElement('label');
+        newLabel.setAttribute('for', 'artist');
+        newLabel.textContent = 'Tên ca sĩ:';
+
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'text');
+        newInput.setAttribute('name', 'artist[]');
+
+        // Thêm nhãn và phần nhập vào div mới
+        newArtistDiv.appendChild(newLabel);
+        newArtistDiv.appendChild(newInput);
+
+        // Thêm div mới vào container
+        artistContainer.appendChild(newArtistDiv);
+    });
 
     document.getElementById('showcreate').addEventListener('submit', function(e) {
         e.preventDefault(); // Ngăn không cho form submit theo cách thông thường

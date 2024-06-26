@@ -49,10 +49,10 @@
             $listModel->addList($name);
         }
 
-        public function uploadMusic($files, $artist) {
+        public function uploadMusic($files) {
             // Gọi model để xử lý tải lên
             $musicModel = new MusicModel();
-            $musicModel->saveMusic($files['music'], $files['image'], $artist);
+            $musicModel->saveMusic($_POST['musicname'],$files['music'], $files['image'], $_POST['artist']);
         }
     }
 ?>

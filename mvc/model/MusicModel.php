@@ -3,8 +3,11 @@ class MusicModel extends DB
 {
     public function Music()
     {
-        $qr = "select * from storemusic";
-        return mysqli_query($this->con, $qr);
+        $sql = "SELECT storemusic.id,storemusic.name,storemusic.nameimage,artist.ArtistName,category.CategoryName,storemusic.state
+                FROM song_artist join artist on song_artist.ArtistId= artist.ArtistId
+		                    join category on song_artist.CategoryId=category.CategoryId
+                            join storemusic on song_artist.id=storemusic.id";
+        return mysqli_query($this->con, $sql);
     }
 
     public function Library()
@@ -16,7 +19,10 @@ class MusicModel extends DB
 
     public function getall()
     {
-        $sql = "SELECT * FROM storemusic";
+        $sql = "SELECT storemusic.id,storemusic.name,storemusic.nameimage,artist.ArtistName,category.CategoryName,storemusic.state
+FROM song_artist join artist on song_artist.ArtistId= artist.ArtistId
+		join category on song_artist.CategoryId=category.CategoryId
+        join storemusic on song_artist.id=storemusic.id";
         $result = mysqli_query($this->con, $sql);
 
         // Kiểm tra và xử lý kết quả trả về
@@ -28,8 +34,8 @@ class MusicModel extends DB
                 $song = array(
                     "id" => $row["id"],
                     "name" => $row["name"],
-                    "artist" => $row["artist"],
-                    "path" => "../music/MoMat-LilWuynDen-9760819.mp3",
+                    "artist" => $row["ArtistName"],
+                    "path" => "../music/{$row['name']}-{$row['ArtistName']}.mp3",
                     "image" => $row["nameimage"],
                     "favorite" => $row["state"]
                 );
@@ -104,35 +110,72 @@ class MusicModel extends DB
         }
     }
 
-    public function saveMusic($music, $image, $artist)
+    public function saveMusic($musicname, $music, $image, $artists)
     {
+        // Theo đó thay đổi lại nơi lấy các bài nhạc các thứ: home,library(addmusic)
+        // idea sẽ là khi thêm nhạc nếu là 2 tk trở lên thì trong bảng song_artist sẽ
+        // có cùng số id với nhau và khi xuất ra thì dựa vào đó để gọi
+
         // echo $music;
         // echo $image;
         // echo $artist;
-        // $msName = addslashes($_FILES["music"]["name"]);
-        // $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
-        $folder_m = 'music/';
-        $file_extension = explode('.', $music['name'])[1];
-        $file_name_m = time() . '.' . $file_extension;
-        $path_file_m = $folder_m . $file_name_m;
-        move_uploaded_file($music["tmp_name"], $path_file_m);
-        // //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
-        // $imageName = addslashes($image["name"]);
-        // $imageData = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+        
+
+        // Chuyển ảnh thành dạng số lưu trữ để tránh trùng lặp
         $folder_i = 'img/';
         $imagename = explode('.', $image['name'])[0];
         $file_extension = explode('.', $image['name'])[1];
         $file_name_i = time() . '.' . $file_extension;
         $path_file_i = $folder_i . $file_name_i;
         move_uploaded_file($image["tmp_name"], $path_file_i);
+        // lưu bài hát vào storemusic
+        $addstoremusic = "INSERT INTO storemusic ( name,nameimage) VALUES 
+        ('$musicname', '$file_name_i')";
+        //lưu ca sĩ vào artist khi trong đấy chưa có tên ca sĩ đấy
+        $artist = implode(", ", $artists);
+        // $addartist="IF NOT EXISTS (SELECT 1 from artist where ArtistName = '$artist' )
+        //     insert into artist(ArtistName) values ('$artist');";
+        $addartist = " INSERT INTO artist (ArtistName)
+            SELECT ?
+            WHERE NOT EXISTS (
+            SELECT 1 FROM artist WHERE ArtistName = ?
+        ) LIMIT 1;";
 
+        // c bị câu truy vấn
+        $stmt= $this->con->prepare($addartist);
 
-        $sql = "INSERT INTO storemusic ( name,nameimage,namemusic, artist) VALUES 
-        ('$imagename', '$file_name_i','$file_name_m','$_POST[artist]')";
-        if (mysqli_query($this->con, $sql) === TRUE) {
+        // gán giá trị vào dấu ?
+        $stmt->bind_param("ss",$artist,$artist);
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                echo "New artist inserted successfully";
+            } else {
+                echo "Artist already exists";
+            }
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        // tên nhạc thì mình sẽ lưu dưới dạng là [tên nhạc]-[tên ca sĩ].[mp3,...]
+        // $msName = addslashes($_FILES["music"]["name"]);
+        // $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
+        // $folder_m = 'music/';
+        // $file_extension = explode('.', $music['name'])[1];
+        // $file_name_m = time() . '.' . $file_extension;
+        // $path_file_m = $folder_m . $file_name_m;
+        // move_uploaded_file($music["tmp_name"], $path_file_m);
+        //đường dẫn tạm thời của tệp hình ảnh đã được gửi lên
+        $folder_m = 'music/';
+        $file_extension = explode('.', $music['name'])[1];
+        $file_name_m = $musicname .'-'. $artist .'.'. $file_extension;
+        $path_file_m = $folder_m . $file_name_m;
+        move_uploaded_file($music["tmp_name"], $path_file_m);
+
+        
+        if (mysqli_query($this->con, $addstoremusic) === TRUE) {
             echo "Hình ảnh đã được tải lên thành công.";
         } else {
-            echo "Lỗi: " . $sql . "<br>" . $this->con->error;
+            echo "Lỗi: " . $addstoremusic . "<br>" . $this->con->error;
         }
     }
 

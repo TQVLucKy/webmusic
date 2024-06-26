@@ -13,11 +13,11 @@
             $all=false;
             $count=0;
             foreach ($data["MS"] as $print) {
-                if($count<=9 || $all){
+                if($count<=20 || $all){
                     echo '<div class="item col-2 mb-3 mx-3 clickable" data-id="' . $print['id'] . '">';
                     echo '<img style="max-width:180px;height:180px" src= ../img/' . $print['nameimage'] . '><br>';
                     echo $print['name'] . "<br>";
-                    echo $print['artist'] . "<br>";
+                    echo $print['ArtistName'] . "<br>";
                     echo '</div>';
                     $count++;
                 }
