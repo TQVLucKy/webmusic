@@ -1,0 +1,9 @@
+.ListMusic table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.ListMusic th, .ListMusic td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}/*# sourceMappingURL=DelList.css.map */

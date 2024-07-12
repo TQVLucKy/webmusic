@@ -1,27 +1,9 @@
-.ListLibrary {
-  display: flex;
-  flex-direction: column;
+.ListLibrary table {
+  border-collapse: collapse;
   width: 100%;
 }
-.ListLibrary .itemsList {
-  display: flex;
-  width: 100%;
-}
-.ListLibrary .itemList {
-  padding: 10px 10px;
-  white-space: nowrap;
-}
-.ListLibrary .stt {
-  width: 100px;
-}
-.ListLibrary .name {
-  flex-grow: 1;
-}
-.ListLibrary .artist {
-  width: 40%;
-}
-.ListLibrary .play,
-.ListLibrary .remove, .ListLibrary .playMusic {
-  width: 100px;
-  cursor: pointer;
+.ListLibrary th, .ListLibrary td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }/*# sourceMappingURL=List.css.map */

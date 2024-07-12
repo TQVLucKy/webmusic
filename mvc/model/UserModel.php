@@ -10,7 +10,7 @@ class UserModel extends DB{
     }
 
     public function checkUsername($username,$password){
-        $sql="select id from registration where username=? and password=?";
+        $sql="select IdAccount from account where username=? and password=?";
         $stmt= mysqli_prepare($this->con,$sql);
        if ($stmt){
         mysqli_stmt_bind_param($stmt,"ss",$username,$password);

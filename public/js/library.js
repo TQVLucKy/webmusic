@@ -22,6 +22,9 @@ function AddMusic() {
     document.getElementById('showcreate').style.position = "absolute";
     document.getElementById('showcreate').style.zIndex = "1";
 }
+function DelMusic(){
+    window.location.assign('./DelList');
+}
 
 
 function AddList() {

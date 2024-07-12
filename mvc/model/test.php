@@ -36,15 +36,10 @@ if(isset($_GET["logout"])){
 // need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
     // Khởi tạo controller và gọi hàm xử lý
-    if(!empty($_POST['artist']))
-        foreach ($_POST['artist'] as $artist) {
-            echo "Tên ca sĩ:".htmlspecialchars($artist)."<br>";
-    }
     //print_r($_post['artist[]']);
     $controller = new Home();
     $controller->uploadMusic($_FILES);
 }
-// test.php
 // Hàm xử lý form
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
@@ -53,6 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
     $controller->createList($_GET['namelist']);
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']))
+{
+    $action=$_POST['action'];
+
+    if($action==='deleteMusic'){
+        $controller=new MusicModel();
+        $controller->DeleteMusic($_POST['idMusic'],$_POST['idArtist'],$_POST['idCategory']);
+    }
+}
 //search theo val
 if (isset($_GET['InputVal'])) {
     $musicModel =  new MusicModel();

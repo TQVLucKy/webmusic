@@ -22,7 +22,8 @@
     </div>
 </div>
 <div id="create" style="display: none;">
-    <button id="AddMusic" onclick="AddMusic()">thêm nhạc</button><br>
+    <button id="AddMusic" onclick="AddMusic()">thêm bài nhạc</button><br>
+    <button type="button" onclick="DelMusic()">Xóa bài nhạc</button><br>
     <button id="AddList" onclick="AddList()">thêm danh sách</button>
 </div>
 <form class="container-fluid addmusic" id="showcreate" style="display:none;" method="post" enctype="multipart/form-data">
@@ -32,12 +33,15 @@
     <input type="file" name="music"></br>
     <label for="image">Chọn hình ảnh:</label>
     <input type="file" name="image"></br>
+    <label for="category">Thể loại:</label>
+    <input type="text" name="category"></br>
     <button type="button" id="addArtistButton">Thêm ca sĩ</button><br>
     <div id="artistContainer">
         <label for="artist">Tên ca sĩ:</label>
         <input type="text" name="artist[]"><br>
     </div>
     <input type="submit" name="submitmusic" value="Tải lên">
+</form>
 </form>
 <form class="container-fluid addlist" id="showList" style="display:none;" method="get">
     <label for="namelist">Tên danh sách:</label>
@@ -46,10 +50,11 @@
 </form>
 
 <script>
+
+
     $(document).ready(function() {
-        // Sử dụng id của form để xác định form cụ thể
         $('#showList').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+            e.preventDefault(); 
             var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
             formData += '&submitlist=' + encodeURIComponent('submitlist');
             alert(formData);
@@ -58,11 +63,10 @@
                 url: './model/test', // File xử lý dữ liệu
                 data: formData,
                 success: function(response) {
-                    // Xử lý kết quả trả về từ server ở đây
+                    // Xử lý kết quả trả về
                     console.log('Kết quả:', response);
                 },
                 error: function() {
-                    // Xử lý lỗi ở đây
                     console.log('Có lỗi xảy ra');
                 }
             });

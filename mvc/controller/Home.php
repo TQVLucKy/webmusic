@@ -43,6 +43,15 @@
                 ]);
         }
 
+        //Hiển thị danh sách bài nhạc để xử lý
+        public function DelList() {
+            $this->view("master1",[
+                "page"=>"DelList",
+                "MS"=>$this->a->Music(),
+                "Lib"=> $this->a->Library(),
+                "g"=> $this->a->getall(),
+            ]);
+        }
         public function createList($name) {
             // Gọi model để xử lý dữ liệu
             $listModel = new MusicModel();
@@ -52,7 +61,7 @@
         public function uploadMusic($files) {
             // Gọi model để xử lý tải lên
             $musicModel = new MusicModel();
-            $musicModel->saveMusic($_POST['musicname'],$files['music'], $files['image'], $_POST['artist']);
+            $musicModel->saveMusic($_POST['musicname'],$files['music'], $files['image'], $_POST['artist'],$_POST['category']);
         }
     }
 ?>

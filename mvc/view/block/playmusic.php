@@ -260,7 +260,9 @@
                 element.value = music.currentTime;
                 element1.innerHTML = formatTimes(music.currentTime)
                 if (Math.floor(music.currentTime) == Math.floor(seekbar.max))
-                    btnnext.click();
+                    {btnnext.click();
+                    alert("done");
+                    }
             }, 500);
             element.addEventListener('change', () => {
                 music.currentTime = element.value;
