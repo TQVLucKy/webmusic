@@ -83,3 +83,8 @@ if (isset($_GET['InputVal'])) {
         $stt++;
     }
 }
+
+if($_SERVER['REQUEST_METHOD'] ==='POST' && isset($_POST['idList'])){
+    $controller= new MusicModel();
+    $controller->DelDanhSachPhat($_POST['idList']);
+}

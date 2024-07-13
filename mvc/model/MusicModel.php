@@ -20,7 +20,7 @@ class MusicModel extends DB
     public function getall()
     {
         $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,artist.NameArtist,category.NameCategory,storemusic.state
-FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
+        FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic";
         $result = mysqli_query($this->con, $sql);
@@ -199,7 +199,7 @@ FROM song_artist_category join artist on song_artist_category.IdArtist= artist.I
             else
                 echo "Thể loại đã tồn tại!</br>";
         } else
-            echo "Error: " . $stmt->error. "</br>";
+            echo "Error: " . $stmt->error . "</br>";
 
 
 
@@ -256,52 +256,75 @@ FROM song_artist_category join artist on song_artist_category.IdArtist= artist.I
     // }
 
     // xóa bài nhạc khỏi hệ thống
-    public function DeleteMusic($IdMusic,$IdArtist,$IdCategory){
-        $sql_select="SELECT artist.NameArtist, storemusic.NameImageMusic, storemusic.NameMusic
+    public function DeleteMusic($IdMusic, $IdArtist, $IdCategory)
+    {
+        $sql_select = "SELECT artist.NameArtist, storemusic.NameImageMusic, storemusic.NameMusic
         FROM song_artist_category
             JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
             JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
             JOIN category ON song_artist_category.IdCategory = category.IdCategory
         WHERE storemusic.IdMusic=? AND artist.IdArtist=? AND category.IdCategory=?";
-        $stmt_select= $this->con->prepare($sql_select);
-        $stmt_select->bind_param("iii",$IdMusic,$IdArtist,$IdCategory);
+        $stmt_select = $this->con->prepare($sql_select);
+        $stmt_select->bind_param("iii", $IdMusic, $IdArtist, $IdCategory);
         $stmt_select->execute();
-        $stmt_select->bind_result($NameArtist,$NameImageMusic,$NameMusic);
-        while($stmt_select->fetch()){
-            $file_music="music/$NameMusic-$NameArtist.mp3";
+        $stmt_select->bind_result($NameArtist, $NameImageMusic, $NameMusic);
+        while ($stmt_select->fetch()) {
+            $file_music = "music/$NameMusic-$NameArtist.mp3";
             echo $file_music;
-            if(file_exists($file_music)){
-                if(unlink($file_music))
+            if (file_exists($file_music)) {
+                if (unlink($file_music))
                     echo "Xóa tập tin nhạc thành công";
-                else 
+                else
                     echo "Xóa tập tin nhạc thất bại";
-            }else
+            } else
                 echo "Tập tin nhạc không tồn tại";
-            $file_img="img/$NameImageMusic.jpg";
+            $file_img = "img/$NameImageMusic.jpg";
             echo $file_img;
-            if(file_exists($file_img)){
-                if(unlink($file_img))
+            if (file_exists($file_img)) {
+                if (unlink($file_img))
                     echo "Xóa tập tin ảnh thành công";
-                else 
+                else
                     echo "Xóa tập tin ảnh thất bại";
-            }else
+            } else
                 echo "Tập tin ảnh không tồn tại";
         }
 
-        $sql_delsac= "DELETE FROM song_artist_category
+        $sql_delsac = "DELETE FROM song_artist_category
         WHERE IdMusic=? and IdArtist=? and IdCategory=?;";
-        $stmt_delsac= $this->con->prepare($sql_delsac);
-        $stmt_delsac->bind_param("iii",$IdMusic,$IdArtist,$IdCategory);
-        if($stmt_delsac->execute())
+        $stmt_delsac = $this->con->prepare($sql_delsac);
+        $stmt_delsac->bind_param("iii", $IdMusic, $IdArtist, $IdCategory);
+        if ($stmt_delsac->execute())
             echo "Xóa bài nhạc thành công";
         else
-            echo "Error: ".$stmt_delsac->error."</br>";
-        $sql_delMusic= "DELETE FROM storemusic WHERE IdMusic=?;";
-        $stmt_delMusic=$this->con->prepare($sql_delMusic);
-        $stmt_delMusic->bind_param("i",$IdMusic);
-        if($stmt_delMusic->execute())
+            echo "Error: " . $stmt_delsac->error . "</br>";
+        $sql_delMusic = "DELETE FROM storemusic WHERE IdMusic=?;";
+        $stmt_delMusic = $this->con->prepare($sql_delMusic);
+        $stmt_delMusic->bind_param("i", $IdMusic);
+        if ($stmt_delMusic->execute())
             echo "Xóa hoàn toàn thành công";
         else
-            echo "Error: ".$stmt_delMusic->error."</br>";
+            echo "Error: " . $stmt_delMusic->error . "</br>";
+    }
+
+    public function DelDanhSachPhat($IdList)
+    {
+        $sql1 = "DELETE FROM listmusic
+            WHERE IdList=?";
+        $stmt1 = $this->con->prepare($sql1);
+        $stmt1->bind_param("i", $IdList);
+
+        $sql2 = "DELETE FROM library
+        WHERE IdList=?";
+        $stmt2 = $this->con->prepare($sql2);
+        $stmt2->bind_param("i", $IdList);
+
+        if ($stmt1->execute()) {
+            echo "Xóa dữ liệu trong ListMusic thành công";
+            if ($stmt2->execute())
+                echo "Xóa dữ liệu trong library thành công";
+            else
+                echo "Error: " . $stmt2->error;
+        } else
+            echo "Error: " . $stmt1->error;
     }
 }
