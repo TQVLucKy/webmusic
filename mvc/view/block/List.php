@@ -2,45 +2,86 @@
 <script type="text/javascript" src="../public/js/List.js"></script>
 <!-- STT         Name        Artist      play        remove -->
 
-
-<div class="HeaderList">
-    <h1>Danh sách <?php foreach ($data["Lib"] as $print) {
-                        if ($print['IdList'] == $_GET['id']) {
-                            echo $print['NameList'];
-                            break;
-                        }
-                    } ?></h1>
-    <div>
-        <a>Thêm nhạc vào danh sách</a>
-        <button onclick="DelDanhSachPhat()">Xóa danh sách</button>
+<div id="list">
+    <div class="HeaderList">
+        <h1>Danh sách <?php foreach ($data["Lib"] as $print) {
+                            if ($print['IdList'] == $_GET['id']) {
+                                echo $print['NameList'];
+                                break;
+                            }
+                        } ?></h1>
+        <div>
+            <button id="buttonToAdd1">Thêm nhạc vào danh sách</button>
+            <button onclick="DelDanhSachPhat()">Xóa danh sách</button>
+        </div>
+    </div>
+    <div class="Search">
+        <input type="text" class="Search-form" placeholder="Search...">
+    </div>
+    <div class="ListLibrary">
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Nghệ sĩ</th>
+                <th>Thể loại</th>
+                <th>Thao tác</th>
+            </tr>
+            <?php
+            $stt = 1;
+            foreach ($data["getlist"] as $print) {
+                echo '<tr><td>';
+                echo $stt;
+                echo '</td><td>';
+                echo $print['NameMusic'];
+                echo '</td><td>';
+                echo $print['NameArtist'];
+                echo '</td><td>';
+                echo $print['NameCategory'];
+                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button> <button onclick=DeleteMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
+                echo '</tr>';
+                $stt++;
+            }
+            ?>
+        </table>
     </div>
 </div>
-<div class="ListLibrary">
-    <table>
-        <tr>
-            <th>STT</th>
-            <th>Tên</th>
-            <th>Nghệ sĩ</th>
-            <th>Thể loại</th>
-            <th>Thao tác</th>
-        </tr>
-        <?php
-        $stt = 1;
-        foreach ($data["getlist"] as $print) {
-            echo '<tr><td>';
-            echo $stt;
-            echo '</td><td>';
-            echo $print['NameMusic'];
-            echo '</td><td>';
-            echo $print['NameArtist'];
-            echo '</td><td>';
-            echo $print['NameCategory'];
-            echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button> <button onclick=DeleteMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
-            echo '</tr>';
-            $stt++;
-        }
-        ?>
-    </table>
+<div id="addmusictoDanhSachPhat" style="display:none;">
+    <div class="HeaderList">
+        <h1>Danh sách các bài nhạc</h1>
+        <button id="buttonToAdd2">Trở lại danh sách phát</button>
+    </div>
+    <div class="Search">
+        <input type="text" class="Search-form" placeholder="Search...">
+    </div>
+    <div class="ListLibrary">
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Nghệ sĩ</th>
+                <th>Thể loại</th>
+                <th>Thao tác</th>
+            </tr>
+            <?php
+            $stt = 1;
+            foreach ($data["MS"] as $print) {
+                echo '<tr><td>';
+                echo $stt;
+                echo '</td><td>';
+                echo $print['NameMusic'];
+                echo '</td><td>';
+                echo $print['NameArtist'];
+                echo '</td><td>';
+                echo $print['NameCategory'];
+                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
+                echo '<button onclick=AddMusicToDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
+                echo '</tr>';
+                $stt++;
+            }
+            ?>
+        </table>
+    </div>
 </div>
 <script>
     var playMusic = document.querySelectorAll('.itemsList .playMusic');
@@ -55,11 +96,24 @@
         $.ajax({
             url: './model/test',
             type: 'POST',
-            data:{idList:<?php echo $_GET['id'];?>},
-            success: function(response){
+            data: {
+                idList: <?php echo $_GET['id']; ?>
+            },
+            success: function(response) {
                 alert("Xóa danh sách phát thành công");
                 window.location.href = './';
             }
         })
     }
+
+    //Mai làm thêm nhạc vào danh sách phát và xóa nhạc trong danh sách phát.
+    // Chuyển qua lại giữa 2 bảng danh sách và thêm.
+    document.querySelector('#buttonToAdd1').addEventListener("click", () => {
+        document.getElementById('list').style.display = 'none';
+        document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
+    })
+    document.querySelector('#buttonToAdd2').addEventListener("click", () => {
+        document.getElementById('list').style.display = 'block';
+        document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
+    })
 </script>
