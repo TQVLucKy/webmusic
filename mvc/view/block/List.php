@@ -38,7 +38,8 @@
                 echo $print['NameArtist'];
                 echo '</td><td>';
                 echo $print['NameCategory'];
-                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button> <button onclick=DeleteMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
+                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
+                echo '<button onclick=DeleteMusicFromDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
                 echo '</tr>';
                 $stt++;
             }
@@ -84,19 +85,24 @@
     </div>
 </div>
 <script>
-    var playMusic = document.querySelectorAll('.itemsList .playMusic');
-    playMusic.forEach(function(item) {
-        item.addEventListener('click', function() {
-            var id = this.getAttribute('data-id');
-            window.location.href = './Play?id=' + id;
-        })
-    })
+    // var playMusic = document.querySelectorAll('.itemsList .playMusic');
+    // playMusic.forEach(function(item) {
+    //     item.addEventListener('click', function() {
+    //         var id = this.getAttribute('data-id');
+    //         window.location.href = './Play?id=' + id;
+    //     })
+    // })
+    function PlayMusic(button) {
+        var idMusic = button.getAttribute('data-idMusic');
+        window.location.href = './Play?id=' + idMusic;
+    }
 
     function DelDanhSachPhat() {
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
+                action: "DelDanhSachPhat",
                 idList: <?php echo $_GET['id']; ?>
             },
             success: function(response) {
@@ -105,7 +111,39 @@
             }
         })
     }
+    //Thêm nhạc vào danh sách phát
+    function AddMusicToDanhSachPhat(button) {
 
+        $.ajax({
+            url: './model/test',
+            type: 'POST',
+            data: {
+                action: "AddMusicToDanhSachPhat",
+                idMusic: button.getAttribute('data-idMusic'),
+                idList: <?php echo $_GET['id']; ?>
+            },
+            success: function(response) {
+                alert("Thêm thành công");
+            }
+        })
+    }
+    // Xóa nhạc ở danh sách phát
+    function DeleteMusicFromDanhSachPhat(button) {
+        $.ajax({
+            url: './model/test',
+            type: 'POST',
+            data: {
+                action: "DeleteMusicFromDanhSachPhat",
+                idMusic: button.getAttribute('data-idMusic'),
+                idList: <?php echo $_GET['id']; ?>
+            },
+            success: function(response) {
+                alert(response);
+                var row = button.closest('tr');
+                row.parentNode.removeChild(row);
+            }
+        })
+    }
     //Mai làm thêm nhạc vào danh sách phát và xóa nhạc trong danh sách phát.
     // Chuyển qua lại giữa 2 bảng danh sách và thêm.
     document.querySelector('#buttonToAdd1').addEventListener("click", () => {
@@ -115,5 +153,6 @@
     document.querySelector('#buttonToAdd2').addEventListener("click", () => {
         document.getElementById('list').style.display = 'block';
         document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
+        window.location.reload();
     })
 </script>

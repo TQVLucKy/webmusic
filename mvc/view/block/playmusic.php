@@ -12,10 +12,6 @@
         ?> -->
 
 <div class="music">
-    <div class="backnext">
-        <button class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
-        <button class="btn btncont"><i class="fa fa-chevron-right"></i></button>
-    </div>
     <div class="container">
         <div class="box-disk">
         </div>
@@ -110,8 +106,7 @@
             clickedList = false;
         else clickedList = true;
     };
-</script>
-<script>
+
     let songs = <?php echo json_encode($data["g"]); ?>;
     let currentSong = 0;
 

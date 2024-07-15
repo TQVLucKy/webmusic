@@ -7,6 +7,10 @@
     <div class="header-title">
         <a class="h1" href="../Home/">Music</a>
     </div>
+    <div class="backnext">
+        <button onclick="back()" class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
+        <button onclick="next()" class="btn btncont"><i class="fa fa-chevron-right"></i></button>
+    </div>
     <form class="header-search">
         <div class="input-group h">
             <input type="text" class="form-control dropdown-toggle" placeholder="Search..." autocomplete="off" style="width:500px">
@@ -63,7 +67,7 @@
             form.style.display = "none";
         }
     }
-    //
+    //login form
     $(document).ready(function() {
         $('#loginForm').submit(function(event) {
             // Ngăn chặn form gửi đi mặc định
@@ -99,6 +103,8 @@
     function Sign() {
         
     }
+
+    //sereach form
     $(document).ready(function() {
         // Khi nhấn vào nút "Search"
         $('.btn-primary').on('click', function(event) {
@@ -142,6 +148,13 @@
                 console.error("Lỗi khi gọi Ajax: " + error);
             }
         });
+    }
+    //back and next
+    function back(){
+        window.history.back();
+    }
+    function next(){
+        window.history.next();
     }
     function Info(){
         var form = document.getElementById("info");

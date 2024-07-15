@@ -47,7 +47,7 @@ class MusicModel extends DB
     // get list from library
     public function getListMusic()
     {
-        $sql = "select library.NameList, storemusic.NameMusic,storemusic.IdMusic,library.IdList,artist.NameArtist
+        $sql = "select *
         FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
@@ -57,7 +57,7 @@ class MusicModel extends DB
     }
 
 
-    public function AddMusicToLibrary($IdList, $id)
+    public function AddMusicToLibrary($IdList, $IdMusic)
     {
 
         //Sau này sẽ thay đổi lại: khi đã lưu ở trong library nào đó
@@ -66,8 +66,8 @@ class MusicModel extends DB
 
         //chỉnh sửa khi thêm music và xem lại add music
         //làm view show library
-        // Kiểm tra xem IdList và id đã tồn tại chưa
-        $query = "SELECT COUNT(*) AS count FROM listmusic WHERE IdList = '$IdList' AND id = '$id'";
+        // Kiểm tra xem IdList và IdMusic đã tồn tại chưa
+        $query = "SELECT COUNT(*) AS count FROM listmusic WHERE IdList = '$IdList' AND IdMusic = '$IdMusic'";
         $result = mysqli_query($this->con, $query);
 
         if ($result) {
@@ -80,12 +80,24 @@ class MusicModel extends DB
                 echo "da ton tai";
             } else {
                 // Thực hiện lệnh INSERT vào cơ sở dữ liệu
-                $sql = "INSERT INTO listmusic (IdList, IdMusic) VALUES ('$IdList', '$id')";
+                $sql = "INSERT INTO listmusic (IdList, IdMusic) VALUES ('$IdList', '$IdMusic')";
                 mysqli_query($this->con, $sql);
             }
         } else {
-            echo "da ton tai id";
+            echo "da ton tai IdMusic";
         }
+    }
+
+    public function DeleteMusicFromLibrary($IdList, $IdMusic)
+    {
+        $sql = "DELETE FROM listmusic
+        WHERE IdList=? and IdMusic=?";
+        $stmt= $this->con->prepare($sql);
+        $stmt->bind_param("ii",$IdList,$IdMusic);
+        if($stmt->execute())
+            echo "Xóa nhạc ở danh sách phát thành công";
+        else
+            echo "Error: ".$stmt->error;
     }
 
 
