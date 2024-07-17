@@ -33,7 +33,8 @@
     <div class="accountlogin" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
         <img onclick="Info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
         <div class="info" id="info" style="display: none;">
-            <a class="DangXuat" onclick="Logout()">Đăng Xuất</a>
+            <button class="DoiMatKhau" onclick="FormChangePassword()">Đổi mật khẩu</button></br>
+            <button class="DangXuat" onclick="Logout()">Đăng xuất</button>
         </div>
     </div>
 </div>
@@ -67,7 +68,7 @@
             form.style.display = "none";
         }
     }
-    //login form
+    // login form
     $(document).ready(function() {
         $('#loginForm').submit(function(event) {
             // Ngăn chặn form gửi đi mặc định
@@ -88,8 +89,7 @@
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
                     Login();
-                    window.location.href="";
-                    // else alert("Đăng nhập thất bại!");
+                    window.location.href = "";
                 },
                 error: function(xhr, status, error) {
                     // Xử lý lỗi (nếu có)
@@ -101,9 +101,103 @@
     });
 
     function Sign() {
-        
+
+    }
+    //đổi mật khẩu
+    function FormChangePassword() {
+        let formchangepassword = document.createElement("form");
+        formchangepassword.innerHTML = `
+        <div class="card">
+            <div class="card-header bg-primary mx-auto">ĐỔI MẬT KHẨU</div>
+            <div class="card-body">
+                <p>
+                    <label>Mật khẩu cũ</label>
+                    <input type="password" class="form-control" name="passOld">
+                </p>
+                <p>
+                    <label>Mật khẩu mới:</label>
+                    <input type="password" class="form-control" name="passNew1">
+                </p>
+                <p>
+                    <label>Nhập lại mật khẩu mới:</label>
+                    <input type="password" class="form-control" name="passNew2">
+                </p>
+                <p>
+                    <button type="submit" class="btn btn-warning">Đổi mật khẩu</button>
+                </p>
+            </div>
+        </div>
+        `;
+        document.body.appendChild(formchangepassword);
+        // Gán sự kiện submit cho form
+        $(formchangepassword).submit(function(event) {
+            event.preventDefault();
+            var userName= <?php echo $_SESSION["username"];?>;
+            var passOld = $('input[name="passOld"]').val();
+            var passNew1 = $('input[name="passNew1"]').val();
+            var passNew2 = $('input[name="passNew2"]').val();
+            $.ajax({
+                type: 'POST',
+                url: './model/test',
+                data: {
+                    userName:userName,
+                    passOld: passOld,
+                    passNew1: passNew1,
+                    passNew2: passNew2,
+                    submitChangePass: 'submitChangePass'
+                },
+                success: function(response) {
+                    alert(response);
+                    window.location.href="./";
+                }
+            });
+        });
     }
 
+    // function test(){
+    //     alert("testr");
+    //         event.preventDefault();
+    //         var passOld = $('input[name="passOld"]').val();
+    //         var passNew1 = $('input[name="passNew1"]').val();
+    //         var passNew2 = $('input[name="passNew2"]').val();
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: './model/test',
+    //             data: {
+    //                 passOld: passOld,
+    //                 passNew1: passNew1,
+    //                 passNew2: passNew2,
+    //                 submitChangePass:'submitChangePass'
+    //             },
+    //             success: function(response) {
+    //                 alert(response);
+    //                 alert("cc");
+    //             }
+    //         });
+    // }
+    // $(document).ready(function() {
+    //     $('#changepass-form').submit(function(event) {
+    //         alert("testr");
+    //         event.preventDefault();
+    //         var passOld = $('input[name="passOld"]').val();
+    //         var passNew1 = $('input[name="passNew1"]').val();
+    //         var passNew2 = $('input[name="passNew2"]').val();
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: './model/test',
+    //             data: {
+    //                 passOld: passOld,
+    //                 passNew1: passNew1,
+    //                 passNew2: passNew2,
+    //                 submitChangePass: 'submitChangePass'
+    //             },
+    //             success: function(response) {
+    //                 alert(response);
+    //                 alert("cc");
+    //             }
+    //         });
+    //     });
+    // });
     //sereach form
     $(document).ready(function() {
         // Khi nhấn vào nút "Search"
@@ -134,12 +228,14 @@
         });
     });
 
-    function Logout(){
+    function Logout() {
         alert("logout");
         $.ajax({
-            url: './model/test', 
+            url: './model/test',
             method: "GET",
-            data:{logout:"logout"}, 
+            data: {
+                logout: "logout"
+            },
             success: function(response) {
                 window.location.href = "";
             },
@@ -150,13 +246,15 @@
         });
     }
     //back and next
-    function back(){
+    function back() {
         window.history.back();
     }
-    function next(){
+
+    function next() {
         window.history.next();
     }
-    function Info(){
+
+    function Info() {
         var form = document.getElementById("info");
         if (form.style.display === "none") {
             form.style.display = "block";

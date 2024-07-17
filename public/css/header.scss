@@ -44,19 +44,43 @@
             background-color: black;
         }
     }
-    .accountlogin{
+
+    .accountlogin {
         border: 3px solid white;
         border-radius: 50%;
-        .info{
+
+        .info {
             background-color: gray;
             border-radius: 5px;
-            position:absolute;
-            top:70px;
+            position: absolute;
+            top: 70px;
             right: 15px;
             z-index: 1;
             cursor: pointer;
         }
+
+        .DoiMatKhau,
+        .DangXuat {
+            width: 100%;
+
+            &:hover {
+                background-color: blue;
+            }
+        }
     }
+}
+
+.card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(3px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .result {
@@ -100,9 +124,11 @@
     padding: 50px;
     margin: 0 auto;
     z-index: 1;
-    input{
+
+    input {
         margin-top: 10px;
     }
+
     .login-button {
         display: block;
         margin: 0 auto;

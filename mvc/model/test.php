@@ -32,6 +32,10 @@ if (isset($_GET["logout"])) {
     session_unset();
 }
 
+if(isset($_POST['submitChangePass'])){
+    $controler= new UserModel();
+    $controler->ChangePassword($_POST['userName'],$_POST['passOld'], $_POST['passNew1'], $_POST['passNew2']);
+}
 // need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitmusic'])) {
     // Khởi tạo controller và gọi hàm xử lý

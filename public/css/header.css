@@ -48,6 +48,28 @@
   z-index: 1;
   cursor: pointer;
 }
+.header .accountlogin .DoiMatKhau,
+.header .accountlogin .DangXuat {
+  width: 100%;
+}
+.header .accountlogin .DoiMatKhau:hover,
+.header .accountlogin .DangXuat:hover {
+  background-color: blue;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 
 .result {
   position: absolute;
