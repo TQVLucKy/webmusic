@@ -27,8 +27,8 @@
             ?> -->
     <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
     <div class="account" style="<?php if (!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
-        <a class="DangKy btn btn-secondary" onclick="Register()">Đăng Ký</a>
-        <a class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</a>
+        <button class="DangKy btn btn-secondary" onclick="Register()">Đăng Ký</button>
+        <button class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</button>
     </div>
     <div class="accountlogin" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
         <img onclick="Info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
@@ -73,7 +73,6 @@
         $('#loginForm').submit(function(event) {
             // Ngăn chặn form gửi đi mặc định
             event.preventDefault();
-
             // Lấy dữ liệu từ form
             var name = $('input[name="name"]').val();
             var password = $('input[name="passWord"]').val();
@@ -132,7 +131,7 @@
         // Gán sự kiện submit cho form
         $(formchangepassword).submit(function(event) {
             event.preventDefault();
-            var userName= <?php echo $_SESSION["username"];?>;
+            var userName= <?php if(isset($_SESSION["username"])) echo $_SESSION["username"]; else echo '-1';?>;
             var passOld = $('input[name="passOld"]').val();
             var passNew1 = $('input[name="passNew1"]').val();
             var passNew2 = $('input[name="passNew2"]').val();
@@ -147,8 +146,9 @@
                     submitChangePass: 'submitChangePass'
                 },
                 success: function(response) {
-                    alert(response);
-                    window.location.href="./";
+                    // alert(response);
+                    console.log(response);
+                    // window.location.href="./";
                 }
             });
         });

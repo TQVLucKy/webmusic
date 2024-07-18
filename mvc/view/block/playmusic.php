@@ -36,7 +36,7 @@
     <?php
     $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
     echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "'";
-    echo " onclick='" . ($favorites[$_GET['id']] == 1 ? "AddFavorite()" : "DelFavorite()") . "'>";
+    echo " onclick=UpdateFavorite()>";
     echo "<i class='fa fa-heart'></i></button>";
     ?>
     <button class="material-icons" onclick=AddMusicToLibrary()>add</button>
@@ -153,6 +153,9 @@
             url: './model/test?action=UpdateFavorite&id=' + <?php echo $_GET['id'] ?>,
             data: {
                 favorite: isFavorite
+            },
+            success: function(response){
+                console.log(response);
             },
             error: function() {
                 console.error('Có lỗi khi cập nhật trạng thái favorite.');

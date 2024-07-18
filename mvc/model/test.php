@@ -1,8 +1,7 @@
 <?php
-include 'C:\xampp\htdocs\webmusic\mvc\model\FavoriteModel.php';
 include 'C:\xampp\htdocs\webmusic\mvc\model\UserModel.php';
 if (isset($_GET['action'])) {
-    $favoriteModel = new test();
+    $favoriteModel = new MusicModel();
     $action = trim($_GET['action']);
     if ($action == "UpdateFavorite") {
         $favoriteModel->UpdateFavorite($_GET["id"]);

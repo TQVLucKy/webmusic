@@ -339,4 +339,9 @@ class MusicModel extends DB
         } else
             echo "Error: " . $stmt1->error;
     }
+    
+    public function UpdateFavorite($IdMusic) {
+        $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE IdMusic = $IdMusic";
+        mysqli_query($this->con,$sql);
+    }
 }

@@ -39,9 +39,9 @@ class UserModel extends DB
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("s", $UserName);
         $stmt->execute();
-        $result=$stmt->fetch();
-        die($result['Password']);
-        if ($PassOld ==$result['Password']) {
+        $stmt->bind_result($Password);
+        $stmt->fetch();
+        if ($PassOld ==($Password??'')) {
             if ($PassNew1 == $PassNew2) {
                 $sql = "UPDATE account
             SET Password=?
