@@ -16,6 +16,11 @@ class MusicModel extends DB
         return mysqli_query($this->con, $qr);
     }
 
+    public function Album()
+    {
+        $sql = "SELECT * FROM Album";
+        return mysqli_query($this->con,$sql);
+    }
 
     public function getall()
     {
@@ -47,7 +52,7 @@ class MusicModel extends DB
     // get list from library
     public function getListMusic()
     {
-        $sql = "select *
+        $sql = "SELECT *
         FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
@@ -57,6 +62,27 @@ class MusicModel extends DB
     }
 
 
+    // get list album from library
+    public function getAlbumMusic(){
+        $sql = "SELECT * FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
+		join category on song_artist_category.IdCategory=category.IdCategory
+        join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
+        join album_song_account on song_artist_category.IdMusic=album_song_account.IdMusic
+        join album on album_song_account.IdAlbum=album.IdAlbum";
+        return mysqli_query($this->con,$sql);
+    }
+
+
+    public function AddAlbum($namealbum){
+        $sql= "INSERT INTO album(NameAlbum) VALUES (?)";
+        $stmt= $this->con->prepare($sql);
+        $stmt->bind_param("s",$namealbum);
+        if($stmt->execute())
+            echo "Thêm album thành công";
+        else
+            echo "Error: " .$stmt->error;
+    }
+    // Thêm nhạc vào danh sách phát
     public function AddMusicToLibrary($IdList, $IdMusic)
     {
 
@@ -88,18 +114,56 @@ class MusicModel extends DB
         }
     }
 
+    // Thêm nhạc vào album
+    public function AddMusicToAlbum($IdAlbum, $IdMusic)
+    {
+        //chỉnh sửa khi thêm music và xem lại add music
+        //làm view show library
+        // Kiểm tra xem IdList và IdMusic đã tồn tại chưa
+        $query = "SELECT COUNT(*) AS count FROM album_song_account WHERE IdAlbum = '$IdAlbum' AND IdMusic = '$IdMusic'";
+        $result = mysqli_query($this->con, $query);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $count = $row['count'];
+            mysqli_free_result($result);
+
+            // Nếu đã tồn tại, xử lý lỗi hoặc thông báo cho người dùng
+            if ($count > 0) {
+                echo "da ton tai";
+            } else {
+                // Thực hiện lệnh INSERT vào cơ sở dữ liệu
+                $sql = "INSERT INTO album_song_account (IdAlbum, IdMusic) VALUES ('$IdAlbum', '$IdMusic')";
+                mysqli_query($this->con, $sql);
+            }
+        } else {
+            echo "da ton tai IdMusic";
+        }
+    }
+    // xóa nhạc khỏi danh sách phát
     public function DeleteMusicFromLibrary($IdList, $IdMusic)
     {
         $sql = "DELETE FROM listmusic
         WHERE IdList=? and IdMusic=?";
-        $stmt= $this->con->prepare($sql);
-        $stmt->bind_param("ii",$IdList,$IdMusic);
-        if($stmt->execute())
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("ii", $IdList, $IdMusic);
+        if ($stmt->execute())
             echo "Xóa nhạc ở danh sách phát thành công";
         else
-            echo "Error: ".$stmt->error;
+            echo "Error: " . $stmt->error;
     }
-
+    // xóa nhạc khỏi album
+    public function DeleteMusicFromAlbum($IdAlbum, $IdMusic)
+    {
+        $sql = "DELETE FROM album_song_account
+        WHERE IdAlbum=? and IdMusic=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("ii", $IdAlbum, $IdMusic);
+        if ($stmt->execute())
+            echo "Xóa nhạc ở album thành công";
+        else
+            echo "Error: " . $stmt->error;
+    }
 
     public function SearchText($val)
     {
@@ -117,7 +181,7 @@ class MusicModel extends DB
     public function addList($name)
     {
         // Thêm danh sách mới vào database
-        $sql = "insert into library(NameList) values ('$_GET[namelist]')";
+        $sql = "insert into library(NameList) values ('$name')";
         if (mysqli_query($this->con, $sql)) {
             echo "danh sách tạo thành công.";
         } else {
@@ -339,9 +403,10 @@ class MusicModel extends DB
         } else
             echo "Error: " . $stmt1->error;
     }
-    
-    public function UpdateFavorite($IdMusic) {
+
+    public function UpdateFavorite($IdMusic)
+    {
         $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE IdMusic = $IdMusic";
-        mysqli_query($this->con,$sql);
+        mysqli_query($this->con, $sql);
     }
 }

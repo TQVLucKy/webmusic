@@ -1,10 +1,10 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
 
 <div class="container-fluid library col-md-2 pt-1">
-    <div class="title d-flex">
+    <!-- <div class="title d-flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
             <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
         </svg>
@@ -19,12 +19,29 @@
             echo '</div>';
         }
         ?>
+    </div> -->
+    <div class="title d-flex">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
+            <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+        </svg>
+        <h2>Album</h2>
+        <button class="material-icons" onclick="Show()">add</button>
+    </div>
+    <div class="ListAlbum">
+        <?php
+        foreach ($data["Album"] as $print) {
+            echo '<div class="itemslist">';
+            echo '<a href="./List?id=' . $print['IdAlbum'] . '">' . $print['NameAlbum'] . '</a>';
+            echo '</div>';
+        }
+        ?>
     </div>
 </div>
 <div id="create" style="display: none;">
     <button id="AddMusic" onclick="AddMusic()">thêm bài nhạc</button><br>
     <button type="button" onclick="DelMusic()">Xóa bài nhạc</button><br>
-    <button id="AddList" onclick="AddList()">thêm danh sách</button>
+    <button id="AddList" onclick="AddList()">Thêm danh sách</button><br>
+    <button id="AddAlbum" onclick="AddAlbum()">Thêm album</button>
 </div>
 <form class="container-fluid addmusic" id="showcreate" style="display:none;" method="post" enctype="multipart/form-data">
     <label for="musicname">Tên bài hát:</label>
@@ -43,18 +60,49 @@
     <input type="submit" name="submitmusic" value="Tải lên">
 </form>
 </form>
-<form class="container-fluid addlist" id="showList" style="display:none;" method="get">
+<form class="container-fluid addlist" id="ShowList" style="display:none;" method="get">
     <label for="namelist">Tên danh sách:</label>
     <input type="text" name="namelist">
     <input type="submit" name="submitlist" value="Tạo">
 </form>
+<form class="container-fluid addalbum" id="ShowAlbum" style="display:none;" method="get">
+    <label for="namelist">Tên Album:</label>
+    <input type="text" name="namealbum">
+    <input type="submit" name="submitalbum" value="Tạo">
+</form>
 
 <script>
+    function AddAlbum() {
+        document.getElementById('ShowAlbum').style.display = "block";
+        document.getElementById('ShowAlbum').style.position = "absolute";
+        document.getElementById('ShowAlbum').style.zIndex = "1";
+    }
+
+    $(document).ready(function() {
+        $('#ShowAlbum').on('submit', function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
+            formData += '&submitalbum=' + encodeURIComponent('submitalbum');
+            alert(formData);
+            $.ajax({
+                type: 'GET',
+                url: './model/test', // File xử lý dữ liệu
+                data: formData,
+                success: function(response) {
+                    // Xử lý kết quả trả về
+                    console.log('Kết quả:', response);
+                },
+                error: function() {
+                    console.log('Có lỗi xảy ra');
+                }
+            });
+        });
+    });
 
 
     $(document).ready(function() {
         $('#showList').on('submit', function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
             formData += '&submitlist=' + encodeURIComponent('submitlist');
             alert(formData);

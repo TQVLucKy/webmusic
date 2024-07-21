@@ -28,7 +28,8 @@ function DelMusic(){
 
 
 function AddList() {
-    document.getElementById('showList').style.display = "block";
-    document.getElementById('showList').style.position = "absolute";
-    document.getElementById('showList').style.zIndex = "1";
+    document.getElementById('ShowList').style.display = "block";
+    document.getElementById('ShowList').style.position = "absolute";
+    document.getElementById('ShowList').style.zIndex = "1";
 }
+

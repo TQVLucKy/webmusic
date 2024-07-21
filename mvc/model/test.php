@@ -50,6 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitlist'])) {
     $controller->createList($_GET['namelist']);
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitalbum'])) {
+    // Khởi tạo controller và gọi hàm xử lý 
+    $controller = new MusicModel();
+    $controller->AddAlbum($_GET['namealbum']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
 
@@ -91,15 +97,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $controller->DelDanhSachPhat($_POST['idList']);
     }
 }
+//Thêm nhạc vào danh sách phát
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] == "AddMusicToDanhSachPhat") {
         $controller = new MusicModel();
         $controller->AddMusicToLibrary($_POST["idList"], $_POST["idMusic"]);
     }
 }
+// Xóa nhạc khỏi danh sách phát
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] == "DeleteMusicFromDanhSachPhat") {
         $controller = new MusicModel();
         $controller->DeleteMusicFromLibrary($_POST["idList"], $_POST["idMusic"]);
+    }
+}
+//Thêm nhạc vào album
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] == "AddMusicToAlbum") {
+        $controller = new MusicModel();
+        $controller->AddMusicToAlbum($_POST["idAlbum"], $_POST["idMusic"]);
+    }
+}
+// Xóa nhạc khỏi album
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] == "DeleteMusicFromAlbum") {
+        $controller = new MusicModel();
+        $controller->DeleteMusicFromAlbum($_POST["idAlbum"], $_POST["idMusic"]);
     }
 }

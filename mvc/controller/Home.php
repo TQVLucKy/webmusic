@@ -12,7 +12,8 @@
             $this->view("master1",[
             "page"=>"home",
             "MS" => $this->a->Music(),
-            "Lib"=> $this->a->Library()
+            "Lib"=> $this->a->Library(),
+            "Album"=> $this->a->Album()
             ]);
         }
         function Play(){
@@ -30,7 +31,9 @@
                 "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
                 "g"=> $this->a->getall(),
-                "getlist" => $this->a->getListMusic()
+                "getlist" => $this->a->getListMusic(),
+                "Album"=> $this->a->Album(),
+                "getalbum" => $this->a->getAlbumMusic(),
                 ]);
         }
         function ShowSearch(){
