@@ -36,10 +36,10 @@
     <?php
     $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
     echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "'";
-    echo " onclick=UpdateFavorite()>";
+    echo " onclick=updateFavorite()>";
     echo "<i class='fa fa-heart'></i></button>";
     ?>
-    <button class="material-icons" onclick=AddMusicToLibrary()>add</button>
+    <button class="material-icons" onclick=addMusicToLibrary()>add</button>
 
 </div>
 <!-- mini music -->
@@ -61,47 +61,63 @@
 </div>
 
 <!-- add song to library -->
-<div id="List" style="display: none;">
+<div id="list" style="display: none;">
     <?php
     foreach ($data["Lib"] as $print) {
-        echo '<div class="itemslist" id="IDList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
+        echo '<div class="items-list" id="idList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
         echo $print['NameList'];
         echo '</div>';
     }
     ?>
 </div>
-<!-- <h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1>
-<h1>CC</h1> -->
+<div class="Recommendation">
+    <h2>Recommended</h2>
+    <div id="recommendations"></div>
+    <script src="../public/js/playmusic.js"></script>
+</div>
 
 <script>
-    var List = document.getElementById('List');
+    function getRecommendations(userId, songId) {
+        $.ajax({
+            url: './model/test?action=getRecommendations',
+            type: 'GET',
+            data: {
+                user_id: userId,
+                song_id: songId
+            },
+            success: function(data) {
+                console.log(data);
+                const recommendations = JSON.parse(data);
+                recommendations.forEach(function(item) {
+                    $('#recommendations').append(`<div style="display: flex;">
+            <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
+            <div>
+                <p>${item['NameMusic']}</p>
+                <p>${item['NameArtists']}</p>
+            </div>
+            </div>`);
+                });
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        getRecommendations(1, 200);
+    });
+
+    var list = document.getElementById('list');
     var clickedList = true;
 
     function handleListClick() {
         if (clickedList) {
-            document.getElementById('List').style.display = "none";
+            document.getElementById('list').style.display = "none";
         }
     }
     document.addEventListener("click", handleListClick);
 
-    function AddMusicToLibrary() {
-        document.getElementById('List').style.display = "block";
-        document.getElementById('List').style.position = "absolute";
+    function addMusicToLibrary() {
+        document.getElementById('list').style.display = "block";
+        document.getElementById('list').style.position = "absolute";
         if (clickedList)
             clickedList = false;
         else clickedList = true;
@@ -129,12 +145,12 @@
     // });
 
     //xử lý thêm nhạc vào library
-    function AddToLibrary(IdList) {
+    function addToLibrary(idList) {
         $.ajax({
             type: "GET",
-            url: "./model/test?action=AddMusicToLibrary",
+            url: "./model/test?action=addMusicToLibrary",
             data: {
-                idList: IdList,
+                idList: idList,
                 idMusic: <?php echo $_GET["id"] ?>
             },
             success: function(response) {
@@ -145,16 +161,16 @@
         handleListClick();
     }
     //xử lý favorite
-    function UpdateFavorite() {
+    function updateFavorite() {
         var isFavorite = document.getElementById('favorite').getAttribute('data-favorite');
         // console.log(isFavorite);
         $.ajax({
             type: "GET",
-            url: './model/test?action=UpdateFavorite&id=' + <?php echo $_GET['id'] ?>,
+            url: './model/test?action=updateFavorite&id=' + <?php echo $_GET['id'] ?>,
             data: {
                 favorite: isFavorite
             },
-            success: function(response){
+            success: function(response) {
                 console.log(response);
             },
             error: function() {
@@ -257,10 +273,10 @@
             setInterval(() => {
                 element.value = music.currentTime;
                 element1.innerHTML = formatTimes(music.currentTime)
-                if (Math.floor(music.currentTime) == Math.floor(seekbar.max))
-                    {btnnext.click();
+                if (Math.floor(music.currentTime) == Math.floor(seekbar.max)) {
+                    btnnext.click();
                     alert("done");
-                    }
+                }
             }, 500);
             element.addEventListener('change', () => {
                 music.currentTime = element.value;

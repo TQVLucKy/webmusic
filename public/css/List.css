@@ -1,14 +1,14 @@
-.HeaderList {
+.header-list {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.ListLibrary table {
+.list-library table {
   border-collapse: collapse;
   width: 100%;
 }
-.ListLibrary th, .ListLibrary td {
+.list-library th, .list-library td {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;

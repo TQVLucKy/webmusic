@@ -1,26 +1,28 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/home.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/home.css">
 </head>
 <div class="menu col-md-12">
     <div class="top d-flex justify-content-between mt-2">
-        <h2>Danh sách phát</h2>
+        <h2>Danh sách</h2>
         <p class="text-secondary">Hiện tất cả</p>
     </div>
     <div class="list-music row">
-        <div class="items col" >
+        <div class="items col">
             <?php
             //use ajax control $all
-            $all=false;
-            $count=0;
+            // tiến hành thêm các bài hát vào db
+            // chỉnh sửa khi phóng to (làm sau cùng)
+            $all = false;
+            $count = 0;
             foreach ($data["MS"] as $print) {
-                if($count<=20 || $all){
-                    echo '<div class="item col-2 mb-3 mx-3 clickable" data-id="' . $print['IdMusic'] . '">';
+                // if ($count <= 20 || $all) {
+                    echo '<div class="item clickable" data-id="' . $print['IdMusic'] . '">';
                     echo '<img style="max-width:180px;height:180px" src= ../img/' . $print['NameImageMusic'] . '><br>';
-                    echo $print['NameMusic'] . "<br>";
-                    echo $print['NameArtist'] . "<br>";
+                    echo $print['NameMusic'] . '</br>';
+                    echo $print['artists'];
                     echo '</div>';
                     $count++;
-                }
+                // }
             }
             ?>
         </div>

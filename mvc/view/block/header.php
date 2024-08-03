@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -7,13 +7,13 @@
     <div class="header-title">
         <a class="h1" href="../Home/">Music</a>
     </div>
-    <div class="backnext">
+    <div class="back-next">
         <button onclick="back()" class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
         <button onclick="next()" class="btn btncont"><i class="fa fa-chevron-right"></i></button>
     </div>
     <form class="header-search">
         <div class="input-group h">
-            <input type="text" class="form-control dropdown-toggle" placeholder="Search..." autocomplete="off" style="width:500px">
+            <input type="text" class="form-control dropdown-toggle" placeholder="Search..." autocomplete="off">
             <span class="mdi mdi-magnify search-icon"></span>
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Search</button>
@@ -27,40 +27,40 @@
             ?> -->
     <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
     <div class="account" style="<?php if (!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
-        <button class="DangKy btn btn-secondary" onclick="Register()">Đăng Ký</button>
-        <button class="DangNhap btn btn-secondary" onclick="Login()">Đăng Nhập</button>
+        <button class="dang-ky btn btn-secondary" onclick="signUp()">Đăng Ký</button>
+        <button class="dang-nhap btn btn-secondary" onclick="showLogin()">Đăng Nhập</button>
     </div>
-    <div class="accountlogin" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
-        <img onclick="Info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
-        <div class="info" id="info" style="display: none;">
-            <button class="DoiMatKhau" onclick="FormChangePassword()">Đổi mật khẩu</button></br>
-            <button class="DangXuat" onclick="Logout()">Đăng xuất</button>
+    <div class="account-login" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
+        <img onclick="info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
+        <div class="account-info" id="info" style="display: none;">
+            <button class="change-password" onclick="FormChangePassword()">Đổi mật khẩu</button></br>
+            <button class="log-out" onclick="Logout()">Đăng xuất</button>
         </div>
     </div>
 </div>
 <div class="login" id="login" style="display:none">
     <h2 class="text-center">Login my website</h2>
     <form id="loginForm" method="POST">
-        <label for="name">Tên đăng nhập:</label>
-        <input type="text" name="name" placeholder="Nhập tên đăng nhập"></br>
-        <laber for="passWord">Nhập mật khẩu:</laber>
-        <input type="password" name="passWord" placeholder="Nhập mật khẩu">
+        <label for="loginName">Tên đăng nhập:</label>
+        <input type="text" name="loginName" placeholder="Nhập tên đăng nhập"></br>
+        <laber for="loginPassword">Nhập mật khẩu:</laber>
+        <input type="password" name="loginName" placeholder="Nhập mật khẩu">
         <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
     </form>
 </div>
 <!-- làm tiếp register và sau đó tối ưu lại đn, đk, đx.  -->
-<div class="register" id="register" style="display:none">
+<div class="sign-up" id="signUp" style="display:none">
     <h2 class="text-center">Register my website</h2>
-    <form id="registerForm" method="POST">
-        <label for="name">Tên đăng nhập:</label>
-        <input type="text" name="name" placeholder="Nhập tên đăng nhập"></br>
-        <laber for="passWord">Nhập mật khẩu:</laber>
-        <input type="password" name="passWord" placeholder="Nhập mật khẩu">
-        <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
+    <form id="signUpForm" method="POST">
+        <label for="signUpName">Tên đăng nhập:</label>
+        <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập"></br>
+        <laber for="signUpPassWord">Nhập mật khẩu:</laber>
+        <input type="password" name="signUpPassWord" placeholder="Nhập mật khẩu">
+        <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
     </form>
 </div>
 <script>
-    function Login() {
+    function showLogin() {
         var form = document.getElementById("login");
         if (form.style.display === "none") {
             form.style.display = "block";
@@ -74,8 +74,8 @@
             // Ngăn chặn form gửi đi mặc định
             event.preventDefault();
             // Lấy dữ liệu từ form
-            var name = $('input[name="name"]').val();
-            var password = $('input[name="passWord"]').val();
+            var name = $('input[name="loginName"]').val();
+            var password = $('input[name="loginName"]').val();
             // Gửi dữ liệu lên server bằng AJAX
             $.ajax({
                 type: 'POST',
@@ -87,7 +87,7 @@
                 },
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
-                    Login();
+                    showLogin();
                     window.location.href = "";
                 },
                 error: function(xhr, status, error) {
@@ -106,9 +106,9 @@
     function FormChangePassword() {
         let formchangepassword = document.createElement("form");
         formchangepassword.innerHTML = `
-        <div class="card">
-            <div class="card-header bg-primary mx-auto">ĐỔI MẬT KHẨU</div>
-            <div class="card-body">
+        <div class="form-change-password">
+            <div class="change-password-header bg-primary mx-auto">ĐỔI MẬT KHẨU</div>
+            <div class="change-password-body">
                 <p>
                     <label>Mật khẩu cũ</label>
                     <input type="password" class="form-control" name="passOld">
@@ -143,7 +143,7 @@
                     passOld: passOld,
                     passNew1: passNew1,
                     passNew2: passNew2,
-                    submitChangePass: 'submitChangePass'
+                    submitChangePassword: 'submitChangePassword'
                 },
                 success: function(response) {
                     // alert(response);
@@ -198,6 +198,8 @@
     //         });
     //     });
     // });
+
+    //kiểm tra lại
     //sereach form
     $(document).ready(function() {
         // Khi nhấn vào nút "Search"
@@ -254,7 +256,7 @@
         window.history.next();
     }
 
-    function Info() {
+    function info() {
         var form = document.getElementById("info");
         if (form.style.display === "none") {
             form.style.display = "block";

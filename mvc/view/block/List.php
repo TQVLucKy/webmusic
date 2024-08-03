@@ -4,7 +4,7 @@
 
 <div id="list">
     <!-- danh sách phát -->
-    <!-- <div class="HeaderList">
+    <!-- <div class="header-list">
         <h1>Danh sách <?php foreach ($data["Lib"] as $print) {
                             if ($print['IdList'] == $_GET['id']) {
                                 echo $print['NameList'];
@@ -13,13 +13,13 @@
                         } ?></h1>
         <div>
             <button id="buttonToAddList1">Thêm nhạc vào danh sách</button>
-            <button onclick="DelDanhSachPhat()">Xóa danh sách</button>
+            <button onclick="delDanhSachPhat()">Xóa danh sách</button>
         </div>
     </div> 
-    <div class="Search">
-        <input type="text" class="Search-form" placeholder="Search...">
+    <div class="search">
+        <input type="text" class="search-form" placeholder="Search...">
     </div>
-    <div class="ListLibrary">
+    <div class="list-library">
         <table>
             <tr>
                 <th>STT</th>
@@ -39,8 +39,8 @@
                 echo $print['NameArtist'];
                 echo '</td><td>';
                 echo $print['NameCategory'];
-                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                echo '<button onclick=DeleteMusicFromDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
+                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
+                echo '<button onclick=deleteMusicFromDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
                 echo '</tr>';
                 $stt++;
             }
@@ -49,7 +49,7 @@
     </div>-->
 
     <!-- album -->
-    <div class="HeaderList">
+    <div class="header-list">
         <h1>Danh sách <?php foreach ($data["Album"] as $print) {
                             if ($print['IdAlbum'] == $_GET['id']) {
                                 echo $print['NameAlbum'];
@@ -58,13 +58,13 @@
                         } ?></h1>
         <div>
             <button id="buttonToAddAlbum1">Thêm nhạc vào album</button>
-            <button onclick="DelAlbum()">Xóa album</button>
+            <button onclick="delAlbum()">Xóa album</button>
         </div>
     </div>
-    <div class="Search">
-        <input type="text" class="Search-form" placeholder="Search...">
+    <div class="search">
+        <input type="text" class="search-form" placeholder="search...">
     </div>
-    <div class="ListLibrary">
+    <div class="list-library">
         <table>
             <tr>
                 <th>STT</th>
@@ -95,14 +95,14 @@
 </div>
 <!-- danh sách phát -->
 <!-- <div id="addmusictoDanhSachPhat" style="display:none;">
-    <div class="HeaderList">
+    <div class="header-list">
         <h1>Danh sách các bài nhạc</h1>
         <button id="buttonToAddList2">Trở lại danh sách phát</button>
     </div>
-    <div class="Search">
-        <input type="text" class="Search-form" placeholder="Search...">
+    <div class="search">
+        <input type="text" class="search-form" placeholder="search...">
     </div>
-    <div class="ListLibrary">
+    <div class="list-library">
         <table>
             <tr>
                 <th>STT</th>
@@ -122,8 +122,8 @@
                 echo $print['NameArtist'];
                 echo '</td><td>';
                 echo $print['NameCategory'];
-                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                echo '<button onclick=AddMusicToDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
+                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
+                echo '<button onclick=addMusicToDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
                 echo '</tr>';
                 $stt++;
             }
@@ -133,15 +133,15 @@
 </div> -->
 
 <!-- album -->
-<div id="addmusictoAlbum" style="display:none;">
-    <div class="HeaderList">
+<div id="addMusicToAlbum" style="display:none;">
+    <div class="header-list">
         <h1>Danh sách các bài nhạc</h1>
         <button id="buttonToAddAlbum2">Trở lại album</button>
     </div>
-    <div class="Search">
-        <input type="text" class="Search-form" placeholder="Search...">
+    <div class="search">
+        <input type="text" class="search-form" placeholder="Search...">
     </div>
-    <div class="ListLibrary">
+    <div class="list-library">
         <table>
             <tr>
                 <th>STT</th>
@@ -161,8 +161,8 @@
                 echo $print['NameArtist'];
                 echo '</td><td>';
                 echo $print['NameCategory'];
-                echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                echo '<button onclick=AddMusicToAlbum(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
+                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
+                echo '<button onclick=addMusicToAlbum(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
                 echo '</tr>';
                 $stt++;
             }
@@ -178,17 +178,17 @@
     //         window.location.href = './Play?id=' + id;
     //     })
     // })
-    function PlayMusic(button) {
+    function playMusic(button) {
         var idMusic = button.getAttribute('data-idMusic');
         window.location.href = './Play?id=' + idMusic;
     }
 
-    function DelDanhSachPhat() {
+    function delDanhSachPhat() {
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
-                action: "DelDanhSachPhat",
+                action: "delDanhSachPhat",
                 idList: <?php echo $_GET['id']; ?>
             },
             success: function(response) {
@@ -198,13 +198,13 @@
         })
     }
     //Thêm nhạc vào danh sách phát
-    function AddMusicToDanhSachPhat(button) {
+    function addMusicToDanhSachPhat(button) {
 
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
-                action: "AddMusicToDanhSachPhat",
+                action: "addMusicToDanhSachPhat",
                 idMusic: button.getAttribute('data-idMusic'),
                 idList: <?php echo $_GET['id']; ?>
             },
@@ -214,13 +214,13 @@
         })
     }
     //Thêm nhạc vào album
-    function AddMusicToAlbum(button) {
+    function addMusicToAlbum(button) {
 
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
-                action: "AddMusicToAlbum",
+                action: "addMusicToAlbum",
                 idMusic: button.getAttribute('data-idMusic'),
                 idAlbum: <?php echo $_GET['id']; ?>
             },
@@ -231,12 +231,12 @@
         })
     }
     // Xóa nhạc ở danh sách phát
-    function DeleteMusicFromDanhSachPhat(button) {
+    function deleteMusicFromDanhSachPhat(button) {
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
-                action: "DeleteMusicFromDanhSachPhat",
+                action: "deleteMusicFromDanhSachPhat",
                 idMusic: button.getAttribute('data-idMusic'),
                 idList: <?php echo $_GET['id']; ?>
             },
@@ -248,12 +248,12 @@
         })
     }
     // Xóa nhạc ở album
-    function DeleteMusicFromAlbum(button) {
+    function deleteMusicFromAlbum(button) {
         $.ajax({
             url: './model/test',
             type: 'POST',
             data: {
-                action: "DeleteMusicFromAlbum",
+                action: "deleteMusicFromAlbum",
                 idMusic: button.getAttribute('data-idMusic'),
                 idAlbum: <?php echo $_GET['id']; ?>
             },
@@ -280,11 +280,11 @@
     //album
     document.querySelector('#buttonToAddAlbum1').addEventListener("click", () => {
         document.getElementById('list').style.display = 'none';
-        document.getElementById('addmusictoAlbum').style.display = 'block';
+        document.getElementById('addMusicToAlbum').style.display = 'block';
     })
     document.querySelector('#buttonToAddAlbum2').addEventListener("click", () => {
         document.getElementById('list').style.display = 'block';
-        document.getElementById('addmusictoAlbum').style.display = 'none';
+        document.getElementById('addMusicToAlbum').style.display = 'none';
         window.location.reload();
     })
 </script>

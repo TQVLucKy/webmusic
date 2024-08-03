@@ -14,7 +14,7 @@
     <div class="listmusic">
         <?php
         foreach ($data["Lib"] as $print) {
-            echo '<div class="itemslist">';
+            echo '<div class="items-list">';
             echo '<a href="./List?id=' . $print['IdList'] . '">' . $print['NameList'] . '</a>';
             echo '</div>';
         }
@@ -27,10 +27,10 @@
         <h2>Album</h2>
         <button class="material-icons" onclick="Show()">add</button>
     </div>
-    <div class="ListAlbum">
+    <div class="list-album">
         <?php
         foreach ($data["Album"] as $print) {
-            echo '<div class="itemslist">';
+            echo '<div class="items-list">';
             echo '<a href="./List?id=' . $print['IdAlbum'] . '">' . $print['NameAlbum'] . '</a>';
             echo '</div>';
         }
@@ -38,14 +38,16 @@
     </div>
 </div>
 <div id="create" style="display: none;">
-    <button id="AddMusic" onclick="AddMusic()">thêm bài nhạc</button><br>
-    <button type="button" onclick="DelMusic()">Xóa bài nhạc</button><br>
-    <button id="AddList" onclick="AddList()">Thêm danh sách</button><br>
-    <button id="AddAlbum" onclick="AddAlbum()">Thêm album</button>
+    <button id="addMusic" onclick="addMusic()">thêm bài nhạc</button><br>
+    <button type="button" onclick="delMusic()">Xóa bài nhạc</button><br>
+    <button id="addList" onclick="addList()">Thêm danh sách</button><br>
+    <button id="addAlbum" onclick="addAlbum()">Thêm album</button>
 </div>
-<form class="container-fluid addmusic" id="showcreate" style="display:none;" method="post" enctype="multipart/form-data">
-    <label for="musicname">Tên bài hát:</label>
-    <input type="text" name="musicname"><br>
+
+<!-- show create music -->
+<form class="container-fluid add-music" id="showCreate" style="display:none;" method="post" enctype="multipart/form-data">
+    <label for="musicName">Tên bài hát:</label>
+    <input type="text" name="musicName"><br>
     <label for="music">Chọn nhạc:</label>
     <input type="file" name="music"></br>
     <label for="image">Chọn hình ảnh:</label>
@@ -57,32 +59,35 @@
         <label for="artist">Tên ca sĩ:</label>
         <input type="text" name="artist[]"><br>
     </div>
-    <input type="submit" name="submitmusic" value="Tải lên">
+    <input type="submit" name="submitMusic" value="Tải lên">
 </form>
+
+<!-- show list -->
+<form class="container-fluid add-list" id="showList" style="display:none;" method="get">
+    <label for="nameList">Tên danh sách:</label>
+    <input type="text" name="nameList">
+    <input type="submit" name="submitList" value="Tạo">
 </form>
-<form class="container-fluid addlist" id="ShowList" style="display:none;" method="get">
-    <label for="namelist">Tên danh sách:</label>
-    <input type="text" name="namelist">
-    <input type="submit" name="submitlist" value="Tạo">
-</form>
-<form class="container-fluid addalbum" id="ShowAlbum" style="display:none;" method="get">
-    <label for="namelist">Tên Album:</label>
-    <input type="text" name="namealbum">
-    <input type="submit" name="submitalbum" value="Tạo">
+
+<!-- show album -->
+<form class="container-fluid add-album" id="showAlbum" style="display:none;" method="get">
+    <label for="nameAlbum">Tên Album:</label>
+    <input type="text" name="nameAlbum">
+    <input type="submit" name="submitAlbum" value="Tạo">
 </form>
 
 <script>
-    function AddAlbum() {
-        document.getElementById('ShowAlbum').style.display = "block";
-        document.getElementById('ShowAlbum').style.position = "absolute";
-        document.getElementById('ShowAlbum').style.zIndex = "1";
+    function addAlbum() {
+        document.getElementById('showAlbum').style.display = "block";
+        document.getElementById('showAlbum').style.position = "absolute";
+        document.getElementById('showAlbum').style.zIndex = "1";
     }
 
     $(document).ready(function() {
-        $('#ShowAlbum').on('submit', function(e) {
+        $('#showAlbum').on('submit', function(e) {
             e.preventDefault();
             var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
-            formData += '&submitalbum=' + encodeURIComponent('submitalbum');
+            formData += '&submitAlbum=' + encodeURIComponent('submitAlbum');
             alert(formData);
             $.ajax({
                 type: 'GET',
@@ -104,7 +109,7 @@
         $('#showList').on('submit', function(e) {
             e.preventDefault();
             var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
-            formData += '&submitlist=' + encodeURIComponent('submitlist');
+            formData += '&submitList=' + encodeURIComponent('submitList');
             alert(formData);
             $.ajax({
                 type: 'GET',
@@ -122,14 +127,14 @@
     });
 
 
-
+    // xử lý create music
     $(document).ready(function() {
-        $('#showcreate').on('submit', function(e) {
+        $('#showCreate').on('submit', function(e) {
             e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
             var formData = new FormData(this); // Sử dụng FormData để xử lý file
 
             // Thêm giá trị của nút submit vào formData
-            formData.append('submitmusic', 'submitmusic');
+            formData.append('submitMusic', 'submitMusic');
             $.ajax({
                 type: 'POST',
                 url: './model/test', // File xử lý dữ liệu tải lên
@@ -138,6 +143,7 @@
                 processData: false, // Không xử lý dữ liệu vì sử dụng FormData
                 success: function(response) {
                     // Xử lý kết quả trả về từ server ở đây
+                    alert("Thêm thành công");
                     console.log('Kết quả:', response);
                 },
                 error: function(xhr, status, error) {
@@ -171,7 +177,7 @@
         artistContainer.appendChild(newArtistDiv);
     });
 
-    document.getElementById('showcreate').addEventListener('submit', function(e) {
+    document.getElementById('showCreate').addEventListener('submit', function(e) {
         e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
 
         var formData = new FormData(this);
@@ -189,4 +195,41 @@
 
         xhr.send(formData);
     });
+
+
+    var create = document.getElementById('create');
+var clicked = true;
+
+document.addEventListener("click", function () {
+    if (clicked) {
+        document.getElementById('create').style.display = "none";
+    }
+
+})
+
+function Show() {
+    document.getElementById('create').style.display = "block";
+    document.getElementById('create').style.position = "absolute";
+    if (clicked)
+        clicked = false;
+    else clicked = true;
+
+};
+
+function addMusic() {
+    document.getElementById('showCreate').style.display = "block";
+    document.getElementById('showCreate').style.position = "absolute";
+    document.getElementById('showCreate').style.zIndex = "1";
+}
+function delMusic(){
+    window.location.assign('./DelList');
+}
+
+
+function addList() {
+    document.getElementById('ShowList').style.display = "block";
+    document.getElementById('ShowList').style.position = "absolute";
+    document.getElementById('ShowList').style.zIndex = "1";
+}
+
 </script>

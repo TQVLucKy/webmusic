@@ -1,8 +1,8 @@
-function PlayMusic(button){
+function playMusic(button){
     var idMusic = button.getAttribute('data-idMusic');
     window.location.href='./Play?id='+idMusic;
 }
-// function DeleteMusic(button){
+// function deleteMusic(button){
 //     var idMusic = button.getAttribute('data-idMusic');
 //     var idArtist = button.getAttribute('data-idArtist');
 //     var idCategory= button.getAttribute('data-idCategory');

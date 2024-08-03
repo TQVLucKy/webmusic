@@ -1,14 +1,14 @@
-.ListLibrary {
+.list-library {
     display: flex;
     flex-direction: column;
     width: 100%;
 
-    .itemsList {
+    .items-list {
         display: flex;
         width: 100%;
     }
 
-    .itemList {
+    .item-list {
         padding: 10px 10px;
         white-space: nowrap;
     }

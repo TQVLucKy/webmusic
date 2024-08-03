@@ -3,10 +3,11 @@ class MusicModel extends DB
 {
     public function Music()
     {
-        $sql = "SELECT *
+        $sql = "SELECT *, GROUP_CONCAT(artist.NameArtist SEPARATOR ' X ') AS artists
                 FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		                    join category on song_artist_category.IdCategory=category.IdCategory
-                            join storemusic on song_artist_category.IdMusic=storemusic.IdMusic";
+                            join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
+                GROUP BY storemusic.NameMusic, category.NameCategory";
         return mysqli_query($this->con, $sql);
     }
 
@@ -19,15 +20,16 @@ class MusicModel extends DB
     public function Album()
     {
         $sql = "SELECT * FROM Album";
-        return mysqli_query($this->con,$sql);
+        return mysqli_query($this->con, $sql);
     }
 
     public function getall()
     {
-        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,artist.NameArtist,category.NameCategory,storemusic.state
+        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist,category.NameCategory,storemusic.state
         FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
-        join storemusic on song_artist_category.IdMusic=storemusic.IdMusic";
+        join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
+        GROUP BY storemusic.IdMusic, storemusic.NameMusic, storemusic.NameImageMusic, category.NameCategory, storemusic.state";
         $result = mysqli_query($this->con, $sql);
 
         // Kiểm tra và xử lý kết quả trả về
@@ -63,27 +65,29 @@ class MusicModel extends DB
 
 
     // get list album from library
-    public function getAlbumMusic(){
+    public function getAlbumMusic()
+    {
         $sql = "SELECT * FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
         join album_song_account on song_artist_category.IdMusic=album_song_account.IdMusic
         join album on album_song_account.IdAlbum=album.IdAlbum";
-        return mysqli_query($this->con,$sql);
+        return mysqli_query($this->con, $sql);
     }
 
 
-    public function AddAlbum($namealbum){
-        $sql= "INSERT INTO album(NameAlbum) VALUES (?)";
-        $stmt= $this->con->prepare($sql);
-        $stmt->bind_param("s",$namealbum);
-        if($stmt->execute())
+    public function AddAlbum($namealbum)
+    {
+        $sql = "INSERT INTO album(NameAlbum) VALUES (?)";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("s", $namealbum);
+        if ($stmt->execute())
             echo "Thêm album thành công";
         else
-            echo "Error: " .$stmt->error;
+            echo "Error: " . $stmt->error;
     }
     // Thêm nhạc vào danh sách phát
-    public function AddMusicToLibrary($IdList, $IdMusic)
+    public function addMusicToLibrary($IdList, $IdMusic)
     {
 
         //Sau này sẽ thay đổi lại: khi đã lưu ở trong library nào đó
@@ -115,7 +119,7 @@ class MusicModel extends DB
     }
 
     // Thêm nhạc vào album
-    public function AddMusicToAlbum($IdAlbum, $IdMusic)
+    public function addMusicToAlbum($IdAlbum, $IdMusic)
     {
         //chỉnh sửa khi thêm music và xem lại add music
         //làm view show library
@@ -141,7 +145,7 @@ class MusicModel extends DB
         }
     }
     // xóa nhạc khỏi danh sách phát
-    public function DeleteMusicFromLibrary($IdList, $IdMusic)
+    public function deleteMusicFromLibrary($IdList, $IdMusic)
     {
         $sql = "DELETE FROM listmusic
         WHERE IdList=? and IdMusic=?";
@@ -153,7 +157,7 @@ class MusicModel extends DB
             echo "Error: " . $stmt->error;
     }
     // xóa nhạc khỏi album
-    public function DeleteMusicFromAlbum($IdAlbum, $IdMusic)
+    public function deleteMusicFromAlbum($IdAlbum, $IdMusic)
     {
         $sql = "DELETE FROM album_song_account
         WHERE IdAlbum=? and IdMusic=?";
@@ -191,37 +195,6 @@ class MusicModel extends DB
 
     public function saveMusic($namemusic, $music, $image, $artists, $category)
     {
-        // Theo đó thay đổi lại nơi lấy các bài nhạc các thứ: home,library(addmusic)
-        // idea sẽ là khi thêm nhạc nếu là 2 tk trở lên thì trong bảng song_artist sẽ
-        // có cùng số id với nhau và khi xuất ra thì dựa vào đó để gọi
-
-        //Lưu ca sĩ
-        //lưu ca sĩ vào artist khi trong đấy chưa có tên ca sĩ đấy
-        $artist = implode(", ", $artists);
-        // $addartist="IF NOT EXISTS (SELECT 1 from artist where NameArtist = '$artist' )
-        //     insert into artist(NameArtist) values ('$artist');";
-        $addartist = " INSERT INTO artist (NameArtist)
-            SELECT ?
-            WHERE NOT EXISTS (
-            SELECT 1 FROM artist WHERE NameArtist = ?
-        ) LIMIT 1;";
-
-        // c bị câu truy vấn
-        $stmt = $this->con->prepare($addartist);
-
-        // gán giá trị vào dấu ?
-        $stmt->bind_param("ss", $artist, $artist);
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
-                echo "Ca sĩ được tải lên thành công";
-            } else {
-                echo "Ca sĩ đã tồn tại";
-            }
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-
         // $msName = addslashes($_FILES["music"]["name"]);
         // $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
         // $folder_m = 'music/';
@@ -234,7 +207,8 @@ class MusicModel extends DB
         // tên nhạc thì mình sẽ lưu dưới dạng là [tên nhạc]-[tên ca sĩ].[mp3,...]
         $folder_m = 'music/';
         $file_extension = explode('.', $music['name'])[1];
-        $file_name_m = $namemusic . '-' . $artist . '.' . $file_extension;
+        $artists_string = implode(' x ', $artists);
+        $file_name_m = $namemusic . '-' . $artists_string . '.' . $file_extension;
         $path_file_m = $folder_m . $file_name_m;
         move_uploaded_file($music["tmp_name"], $path_file_m);
 
@@ -249,53 +223,87 @@ class MusicModel extends DB
         // Thêm ảnh vào db
         $addimage = $this->con->prepare("INSERT INTO storemusic(NameMusic ,NameImageMusic) VALUES (?,?)");
         $addimage->bind_param("ss", $namemusic, $file_name_i);
-        if ($addimage->execute()) {
-            echo "Hình ảnh đã được tải lên thành công!</br>";
-        } else {
-            echo "Error: " . $addimage->error . "</br>";
-        }
+        $addimage->execute();
+        $musicId = $addimage->insert_id;
+        echo "musicid" . $musicId;
+        echo "Hình ảnh đã được tải lên thành công!</br>";
 
 
         //Kiểm tra và thêm category vào db
         // $category= implode(",",$category);
 
-        $addcategory = "INSERT INTO category (NameCategory)
-            SELECT ?
-            WHERE NOT EXISTS (
-            SELECT 1 FROM category WHERE NameCategory=?
-            ) LIMIT 1;";
+        $stmt = $this->con->prepare("SELECT IdCategory FROM category WHERE NameCategory = ?");
+        $stmt->bind_param("s", $category);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows() > 0) {
+            $stmt->bind_result($categoryId);
+            $stmt->fetch();
+            echo "Thể loại đã tồn tại!</br>";
+        } else {
+            $stmt = $this->con->prepare("INSERT INTO category (NameCategory) VALUES (?)");
+            $stmt->bind_param("s", $category);
+            $stmt->execute();
+            $categoryId = $stmt->insert_id;
+        }
+        echo "categoryid" . $categoryId;
 
-        // Câu truy vấn
-        $stmt = $this->con->prepare($addcategory);
-        // Gán giá trị vào ??
-        $stmt->bind_param("ss", $category, $category);
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0)
-                echo "Thể loại được tải lên thành công!</br>";
-            else
-                echo "Thể loại đã tồn tại!</br>";
-        } else
-            echo "Error: " . $stmt->error . "</br>";
-
-
+        // SELECT s.song_title, GROUP_CONCAT(a.artist_name) AS artists, c.category_name
+        // FROM song s
+        // JOIN song_artist_category sac ON s.song_id = sac.song_id
+        // JOIN artist a ON sac.artist_id = a.artist_id
+        // JOIN category c ON sac.category_id = c.category_id
+        // GROUP BY s.song_id, c.category_name;
 
         //Thêm bài nhạc vào danh sách
         //Chưa tính tới trường hợp song ca,...
-        $addsong_artist_category = "INSERT INTO song_artist_category (IdMusic, IdArtist, IdCategory)
-        SELECT sm.IdMusic, a.IdArtist, c.IdCategory
-        FROM storemusic sm
-            JOIN artist a ON sm.NameMusic = ? AND a.NameArtist = ?
-            JOIN category c ON c.NameCategory = ?
-        ORDER BY sm.IdMusic DESC
-        LIMIT 1;";
+        // $addsong_artist_category = "INSERT INTO song_artist_category (IdMusic, IdArtist, IdCategory)
+        // SELECT sm.IdMusic, a.IdArtist, c.IdCategory
+        // FROM storemusic sm
+        //     JOIN artist a ON sm.NameMusic = ? AND a.NameArtist = ?
+        //     JOIN category c ON c.NameCategory = ?
+        // ORDER BY sm.IdMusic DESC;";
 
-        $stmt = $this->con->prepare($addsong_artist_category);
+        // $stmt = $this->con->prepare($addsong_artist_category);
+        // $stmt=$this->con->prepare("INSERT INTO music_artist_category(IdMusic,IdArtist,Idcategory) VALUES (?,?,?)");
+        // $stmt->bind_param("iii", $musicId, $artistId, $categoryId);
+        // if ($stmt->execute())
+        //     echo "Bài nhạc đã được tải lên";
+        // else
+        //     echo "Error: " . $stmt->error;
 
-        $stmt->bind_param("sss", $namemusic, $artist, $category);
-        if ($stmt->execute())
-            echo "Bài nhạc đã được tải lên";
-        else
-            echo "Error: " . $stmt->error;
+        // Theo đó thay đổi lại nơi lấy các bài nhạc các thứ: home,library(addmusic)
+        // idea sẽ là khi thêm nhạc nếu là 2 tk trở lên thì trong bảng song_artist sẽ
+        // có cùng số id với nhau và khi xuất ra thì dựa vào đó để gọi
+
+        //Lưu ca sĩ
+        //lưu ca sĩ vào artist khi trong đấy chưa có tên ca sĩ đấy
+        // $artist = implode(", ", $artists);
+        // $addartist="IF NOT EXISTS (SELECT 1 from artist where NameArtist = '$artist' )
+        //     insert into artist(NameArtist) values ('$artist');";
+
+        foreach ($artists as $artist) {
+            $stmt = $this->con->prepare("SELECT IdArtist FROM artist WHERE NameArtist=?");
+            $stmt->bind_param("s", $artist);
+            $stmt->execute();
+            $stmt->store_result();
+            if ($stmt->num_rows() > 0) {
+                $stmt->bind_result($artistId);
+                $stmt->fetch();
+                echo "artitstid:" . $artistId;
+            } else {
+                $stmt = $this->con->prepare("INSERT INTO artist(NameArtist) VALUES (?)");
+                $stmt->bind_param("s", $artist);
+                $stmt->execute();
+                $artistId = $stmt->insert_id;
+                echo "artistid:" . $artistId;
+            }
+            //Thêm nhạc vào bảng song_artist_category
+            $stmt = $this->con->prepare("INSERT INTO song_artist_category (IdMusic,IdArtist,IdCategory) VALUES (?,?,?)");
+            $stmt->bind_param("iii", $musicId, $artistId, $categoryId);
+            $stmt->execute();
+        }
+        echo "Bài hát thêm thành công";
     }
 
     //Add music 
@@ -404,9 +412,83 @@ class MusicModel extends DB
             echo "Error: " . $stmt1->error;
     }
 
-    public function UpdateFavorite($IdMusic)
+    public function updateFavorite($IdMusic)
     {
         $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE IdMusic = $IdMusic";
         mysqli_query($this->con, $sql);
     }
+
+    public function getRecommendations($user_id, $song_id)
+    {
+        // $user_ratings = $this->getUserRatings($user_id);
+        // $other_user_ratings = $this->getOtherUserRatings($user_id);
+        $sql = "SELECT IdCategory, IdArtist FROM song_artist_category WHERE IdMusic = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $song_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $current_song = $result->fetch_assoc();
+        $IdCategory = $current_song['IdCategory'];
+        $IdArtist = $current_song['IdArtist'];
+
+        // Lấy các bài hát gợi ý dựa trên thể loại và ca sĩ
+        $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtists
+                FROM song_artist_category 
+                JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+                JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+                WHERE (song_artist_category.IdCategory = ? OR song_artist_category.IdArtist = ?) AND storemusic.IdMusic != ?
+                GROUP BY storemusic.IdMusic
+                LIMIT 10"; // Giới hạn 10 bài hát gợi ý
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("iii", $IdCategory, $IdArtist, $song_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $recommendations = [];
+        while ($row = $result->fetch_assoc()) {
+            $recommendations[] = [
+                'IdMusic' => $row['IdMusic'],
+                'NameImageMusic' => $row['NameImageMusic'],
+                'NameMusic' => $row['NameMusic'],
+                'NameArtists' => $row['NameArtists']
+            ];
+        }
+        return $recommendations;
+    }
+//     public function getSongDetails($song_id)
+//     {
+//         $sql = "SELECT category.IdCategory,artist.IdArtist
+// FROM song_artist_category join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
+// 							join category on song_artist_category.IdCategory=category.IdCategory
+//                             JOIN artist on song_artist_category.IdArtist=artist.IdArtist
+// WHERE storemusic.IdMusic=?";
+//         $stmt = $this->con->prepare($sql);
+//         $stmt->bind_param("i", $song_id);
+//         $stmt->execute();
+//         $result = $stmt->get_result();
+//         return $result->fetch_assoc();
+//     }
+//     public function getSimilarSongs($IdCategory, $IdArtist, $song_id)
+//     {
+//         $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR 'x ') AS NameArtists
+// FROM song_artist_category 
+// JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+// JOIN category ON song_artist_category.IdCategory = category.IdCategory
+// JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+// WHERE category.IdCategory = ? AND storemusic.IdMusic != ?
+// GROUP BY storemusic.IdMusic";
+//         $stmt = $this->con->prepare($sql);
+//         $stmt->bind_param("ii", $IdCategory, $song_id);
+//         $stmt->execute();
+//         $result = $stmt->get_result();
+//         $songs = [];
+//         while ($row = $result->fetch_assoc()) {
+//             $songs[] = [
+//                 'IdMusic' => $row['IdMusic'],
+//                 'NameImageMusic' => $row['NameImageMusic'],
+//                 'NameMusic' => $row['NameMusic'],
+//                 'NameArtists' => $row['NameArtist']
+//             ];
+//         }
+//         return $songs;
+//     }
 }

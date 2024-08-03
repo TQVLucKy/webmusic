@@ -18,25 +18,28 @@
 
 .menu .list-music {
   overflow-y: scroll;
-  height: 550px;
+  max-height: 550px;
 }
 .menu .list-music .items {
-  display: flex;
-  flex-wrap: wrap;
-  text-align: center;
-  padding: 10px;
-  height: 100%;
-  border-radius: 15px;
+  display: grid;
+  max-width: 100%;
+  margin: 0 auto;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, 250px);
 }
-.menu .list-music .item {
-  text-align: center;
-  padding: 10px;
-  float: left;
+.menu .list-music .items .item {
+  padding: 10px 0;
   border-radius: 15px;
   cursor: pointer;
+  height: 250px;
+  width: 225px;
 }
-.menu .list-music .item:hover {
+.menu .list-music .items .item:hover {
   background-color: rgb(38, 38, 38);
+}
+.menu .list-music .items .item .name-info {
+  display: inline;
+  align-items: center;
 }
 
 body {

@@ -2,7 +2,7 @@
 <script type="text/javascript" src="../public/js/DelList.js"></script>
 
 <h1>Danh sách tất cả bài nhạc</h1>
-<div class="ListMusic">
+<div class="list-music">
     <table>
         <tr>
             <th>STT</th>

@@ -1,21 +1,21 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../public/css/ShowSearch.scss">
 </head>
-<div class="ListLibrary">
-    <div class="itemsList">
-        <div class="itemList stt">
+<div class="list-library">
+    <div class="items-list">
+        <div class="items-list stt">
             STT
         </div>
-        <div class="itemList name">
+        <div class="item-list name">
             Tên
         </div>
-        <div class="itemList artist">
+        <div class="item-list artist">
             Nghệ sĩ
         </div>
-        <div class="itemList play">
+        <div class="item-list play">
             
         </div>
-        <div class="itemList remove">
+        <div class="item-list remove">
             
         </div>
     </div>

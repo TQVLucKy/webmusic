@@ -1,13 +1,14 @@
 .header {
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 15px;
   margin: 15px 0;
+  padding: 5px;
   background-color: rgb(17, 17, 17);
-  height: 50px;
 }
-.header .backnext .btn {
+.header .back-next .btn {
   width: 40px;
   height: 40px;
   background: gray;
@@ -17,14 +18,10 @@
   color: white;
   margin-left: 5px;
 }
-.header .backnext .btn:hover {
+.header .back-next .btn:hover {
   background-color: blue;
   opacity: 0.5;
   transition: 1s;
-}
-.header .input-group {
-  display: flex;
-  align-items: baseline;
 }
 .header .h1 {
   text-decoration: none;
@@ -32,14 +29,18 @@
 .header .h1:hover {
   color: white;
 }
+.header .account button {
+  width: 100px;
+  align-items: center;
+}
 .header .account button:hover {
   background-color: black;
 }
-.header .accountlogin {
+.header .account-login {
   border: 3px solid white;
   border-radius: 50%;
 }
-.header .accountlogin .info {
+.header .account-login .account-info {
   background-color: gray;
   border-radius: 5px;
   position: absolute;
@@ -48,16 +49,16 @@
   z-index: 1;
   cursor: pointer;
 }
-.header .accountlogin .DoiMatKhau,
-.header .accountlogin .DangXuat {
+.header .account-login .change-password,
+.header .account-login .log-out {
   width: 100%;
 }
-.header .accountlogin .DoiMatKhau:hover,
-.header .accountlogin .DangXuat:hover {
+.header .account-login .change-password:hover,
+.header .account-login .log-out:hover {
   background-color: blue;
 }
 
-.card {
+.form-change-password {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -78,15 +79,35 @@
   left: 0;
 }
 
-.input-group input[type=text],
-.result {
+.header-search {
+  width: 473px;
+  margin: 0 5px;
+}
+.header-search .input-group {
+  display: flex;
+  align-items: center;
+}
+.header-search .input-group .form-control {
+  width: 100%;
+  max-width: 400px;
+  transition: width 0.3s ease;
+}
+.header-search .input-group input[type=text],
+.header-search .input-group .result {
   width: 100%;
   box-sizing: border-box;
   border-radius: 5px;
 }
+@media (max-width: 300px) {
+  .header-search .input-group .form-control,
+  .header-search .input-group .input-group input[type=text] {
+    max-width: 100px;
+  }
+}
 
 /* Formatting result items */
 .result p {
+  width: 100%;
   color: black;
   background-color: white;
   margin: 0;
@@ -96,7 +117,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
 .result p:hover {
   background: gray;
   color: white;

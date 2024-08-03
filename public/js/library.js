@@ -17,19 +17,19 @@ function Show() {
 
 };
 
-function AddMusic() {
-    document.getElementById('showcreate').style.display = "block";
-    document.getElementById('showcreate').style.position = "absolute";
-    document.getElementById('showcreate').style.zIndex = "1";
+function addMusic() {
+    document.getElementById('showCreate').style.display = "block";
+    document.getElementById('showCreate').style.position = "absolute";
+    document.getElementById('showCreate').style.zIndex = "1";
 }
-function DelMusic(){
+function delMusic(){
     window.location.assign('./DelList');
 }
 
 
-function AddList() {
-    document.getElementById('ShowList').style.display = "block";
-    document.getElementById('ShowList').style.position = "absolute";
-    document.getElementById('ShowList').style.zIndex = "1";
+function addList() {
+    document.getElementById('showList').style.display = "block";
+    document.getElementById('showList').style.position = "absolute";
+    document.getElementById('showList').style.zIndex = "1";
 }
 
