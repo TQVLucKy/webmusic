@@ -4,7 +4,7 @@
 
 <div id="list">
     <!-- danh sách phát -->
-    <!-- <div class="header-list">
+    <div class="header-list">
         <h1>Danh sách <?php foreach ($data["Lib"] as $print) {
                             if ($print['IdList'] == $_GET['id']) {
                                 echo $print['NameList'];
@@ -46,10 +46,10 @@
             }
             ?>
         </table>
-    </div>-->
+    </div>
 
     <!-- album -->
-    <div class="header-list">
+    <!-- <div class="header-list">
         <h1>Danh sách <?php foreach ($data["Album"] as $print) {
                             if ($print['IdAlbum'] == $_GET['id']) {
                                 echo $print['NameAlbum'];
@@ -91,10 +91,10 @@
             }
             ?>
         </table>
-    </div>
+    </div> -->
 </div>
 <!-- danh sách phát -->
-<!-- <div id="addmusictoDanhSachPhat" style="display:none;">
+<div id="addmusictoDanhSachPhat" style="display:none;">
     <div class="header-list">
         <h1>Danh sách các bài nhạc</h1>
         <button id="buttonToAddList2">Trở lại danh sách phát</button>
@@ -130,10 +130,10 @@
             ?>
         </table>
     </div>
-</div> -->
+</div>
 
 <!-- album -->
-<div id="addMusicToAlbum" style="display:none;">
+<!-- <div id="addMusicToAlbum" style="display:none;">
     <div class="header-list">
         <h1>Danh sách các bài nhạc</h1>
         <button id="buttonToAddAlbum2">Trở lại album</button>
@@ -169,7 +169,7 @@
             ?>
         </table>
     </div>
-</div>
+</div> -->
 <script>
     // var playMusic = document.querySelectorAll('.itemsList .playMusic');
     // playMusic.forEach(function(item) {
@@ -267,24 +267,24 @@
     //Mai làm thêm nhạc vào danh sách phát và xóa nhạc trong danh sách phát.
     // Chuyển qua lại giữa 2 bảng danh sách và thêm.
     //danh sách phát
-    // document.querySelector('#buttonToAddList1').addEventListener("click", () => {
-    //     document.getElementById('list').style.display = 'none';
-    //     document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
-    // })
-    // document.querySelector('#buttonToAddList2').addEventListener("click", () => {
-    //     document.getElementById('list').style.display = 'block';
-    //     document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
-    //     window.location.reload();
-    // })
-
-    //album
-    document.querySelector('#buttonToAddAlbum1').addEventListener("click", () => {
+    document.querySelector('#buttonToAddList1').addEventListener("click", () => {
         document.getElementById('list').style.display = 'none';
-        document.getElementById('addMusicToAlbum').style.display = 'block';
+        document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
     })
-    document.querySelector('#buttonToAddAlbum2').addEventListener("click", () => {
+    document.querySelector('#buttonToAddList2').addEventListener("click", () => {
         document.getElementById('list').style.display = 'block';
-        document.getElementById('addMusicToAlbum').style.display = 'none';
+        document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
         window.location.reload();
     })
+
+    //album
+    // document.querySelector('#buttonToAddAlbum1').addEventListener("click", () => {
+    //     document.getElementById('list').style.display = 'none';
+    //     document.getElementById('addMusicToAlbum').style.display = 'block';
+    // })
+    // document.querySelector('#buttonToAddAlbum2').addEventListener("click", () => {
+    //     document.getElementById('list').style.display = 'block';
+    //     document.getElementById('addMusicToAlbum').style.display = 'none';
+    //     window.location.reload();
+    // })
 </script>

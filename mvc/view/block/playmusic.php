@@ -70,13 +70,44 @@
     }
     ?>
 </div>
-<div class="Recommendation">
+<div class="artists">
+    <div id="artistList"></div>
+</div>
+<div class="recommendation">
     <h2>Recommended</h2>
     <div id="recommendations"></div>
     <script src="../public/js/playmusic.js"></script>
 </div>
-
+<div class="popular-music-artist">
+    <p>Các bản nhạc thịnh hành của</p>
+    <h2 class="current-artist">ca sĩ</h2>
+    <div id="recommendedByArtist"></div>
+</div>
 <script>
+    // artist list
+    function getArtists(songId) {
+        $.ajax({
+            url: './model/test?action=getArtists',
+            type: 'GET',
+            data: {
+                song_id: songId
+            },
+            success: function(data) {
+                const getArtists = JSON.parse(data);
+                getArtists.forEach(function(item) {
+                    $('#artistList').append(`<img src="../img/1722584840.jpg" style="width:100px;height:100px">
+                    <a class="artist-item" href="./Artist?id=${item['IdArtists']}">
+                    ${item['NameArtists']}
+                    </a>`);
+                });
+            }
+        });
+    }
+    $(document).ready(function() {
+        getArtists(<?php echo $_GET["id"] ?>);
+    });
+
+    //recommended
     function getRecommendations(userId, songId) {
         $.ajax({
             url: './model/test?action=getRecommendations',
@@ -89,20 +120,48 @@
                 console.log(data);
                 const recommendations = JSON.parse(data);
                 recommendations.forEach(function(item) {
-                    $('#recommendations').append(`<div style="display: flex;">
+                    $('#recommendations').append(`<a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
             <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
             <div>
-                <p>${item['NameMusic']}</p>
-                <p>${item['NameArtists']}</p>
+                <h5>${item['NameMusic']}</h5>
+                <p style="opacity:0.8;">${item['NameArtists']}</p>
             </div>
-            </div>`);
+            </a>`);
+                });
+            }
+        });
+    }
+    $(document).ready(function() {
+        getRecommendations(1, <?php echo $_GET["id"] ?>);
+    });
+
+    //recommended by artist
+    function getRecommendedByArtist(artistId, songId) {
+        $.ajax({
+            url: './model/test?action=getRecommendedByArtist',
+            type: 'GET',
+            data: {
+                artist_id: artistId,
+                song_id: songId
+            },
+            success: function(data) {
+                console.log(data);
+                const recommendedByArtist = JSON.parse(data);
+                recommendedByArtist.forEach(function(item) {
+                    $('#recommendedByArtist').append(`<a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
+            <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
+            <div>
+                <h5>${item['NameMusic']}</h5>
+                <p style="opacity:0.8;">${item['NameArtists']}</p>
+            </div>
+            </a>`);
                 });
             }
         });
     }
 
     $(document).ready(function() {
-        getRecommendations(1, 200);
+        getRecommendedByArtist(48, <?php echo $_GET["id"] ?>);
     });
 
     var list = document.getElementById('list');
@@ -193,6 +252,7 @@
         myFunction();
     };
 
+    // hiển thị mini-music
     function myFunction() {
         if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
             document.getElementById('music-slider').style.display = 'block';
@@ -214,9 +274,6 @@
             boxdisk.classList.toggle('play');
         })
     });
-
-
-
     //media
     const updateCurrentMusicInfo = () => {
         songname.forEach(element => {
@@ -250,7 +307,22 @@
                 element.innerHTML = formatTimes(music.duration);
             })
         }, 300);
+        
+
+        //đang có lỗi là khi reload lại trang là không phát nhạc
+        //tự động phát khi chọn/chuyển bài
+        setTimeout(() => {
+            if (music.paused) {
+                music.play();
+                btnplay.forEach(element1 => {
+                element1.classList.toggle('pause');
+            });
+            boxdisk.classList.toggle('play');
+            }
+        }, 300);
     }
+
+
     var url = new URL(window.location.href);
     console.log(url);
     var id = url.searchParams.get("id");
@@ -268,22 +340,40 @@
     }
 
     // set seek bar
-    seekbar.forEach(element => {
-        currenttimes.forEach(element1 => {
-            setInterval(() => {
-                element.value = music.currentTime;
-                element1.innerHTML = formatTimes(music.currentTime)
-                if (Math.floor(music.currentTime) == Math.floor(seekbar.max)) {
-                    btnnext.click();
-                    alert("done");
-                }
-            }, 500);
-            element.addEventListener('change', () => {
-                music.currentTime = element.value;
-            })
-        })
+    // seekbar.forEach(element => {
+    //     currenttimes.forEach(element1 => {
+    //         setInterval(() => {
+    //             element.value = music.currentTime;
+    //             element1.innerHTML = formatTimes(music.currentTime)
+    //             if (Math.floor(music.currentTime) == Math.floor(seekbar.max)) {
+    //                 btnnext.click();
+    //             }
+    //         }, 500);
+    //         element.addEventListener('change', () => {
+    //             music.currentTime = element.value;
+    //         })
+    //     })
 
+    // });
+    seekbar.forEach(element => {
+        setInterval(() => {
+            element.value = music.currentTime;
+            currenttimes.forEach(element1 => {
+                element1.innerHTML = formatTimes(music.currentTime);
+            });
+        }, 500);
+
+        element.addEventListener('change', () => {
+            music.currentTime = element.value;
+        });
     });
+    // Tự động chuyển bài khi kết thúc bài hiện tại
+    music.addEventListener('ended', () => {
+        if (btnnext.length > 0) {
+        btnnext[0].click();
+    }
+    });
+
 
     // setInterval(() => {
     //     seekbar[0].value = music.currentTime;

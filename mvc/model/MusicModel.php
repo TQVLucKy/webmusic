@@ -438,7 +438,8 @@ class MusicModel extends DB
                 JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
                 WHERE (song_artist_category.IdCategory = ? OR song_artist_category.IdArtist = ?) AND storemusic.IdMusic != ?
                 GROUP BY storemusic.IdMusic
-                LIMIT 10"; // Giới hạn 10 bài hát gợi ý
+                ORDER BY RAND()
+                LIMIT 5"; // Giới hạn 10 bài hát gợi ý
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("iii", $IdCategory, $IdArtist, $song_id);
         $stmt->execute();
@@ -454,41 +455,45 @@ class MusicModel extends DB
         }
         return $recommendations;
     }
-//     public function getSongDetails($song_id)
-//     {
-//         $sql = "SELECT category.IdCategory,artist.IdArtist
-// FROM song_artist_category join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
-// 							join category on song_artist_category.IdCategory=category.IdCategory
-//                             JOIN artist on song_artist_category.IdArtist=artist.IdArtist
-// WHERE storemusic.IdMusic=?";
-//         $stmt = $this->con->prepare($sql);
-//         $stmt->bind_param("i", $song_id);
-//         $stmt->execute();
-//         $result = $stmt->get_result();
-//         return $result->fetch_assoc();
-//     }
-//     public function getSimilarSongs($IdCategory, $IdArtist, $song_id)
-//     {
-//         $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR 'x ') AS NameArtists
-// FROM song_artist_category 
-// JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
-// JOIN category ON song_artist_category.IdCategory = category.IdCategory
-// JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
-// WHERE category.IdCategory = ? AND storemusic.IdMusic != ?
-// GROUP BY storemusic.IdMusic";
-//         $stmt = $this->con->prepare($sql);
-//         $stmt->bind_param("ii", $IdCategory, $song_id);
-//         $stmt->execute();
-//         $result = $stmt->get_result();
-//         $songs = [];
-//         while ($row = $result->fetch_assoc()) {
-//             $songs[] = [
-//                 'IdMusic' => $row['IdMusic'],
-//                 'NameImageMusic' => $row['NameImageMusic'],
-//                 'NameMusic' => $row['NameMusic'],
-//                 'NameArtists' => $row['NameArtist']
-//             ];
-//         }
-//         return $songs;
-//     }
+    
+    public function getRecommendedByArtist($artist_id,$song_id){
+        $sql= "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtists
+                FROM song_artist_category 
+                JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+                JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+                WHERE song_artist_category.IdArtist = ? AND storemusic.IdMusic != ?
+                GROUP BY storemusic.IdMusic
+                LIMIT 5";
+        $stmt=$this->con->prepare($sql);
+        $stmt->bind_param("ii",$artist_id,$song_id);
+        $stmt->execute();
+        $result=$stmt->get_result();
+        while($row= $result->fetch_assoc()){
+            $recommendedByArtist[]=[
+            'IdMusic'=>$row['IdMusic'],
+            'NameImageMusic'=>$row['NameImageMusic'],
+            'NameMusic'=>$row['NameMusic'],
+            'NameArtists'=> $row['NameArtists']
+            ];
+        }
+        return $recommendedByArtist;
+    }
+
+    public function getArtists($song_id){
+        $sql="SELECT artist.IdArtist,artist.NameArtist
+        FROM artist join song_artist_category on artist.IdArtist=song_artist_category.IdArtist
+        WHERE song_artist_category.IdMusic= ?";
+        $stmt=$this->con->prepare($sql);
+        $stmt->bind_param("i",$song_id);
+        $stmt->execute();
+        $result=$stmt->get_result();
+        while($row= $result->fetch_assoc()){
+            $getArtists[]=[
+            'IdArtists'=> $row['IdArtist'],
+            'NameArtists'=> $row['NameArtist']
+            ];
+        }
+        return $getArtists;
+    }
 }
+

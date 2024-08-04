@@ -322,4 +322,34 @@
   width: 600px;
   padding: 50px;
   margin: 0px auto;
+}
+
+.recommendation-item {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  max-height: 60px;
+  padding: 5px 0;
+  margin: 5px 0 0 15px;
+}
+.recommendation-item:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: rgba(17, 17, 17, 0.1);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.artists #artistList {
+  display: flex;
+  align-items: center;
+}
+.artists #artistList img {
+  border-radius: 50%;
+}
+.artists #artistList .artist-item {
+  opacity: 0.8;
+  font-size: 2rem;
+  color: white;
+  text-decoration: none;
+  padding-left: 10px;
 }/*# sourceMappingURL=playmusic.css.map */

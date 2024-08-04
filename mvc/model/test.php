@@ -134,3 +134,18 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
         echo json_encode($recommendations,JSON_UNESCAPED_UNICODE);
     }
 }
+if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
+    if($_GET['action']=="getRecommendedByArtist"){
+        $controler = new MusicModel();
+        $recommendedByArtist=$controler->getRecommendedByArtist($_GET["artist_id"],$_GET["song_id"]);
+        echo json_encode($recommendedByArtist,JSON_UNESCAPED_UNICODE);
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
+    if($_GET['action']=="getArtists"){
+        $controler = new MusicModel();
+        $getArtists=$controler->getArtists($_GET["song_id"]);
+        echo json_encode($getArtists,JSON_UNESCAPED_UNICODE);
+    }
+}
