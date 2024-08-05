@@ -6,6 +6,7 @@ body {
 .menu {
   background: rgb(17, 17, 17);
   border-radius: 25px;
+  height: 625px;
 }
 .menu .items {
   text-align: center;

@@ -12,16 +12,13 @@
             //use ajax control $all
             // tiến hành thêm các bài hát vào db
             // chỉnh sửa khi phóng to (làm sau cùng)
-            $all = false;
-            $count = 0;
             foreach ($data["MS"] as $print) {
                 // if ($count <= 20 || $all) {
                     echo '<div class="item clickable" data-id="' . $print['IdMusic'] . '">';
                     echo '<img style="max-width:180px;height:180px" src= ../img/' . $print['NameImageMusic'] . '><br>';
                     echo $print['NameMusic'] . '</br>';
-                    echo $print['artists'];
+                    echo '<p>'.$print['artists'].'</p>';
                     echo '</div>';
-                    $count++;
                 // }
             }
             ?>

@@ -51,7 +51,8 @@
 
 .add-music,
 .add-list,
-.add-album {
+.add-album,
+.add-artist {
   color: white;
   -webkit-backdrop-filter: blur(3px);
           backdrop-filter: blur(3px);

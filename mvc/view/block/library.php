@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
     <script type="text/javascript" src="../public/js/library.js"></script>
 </head>
 
@@ -42,6 +42,7 @@
     <button type="button" onclick="delMusic()">Xóa bài nhạc</button><br>
     <button id="addList" onclick="addList()">Thêm danh sách</button><br>
     <button id="addAlbum" onclick="addAlbum()">Thêm album</button>
+    <button id="addArtist" onclick="addArtist()">Thêm ca sĩ</button>
 </div>
 
 <!-- show create music -->
@@ -73,14 +74,29 @@
 <form class="container-fluid add-album" id="showAlbum" style="display:none;" method="get">
     <label for="nameAlbum">Tên Album:</label>
     <input type="text" name="nameAlbum">
+
     <input type="submit" name="submitAlbum" value="Tạo">
 </form>
 
+<!-- show add artist -->
+<form class="contrainer-fluid add-artist" id="showAddArtist" style="display: none;" method="Post">
+    <label for="nameArtist">Tên ca sĩ:</label>
+    <input type="text" name="nameArtist"></br>
+    <label for="imageArtist">Chọn ảnh đại diện:</label>
+    <input type="file" name="imageArtist"></br>
+    <input type="submit" name="submitAddArtist" value="Thêm">
+</form>
 <script>
     function addAlbum() {
         document.getElementById('showAlbum').style.display = "block";
         document.getElementById('showAlbum').style.position = "absolute";
         document.getElementById('showAlbum').style.zIndex = "1";
+    }
+
+    function addArtist() {
+        document.getElementById('showAddArtist').style.display = "block";
+        document.getElementById('showAddArtist').style.position = "absolute";
+        document.getElementById('showAddArtist').style.zIndex = "1";
     }
 
     $(document).ready(function() {
@@ -196,40 +212,67 @@
         xhr.send(formData);
     });
 
+    //xử lý thêm artist vào db
+    $(document).ready(function() {
+        $('#showAddArtist').on('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+            var formData = new FormData(this); // Sử dụng FormData để xử lý file
+
+            // Thêm giá trị của nút submit vào formData
+            formData.append('submitAddArtist', 'submitAddArtist');
+            $.ajax({
+                type: 'POST',
+                url: './model/test', // File xử lý dữ liệu tải lên
+                data: formData,
+                contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
+                processData: false, // Không xử lý dữ liệu vì sử dụng FormData
+                success: function(response) {
+                    // Xử lý kết quả trả về từ server ở đây
+                    alert("Thêm ca sĩ thành công");
+                    console.log('Kết quả:', response);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi ở đây
+                    console.log('Có lỗi xảy ra:', xhr.responseText);
+                }
+            });
+        });
+    });
+
 
     var create = document.getElementById('create');
-var clicked = true;
+    var clicked = true;
 
-document.addEventListener("click", function () {
-    if (clicked) {
-        document.getElementById('create').style.display = "none";
+    document.addEventListener("click", function() {
+        if (clicked) {
+            document.getElementById('create').style.display = "none";
+        }
+
+    })
+
+    function Show() {
+        document.getElementById('create').style.display = "block";
+        document.getElementById('create').style.position = "absolute";
+        if (clicked)
+            clicked = false;
+        else clicked = true;
+
+    };
+
+    function addMusic() {
+        document.getElementById('showCreate').style.display = "block";
+        document.getElementById('showCreate').style.position = "absolute";
+        document.getElementById('showCreate').style.zIndex = "1";
     }
 
-})
-
-function Show() {
-    document.getElementById('create').style.display = "block";
-    document.getElementById('create').style.position = "absolute";
-    if (clicked)
-        clicked = false;
-    else clicked = true;
-
-};
-
-function addMusic() {
-    document.getElementById('showCreate').style.display = "block";
-    document.getElementById('showCreate').style.position = "absolute";
-    document.getElementById('showCreate').style.zIndex = "1";
-}
-function delMusic(){
-    window.location.assign('./DelList');
-}
+    function delMusic() {
+        window.location.assign('./DelList');
+    }
 
 
-function addList() {
-    document.getElementById('showList').style.display = "block";
-    document.getElementById('showList').style.position = "absolute";
-    document.getElementById('showList').style.zIndex = "1";
-}
-
+    function addList() {
+        document.getElementById('showList').style.display = "block";
+        document.getElementById('showList').style.position = "absolute";
+        document.getElementById('showList').style.zIndex = "1";
+    }
 </script>

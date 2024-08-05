@@ -1,0 +1,44 @@
+.artist-name {
+  font-size: 5em;
+}
+
+.song-popular p, .song-has-artist p {
+  font-size: 2em;
+}
+.song-popular .artist-all-item, .song-has-artist .artist-all-item {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  max-height: 60px;
+  align-items: center;
+}
+.song-popular .artist-all-item h5, .song-has-artist .artist-all-item h5 {
+  margin-left: 5px;
+}
+.song-popular .artist-all-item:hover, .song-has-artist .artist-all-item:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: rgba(17, 17, 17, 0.1);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.song-popular .artist-all-item .count, .song-has-artist .artist-all-item .count {
+  padding: 20px;
+}
+.song-popular .song-has-artist-item, .song-has-artist .song-has-artist-item {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  max-height: 60px;
+  padding: 5px 0;
+  margin: 5px 0 0 15px;
+  align-items: center;
+}
+.song-popular .song-has-artist-item h5, .song-has-artist .song-has-artist-item h5 {
+  margin-left: 5px;
+}
+.song-popular .song-has-artist-item:hover, .song-has-artist .song-has-artist-item:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: rgba(17, 17, 17, 0.1);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}/*# sourceMappingURL=Artist.css.map */

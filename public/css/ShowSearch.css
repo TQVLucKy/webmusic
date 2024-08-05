@@ -1,27 +1,42 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(105, 103, 103);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(105, 103, 103, 0.5);
+  border-radius: 10px;
+}
+
+.search-title {
+  font-size: 2rem;
+}
+
 .list-library {
+  overflow-y: scroll;
+  max-height: 550px;
+}
+.list-library .search-text-item {
+  text-decoration: none;
+  color: inherit;
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  max-height: 60px;
+  align-items: center;
 }
-.list-library .items-list {
-  display: flex;
-  width: 100%;
+.list-library .search-text-item:hover {
+  text-decoration: none;
+  color: inherit;
+  background-color: rgba(17, 17, 17, 0.1);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.list-library .item-list {
-  padding: 10px 10px;
-  white-space: nowrap;
-}
-.list-library .stt {
-  width: 100px;
-}
-.list-library .name {
-  flex-grow: 1;
-}
-.list-library .artist {
-  width: 40%;
-}
-.list-library .play,
-.list-library .remove, .list-library .playMusic {
-  width: 100px;
-  cursor: pointer;
+.list-library .search-text-item .count {
+  padding: 20px;
 }/*# sourceMappingURL=ShowSearch.css.map */

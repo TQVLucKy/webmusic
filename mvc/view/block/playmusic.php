@@ -307,17 +307,15 @@
                 element.innerHTML = formatTimes(music.duration);
             })
         }, 300);
-        
 
-        //đang có lỗi là khi reload lại trang là không phát nhạc
         //tự động phát khi chọn/chuyển bài
         setTimeout(() => {
             if (music.paused) {
                 music.play();
                 btnplay.forEach(element1 => {
-                element1.classList.toggle('pause');
-            });
-            boxdisk.classList.toggle('play');
+                    element1.classList.toggle('pause');
+                });
+                boxdisk.classList.toggle('play');
             }
         }, 300);
     }
@@ -328,6 +326,15 @@
     var id = url.searchParams.get("id");
     setSongById(id);
 
+    window.addEventListener('load', () => {
+        if (music.paused) {
+            music.play();
+            btnplay.forEach(element1 => {
+                element1.classList.toggle('pause');
+            });
+            boxdisk.classList.toggle('play');
+        }
+    });
     const formatTimes = (time) => {
         let min = Math.floor(time / 60);
         if (min < 10)
@@ -370,8 +377,8 @@
     // Tự động chuyển bài khi kết thúc bài hiện tại
     music.addEventListener('ended', () => {
         if (btnnext.length > 0) {
-        btnnext[0].click();
-    }
+            btnnext[0].click();
+        }
     });
 
 

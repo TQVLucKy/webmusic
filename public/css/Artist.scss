@@ -1,0 +1,55 @@
+.artist-name {
+    font-size: 5em;
+}
+
+.song-popular, .song-has-artist{
+    p {
+        font-size: 2em;
+    }
+
+    .artist-all-item {
+
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        max-height: 60px;
+        align-items: center;
+
+        h5 {
+            margin-left: 5px;
+        }
+
+        &:hover {
+            // background-color: red;
+            text-decoration: none;
+            color: inherit;
+            background-color: rgba(17, 17, 17, 0.1);
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .count{
+            padding: 20px;
+        }
+    }
+    .song-has-artist-item{
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        max-height: 60px;
+        padding: 5px 0;
+        margin: 5px 0 0 15px;
+        align-items: center;
+
+        h5 {
+            margin-left: 5px;
+        }
+
+        &:hover {
+            // background-color: red;
+            text-decoration: none;
+            color: inherit;
+            background-color: rgba(17, 17, 17, 0.1);
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+    }
+
+}

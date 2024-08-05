@@ -42,6 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitMusic'])) {
     $controller = new Home();
     $controller->uploadMusic($_FILES);
 }
+
+// điều hướng vào model xử lý
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitAddArtist'])) {
+    $controller = new MusicModel();
+    $controller->addArtist($_POST['nameArtist'],$_FILES['imageArtist']);
+}
 // Hàm xử lý form
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitList'])) {
@@ -68,27 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 if (isset($_GET['InputVal'])) {
     $musicModel =  new MusicModel();
     $musicList = $musicModel->SearchText($_GET["InputVal"]);
-    $stt = 1;
-    foreach ($musicList as $print) {
-        echo '<div class="itemsList">';
-        echo '<div class="itemList stt">';
-        echo $stt;
-        echo '</div>';
-        echo '<div class="itemList name">';
-        echo $print['name'];
-        echo '</div>';
-        echo '<div class="itemList artist">';
-        echo $print['artist'];
-        echo '</div>';
-        echo '<div class="itemList playMusic" data-id="' . $print['id'] . '">';
-        echo 'Play'; // Đặt nút Play ở đây
-        echo '</div>';
-        echo '<div class="itemList remove">';
-        echo 'Remove'; // Đặt nút Remove ở đây
-        echo '</div>';
-        echo '</div>';
-        $stt++;
-    }
+    echo json_encode($musicList,JSON_UNESCAPED_UNICODE);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -147,5 +133,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
         $controler = new MusicModel();
         $getArtists=$controler->getArtists($_GET["song_id"]);
         echo json_encode($getArtists,JSON_UNESCAPED_UNICODE);
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
+    if($_GET['action']=="getArtistAll"){
+        $controler = new MusicModel();
+        $artistAll=$controler->getArtistAll($_GET["idArtist"]);
+        echo json_encode($artistAll,JSON_UNESCAPED_UNICODE);
     }
 }

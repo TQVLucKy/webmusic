@@ -36,6 +36,13 @@
                 "getalbum" => $this->a->getAlbumMusic(),
                 ]);
         }
+
+        function Artist(){
+            $this->view("master1",[
+                "page"=>"Artist",
+                "Lib"=> $this->a->Library()
+            ]);
+        }
         function ShowSearch(){
             $this->view("master1",[
                 "page"=>"ShowSearch",

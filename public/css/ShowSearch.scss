@@ -1,33 +1,42 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(105, 103, 103);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(105, 103, 103, 0.5);
+    border-radius: 10px;
+}
+.search-title{
+    font-size: 2rem;
+}
+
 .list-library {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    .items-list {
+    overflow-y: scroll;
+    max-height: 550px;
+    .search-text-item{
+        text-decoration: none;
+        color: inherit;
         display: flex;
-        width: 100%;
-    }
-
-    .item-list {
-        padding: 10px 10px;
-        white-space: nowrap;
-    }
-
-    .stt {
-        width: 100px;
-    }
-
-    .name {
-        flex-grow: 1;
-    }
-
-     .artist {
-        width: 40%;
-    }
-
-    .play,
-    .remove,.playMusic {
-        width: 100px;
-        cursor: pointer;
+        max-height: 60px;
+        align-items: center;
+        &:hover {
+            // background-color: red;
+            text-decoration: none;
+            color: inherit;
+            background-color: rgba(17, 17, 17, 0.1);
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .count{
+            padding: 20px;
+        }
     }
 }
