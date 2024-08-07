@@ -15,12 +15,13 @@
             <button id="buttonToAddList1">Thêm nhạc vào danh sách</button>
             <button onclick="delDanhSachPhat()">Xóa danh sách</button>
         </div>
-    </div> 
+    </div>
     <div class="search">
         <input type="text" class="search-form" placeholder="Search...">
+        <div class="result"></div>
     </div>
     <div class="list-library">
-        <table>
+        <table id="song-list">
             <tr>
                 <th>STT</th>
                 <th>Tên</th>
@@ -34,14 +35,15 @@
                 echo '<tr><td>';
                 echo $stt;
                 echo '</td><td>';
-                echo $print['NameMusic'];
+                echo htmlspecialchars($print['NameMusic']);
                 echo '</td><td>';
-                echo $print['NameArtist'];
+                echo htmlspecialchars($print['NameArtist']);
                 echo '</td><td>';
-                echo $print['NameCategory'];
-                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                echo '<button onclick=deleteMusicFromDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
-                echo '</tr>';
+                echo htmlspecialchars($print['NameCategory']);
+                echo '</tb><td>';
+                echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Play</button>';
+                echo '<button onclick="deleteMusicFromDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Remove</button>';
+                echo '</td></tr>';
                 $stt++;
             }
             ?>
@@ -101,9 +103,10 @@
     </div>
     <div class="search">
         <input type="text" class="search-form" placeholder="search...">
+        <div class="result"></div>
     </div>
     <div class="list-library">
-        <table>
+        <table id="song-all">
             <tr>
                 <th>STT</th>
                 <th>Tên</th>
@@ -117,14 +120,15 @@
                 echo '<tr><td>';
                 echo $stt;
                 echo '</td><td>';
-                echo $print['NameMusic'];
+                echo htmlspecialchars($print['NameMusic']);
                 echo '</td><td>';
-                echo $print['NameArtist'];
+                echo htmlspecialchars($print['NameArtist']);
                 echo '</td><td>';
-                echo $print['NameCategory'];
-                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                echo '<button onclick=addMusicToDanhSachPhat(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
-                echo '</tr>';
+                echo htmlspecialchars($print['NameCategory']);
+                echo '</tb><td>';
+                echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Play</button>';
+                echo '<button onclick="addMusicToDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Add</button>';
+                echo '</td></tr>';
                 $stt++;
             }
             ?>
@@ -171,6 +175,50 @@
     </div>
 </div> -->
 <script>
+    $(document).ready(function() {
+        var idList = "<?php echo $_GET['id']; ?>";
+        var originalContent = $("#song-list").html(); //Lưu nội dung ban đầu của danh sách
+        $('.search input[type="text"]').on("keyup input", function() {
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if (inputVal.length) {
+                $.get("../search/ListSearch.php", {
+                    term: inputVal,
+                    idList: idList
+                }).done(function(data) {
+                    // Display the returned data in browser
+                    $("#song-list").find("tr:gt(0)").remove();
+                    $("#song-list").append(data);
+                });
+            } else {
+                $("#song-list").html(originalContent);
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        var idList = "<?php echo $_GET['id']; ?>";
+        var originalContent = $("#song-all").html(); //Lưu nội dung ban đầu của danh sách
+        $('.search input[type="text"]').on("keyup input", function() {
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if (inputVal.length) {
+                $.get("../search/SearchAll.php", {
+                    term: inputVal,
+                    idList: idList
+                }).done(function(data) {
+                    // Display the returned data in browser
+                    $("#song-all").find("tr:gt(0)").remove();
+                    $("#song-all").append(data);
+                });
+            } else {
+                $("#song-all").html(originalContent);
+            }
+        });
+
+    });
+
     // var playMusic = document.querySelectorAll('.itemsList .playMusic');
     // playMusic.forEach(function(item) {
     //     item.addEventListener('click', function() {
