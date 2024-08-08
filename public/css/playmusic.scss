@@ -1,3 +1,30 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(105, 103, 103);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(105, 103, 103, 0.5);
+    border-radius: 10px;
+}
+
+$transition-duration: 0.5s;
+$font-size: 24px;
+
+
+.playmusic {
+    overflow-y: scroll;
+    max-height: 600px;
+}
+
 .music {
     // .backnext {
     //     display: flex;
@@ -99,10 +126,10 @@
             }
 
             .controls {
-                width: 150px;
+                width: 300px;
                 display: flex;
                 justify-content: space-between;
-                margin: 15px auto;
+                margin: 15px 360px;
 
                 .btn-play {
                     position: relative;
@@ -137,6 +164,42 @@
                         }
                     }
                 }
+
+
+                .volume-container {
+                    position: relative;
+                    display: inline-block;
+
+                    .volume-button {
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        cursor: pointer;
+
+                        i {
+                            font-size: 24px;
+                        }
+                    }
+
+                    .volume-slider {
+                        width: 70px;
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: opacity $transition-duration ease, visibility $transition-duration ease;
+
+                        &:hover {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+                    }
+
+                    &:hover .volume-slider {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+
+
 
             }
 
@@ -239,15 +302,16 @@
     }
 
     .controls {
-        width: 150px;
+        width: 90%;
         display: flex;
-        justify-content: space-between;
-        margin: auto;
+        justify-content:center;
+        margin: 15px 35px;
 
         .btn-play {
             position: relative;
-            width: 50px;
-            height: 50px;
+            margin:5px 10px 0 10px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: gray;
             cursor: pointer;
@@ -264,8 +328,8 @@
                 top: 20%;
                 left: 25%;
                 transform: translateY(-50);
-                width: 10px;
-                height: 30px;
+                width: 8px;
+                height: 20px;
                 border-radius: 2px;
                 background: white;
                 transition: .5s;
@@ -293,8 +357,8 @@
         }
 
         .btn {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             background: gray;
             border-radius: 50%;
             display: flex;
@@ -310,6 +374,44 @@
                 transition: 1s;
             }
         }
+
+        .volume-container {
+            position: relative;
+            display: inline-block;
+            .volume-button {
+                background: none;
+                border: none;
+                font-size: 24px;
+                transform: rotate(-90deg);
+                cursor: pointer;
+
+                i {
+                    font-size: 24px;
+                }
+            }
+
+            .volume-slider {
+                position: absolute;
+                top: -35px; // Điều chỉnh giá trị này để đặt thanh điều chỉnh ở vị trí mong muốn
+                left: -3px;
+                transform: rotate(-90deg);
+                width: 50px;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity $transition-duration ease;
+
+                &:hover {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+
+            &:hover .volume-slider {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
     }
 }
 
@@ -422,12 +524,13 @@
     #artistList {
         display: flex;
         align-items: center;
+
         img {
             border-radius: 50%;
         }
 
         .artist-item {
-            opacity:0.8;
+            opacity: 0.8;
             font-size: 2rem;
             color: white;
             text-decoration: none;

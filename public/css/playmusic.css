@@ -1,3 +1,26 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(105, 103, 103);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(105, 103, 103, 0.5);
+  border-radius: 10px;
+}
+
+.playmusic {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
 .music .container {
   display: flex;
 }
@@ -64,10 +87,10 @@
   box-shadow: -1000px 0 0 1000px white;
 }
 .music .container .title .controls {
-  width: 150px;
+  width: 300px;
   display: flex;
   justify-content: space-between;
-  margin: 15px auto;
+  margin: 15px 360px;
 }
 .music .container .title .controls .btn-play {
   position: relative;
@@ -99,6 +122,33 @@
 .music .container .title .controls .btn-play span:nth-child(2) {
   left: 55%;
   transform-origin: center;
+}
+.music .container .title .controls .volume-container {
+  position: relative;
+  display: inline-block;
+}
+.music .container .title .controls .volume-container .volume-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+.music .container .title .controls .volume-container .volume-button i {
+  font-size: 24px;
+}
+.music .container .title .controls .volume-container .volume-slider {
+  width: 70px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.music .container .title .controls .volume-container .volume-slider:hover {
+  opacity: 1;
+  visibility: visible;
+}
+.music .container .title .controls .volume-container:hover .volume-slider {
+  opacity: 1;
+  visibility: visible;
 }
 .music .container .title .btn-play.pause span:nth-child(2) {
   transform: translateY(-50%) scaleY(0);
@@ -183,15 +233,16 @@
   justify-content: center;
 }
 .music-slider .controls {
-  width: 150px;
+  width: 90%;
   display: flex;
-  justify-content: space-between;
-  margin: auto;
+  justify-content: center;
+  margin: 15px 35px;
 }
 .music-slider .controls .btn-play {
   position: relative;
-  width: 50px;
-  height: 50px;
+  margin: 5px 10px 0 10px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: gray;
   cursor: pointer;
@@ -207,8 +258,8 @@
   top: 20%;
   left: 25%;
   transform: translateY(-50);
-  width: 10px;
-  height: 30px;
+  width: 8px;
+  height: 20px;
   border-radius: 2px;
   background: white;
   transition: 0.5s;
@@ -232,8 +283,8 @@
           clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
 }
 .music-slider .controls .btn {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: gray;
   border-radius: 50%;
   display: flex;
@@ -247,6 +298,38 @@
   background-color: black;
   opacity: 0.5;
   transition: 1s;
+}
+.music-slider .controls .volume-container {
+  position: relative;
+  display: inline-block;
+}
+.music-slider .controls .volume-container .volume-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  transform: rotate(-90deg);
+  cursor: pointer;
+}
+.music-slider .controls .volume-container .volume-button i {
+  font-size: 24px;
+}
+.music-slider .controls .volume-container .volume-slider {
+  position: absolute;
+  top: -35px;
+  left: -3px;
+  transform: rotate(-90deg);
+  width: 50px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease;
+}
+.music-slider .controls .volume-container .volume-slider:hover {
+  opacity: 1;
+  visibility: visible;
+}
+.music-slider .controls .volume-container:hover .volume-slider {
+  opacity: 1;
+  visibility: visible;
 }
 
 .contact {

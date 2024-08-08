@@ -1,6 +1,5 @@
 <link rel="stylesheet" type="text/css" href="../public/css/playmusic.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-<!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
 
 <head>
     <!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
@@ -10,78 +9,88 @@
         // print_r($_GET);     
         // echo "ID: ".$_GET['url'];
         ?> -->
+<div class="playmusic">
+    <div class="music">
+        <div class="container">
+            <div class="box-disk">
+            </div>
+            <div class="title">
+                <span class="current-time">00:00</span>
+                <span class="music-time">00:00</span>
+                <input type="range" value="0" class="seek-bar" />
+                <span class="current-music">tên bài</span>
+                <span class="current-artist">ca sĩ</span>
+                <div class="controls">
+                    <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn-play pause">
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
+                    <div class="volume-container">
+                <button class="volume-button"><i class="fa-solid fa-volume-high" style="color: #ffffff;"></i></button>
+                <input type="range" class="volume-slider" min="0" max="100" value="50">
+            </div>
+                </div>
 
-<div class="music">
-    <div class="container">
-        <div class="box-disk">
-        </div>
-        <div class="title">
-            <span class="current-time">00:00</span>
-            <span class="music-time">00:00</span>
-            <input type="range" value="0" class="seek-bar" />
-            <span class="current-music">tên bài</span>
-            <span class="current-artist">ca sĩ</span>
-            <div class="controls">
-                <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
-                <button class="btn-play pause">
-                    <span></span>
-                    <span></span>
-                </button>
-                <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
             </div>
         </div>
     </div>
-</div>
-<div class="contact">
-    <?php
-    $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
-    echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "'";
-    echo " onclick=updateFavorite()>";
-    echo "<i class='fa fa-heart'></i></button>";
-    ?>
-    <button class="material-icons" onclick=addMusicToLibrary()>add</button>
+    <div class="contact">
+        <?php
+        $favorites = array_combine(array_column($data["g"], 'id'), array_column($data["g"], 'favorite'));
+        echo "<button id='favorite' data-favorite='" . $favorites[$_GET['id']] . "'class='" . ($favorites[$_GET['id']] == 1 ? "btn favorited" : "btn favorite") . "'";
+        echo " onclick=updateFavorite()>";
+        echo "<i class='fa fa-heart'></i></button>";
+        ?>
+        <button class="material-icons" onclick=addMusicToLibrary()>add</button>
 
-</div>
-<!-- mini music -->
-<audio src="" id="audio"></audio>
-<div class="music-slider" id="music-slider" style="display: none;">
-    <span class="current-time">00:00</span>
-    <span class="music-time">00:00</span>
-    <input type="range" value="0" class="seek-bar" />
-    <span class="current-music">tên bài</span>
-    <span class="current-artist">ca sĩ</span>
-    <div class="controls">
-        <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
-        <button class="btn-play pause">
-            <span></span>
-            <span></span>
-        </button>
-        <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
     </div>
-</div>
+    <!-- mini music -->
+    <audio src="" id="audio"></audio>
+    <div class="music-slider" id="music-slider" style="display: none;">
+        <span class="current-time">00:00</span>
+        <span class="music-time">00:00</span>
+        <input type="range" value="0" class="seek-bar" />
+        <span class="current-music">tên bài</span>
+        <span class="current-artist">ca sĩ</span>
+        <div class="controls">
+            <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
+            <button class="btn-play pause">
+                <span></span>
+                <span></span>
+            </button>
+            <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
+            <div class="volume-container">
+                <button class="volume-button"><i class="fa-solid fa-volume-high" style="color: #ffffff;"></i></button>
+                <input type="range" class="volume-slider" min="0" max="100" value="50" orient="vertical">
+            </div>
+        </div>
+    </div>
 
-<!-- add song to library -->
-<div id="list" style="display: none;">
-    <?php
-    foreach ($data["Lib"] as $print) {
-        echo '<div class="items-list" id="idList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
-        echo $print['NameList'];
-        echo '</div>';
-    }
-    ?>
-</div>
-<div class="artists">
-    <div id="artistList"></div>
-</div>
-<div class="recommendation">
-    <h2>Recommended</h2>
-    <div id="recommendations"></div>
-    <script src="../public/js/playmusic.js"></script>
-</div>
-<div class="popular-music-artist">
-    <p>Các bản nhạc thịnh hành của</p>
-    <h2 class="current-artist">ca sĩ</h2>
-    <div id="recommendedByArtist"></div>
+    <!-- add song to library -->
+    <div id="list" style="display: none;">
+        <?php
+        foreach ($data["Lib"] as $print) {
+            echo '<div class="items-list" id="idList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
+            echo $print['NameList'];
+            echo '</div>';
+        }
+        ?>
+    </div>
+    <div class="artists">
+        <div id="artistList"></div>
+    </div>
+    <div class="recommendation">
+        <h2>Recommended</h2>
+        <div id="recommendations"></div>
+        <script src="../public/js/playmusic.js"></script>
+    </div>
+    <div class="popular-music-artist">
+        <p>Các bản nhạc thịnh hành của</p>
+        <h2 class="current-artist">ca sĩ</h2>
+        <div id="recommendedByArtist"></div>
+    </div>
 </div>
 <script>
     // artist list
@@ -195,7 +204,7 @@
     const btnplay = document.querySelectorAll('.btn-play');
     const btnback = document.querySelectorAll('.btnback');
     const btnnext = document.querySelectorAll('.btnnext');
-
+    const volumeSlider = document.querySelectorAll('.volume-slider')
     // window.addEventListener("scroll", () => {
     //     if (document.body.scrollTop>200)
     //         document.getElementById('1').style.display = 'block';
@@ -248,17 +257,18 @@
         }
     });
 
-    window.onscroll = function() {
-        myFunction();
-    };
-
+    myFunction();
     // hiển thị mini-music
     function myFunction() {
-        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-            document.getElementById('music-slider').style.display = 'block';
-        } else {
-            document.getElementById('music-slider').style.display = 'none';
-        }
+        const overFlowElement = document.getElementsByClassName('playmusic')[0];
+        overFlowElement.addEventListener('scroll', function() {
+            if (overFlowElement.scrollTop > 200) {
+                document.getElementById('music-slider').style.display = 'block';
+            } else {
+                document.getElementById('music-slider').style.display = 'none';
+            }
+        })
+
     }
 
     btnplay.forEach(element => {
@@ -437,4 +447,11 @@
     //         randomSong = songs[floor.random() * (songs.length() - 1) + 1];
     //     setSong(randomSong);
     // })
+
+
+    volumeSlider.forEach(slider => {
+        slider.addEventListener('input', function() {
+            music.volume = slider.value;
+        });
+    });
 </script>

@@ -3,12 +3,12 @@ class MusicModel extends DB
 {
     public function Music()
     {
-        $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory
+        $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory, storemusic.NameImageMusic
             FROM song_artist_category
             JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
             JOIN category ON song_artist_category.IdCategory = category.IdCategory
             JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
-            GROUP BY storemusic.IdMusic, storemusic.NameMusic,category.NameCategory";
+            GROUP BY storemusic.IdMusic, storemusic.NameMusic,category.NameCategory, storemusic.NameImageMusic";
         return mysqli_query($this->con, $sql);
     }
 

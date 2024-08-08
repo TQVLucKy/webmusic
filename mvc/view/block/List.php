@@ -95,6 +95,12 @@
         </table>
     </div> -->
 </div>
+
+<!-- phát nhạc theo danh sách
+    ý tưởng: 
+    - Khi nhấn vào nút phát tất cả sẽ nhảy sang trang Play. với id: bài hát hiện tại, idList: danh sách phát
+    - Nếu thế thì phải chỉnh sửa lại trong Play. Khi nào có idList ở play thì lấy giá trị đó và gọi theo ds đó.
+    -->
 <!-- danh sách phát -->
 <div id="addmusictoDanhSachPhat" style="display:none;">
     <div class="header-list">

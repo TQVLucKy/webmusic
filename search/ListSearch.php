@@ -17,15 +17,24 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
     $term = $_GET["term"];
     $idList = $_GET["idList"];
 
-    $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, artist.NameArtist, category.NameCategory
-            FROM listmusic
-            JOIN song_artist_category ON listmusic.IdMusic = song_artist_category.IdMusic
-            JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
-            JOIN category ON song_artist_category.IdCategory = category.IdCategory
-            JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
-            WHERE listmusic.IdList = ? AND (storemusic.NameMusic LIKE ? 
-     OR category.NameCategory LIKE ? 
-     OR artist.NameArtist LIKE ?)";
+    $sql = "SELECT *
+    FROM (
+    SELECT 
+        storemusic.IdMusic, 
+        storemusic.NameMusic, 
+        GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, 
+        category.NameCategory
+    FROM song_artist_category
+    JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+    JOIN category ON song_artist_category.IdCategory = category.IdCategory
+    JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+    GROUP BY storemusic.IdMusic, storemusic.NameMusic, category.NameCategory
+    ) AS subquery
+    WHERE 
+        listmusic.IdMusic = ?
+        subquery.NameMusic LIKE ? 
+        OR subquery.NameCategory LIKE ? 
+        OR subquery.NameArtist LIKE ?";
 
     if ($stmt = $link->prepare($sql)) {
         $param_term = '%'.$term . '%';

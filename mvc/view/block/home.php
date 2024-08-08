@@ -17,7 +17,7 @@
                     echo '<div class="item clickable" data-id="' . $print['IdMusic'] . '">';
                     echo '<img style="max-width:180px;height:180px" src= ../img/' . $print['NameImageMusic'] . '><br>';
                     echo $print['NameMusic'] . '</br>';
-                    echo '<p>'.$print['artists'].'</p>';
+                    echo '<p>'.$print['NameArtist'].'</p>';
                     echo '</div>';
                 // }
             }
