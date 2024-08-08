@@ -33,9 +33,9 @@ if (isset($_GET["logout"])) {
     session_unset();
 }
 
-if(isset($_POST['submitChangePassword'])){
-    $controler= new UserModel();
-    $controler->ChangePassword($_POST['userName'],$_POST['passOld'], $_POST['passNew1'], $_POST['passNew2']);
+if (isset($_POST['submitChangePassword'])) {
+    $controler = new UserModel();
+    $controler->ChangePassword($_POST['userName'], $_POST['passOld'], $_POST['passNew1'], $_POST['passNew2']);
 }
 // need fix: it not work t think isset($_POST['submitmusic']) complete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitMusic'])) {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitMusic'])) {
 // điều hướng vào model xử lý
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitAddArtist'])) {
     $controller = new MusicModel();
-    $controller->addArtist($_POST['nameArtist'],$_FILES['imageArtist']);
+    $controller->addArtist($_POST['nameArtist'], $_FILES['imageArtist']);
 }
 // Hàm xử lý form
 
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 if (isset($_GET['InputVal'])) {
     $musicModel =  new MusicModel();
     $musicList = $musicModel->SearchText($_GET["InputVal"]);
-    echo json_encode($musicList,JSON_UNESCAPED_UNICODE);
+    echo json_encode($musicList, JSON_UNESCAPED_UNICODE);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -113,33 +113,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 }
 
 //
-if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
-    if($_GET['action']=="getRecommendations"){
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET['action'] == "getRecommendations") {
         $controler = new MusicModel();
-        $recommendations=$controler->getRecommendations($_GET["user_id"],$_GET["song_id"]);
-        echo json_encode($recommendations,JSON_UNESCAPED_UNICODE);
+        $recommendations = $controler->getRecommendations($_GET["user_id"], $_GET["song_id"]);
+        echo json_encode($recommendations, JSON_UNESCAPED_UNICODE);
     }
 }
-if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
-    if($_GET['action']=="getRecommendedByArtist"){
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET['action'] == "getRecommendedByArtist") {
         $controler = new MusicModel();
-        $recommendedByArtist=$controler->getRecommendedByArtist($_GET["artist_id"],$_GET["song_id"]);
-        echo json_encode($recommendedByArtist,JSON_UNESCAPED_UNICODE);
-    }
-}
-
-if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
-    if($_GET['action']=="getArtists"){
-        $controler = new MusicModel();
-        $getArtists=$controler->getArtists($_GET["song_id"]);
-        echo json_encode($getArtists,JSON_UNESCAPED_UNICODE);
+        $recommendedByArtist = $controler->getRecommendedByArtist($_GET["artist_id"], $_GET["song_id"]);
+        echo json_encode($recommendedByArtist, JSON_UNESCAPED_UNICODE);
     }
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])){
-    if($_GET['action']=="getArtistAll"){
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET['action'] == "getArtists") {
         $controler = new MusicModel();
-        $artistAll=$controler->getArtistAll($_GET["idArtist"]);
-        echo json_encode($artistAll,JSON_UNESCAPED_UNICODE);
+        $getArtists = $controler->getArtists($_GET["song_id"]);
+        echo json_encode($getArtists, JSON_UNESCAPED_UNICODE);
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET['action'] == "getArtistAll") {
+        $controler = new MusicModel();
+        $artistAll = $controler->getArtistAll($_GET["idArtist"]);
+        echo json_encode($artistAll, JSON_UNESCAPED_UNICODE);
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET["action"] == "Play") {
+        $controler = new MusicModel();
+        if (!isset($_GET['idList']))
+            $songs = $controler->getSongFromList($_GET['id']);
+        else
+            $songs = $controler->getSongFromList($_GET['id'], $_GET['idList']);
+
+
+        echo json_encode($songs, JSON_UNESCAPED_UNICODE);
     }
 }

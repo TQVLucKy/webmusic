@@ -19,6 +19,8 @@
     <div class="search">
         <input type="text" class="search-form" placeholder="Search...">
         <div class="result"></div>
+        <button onclick="playMusicFromList()">Phát tất cả</button>
+
     </div>
     <div class="list-library">
         <table id="song-list">
@@ -41,7 +43,10 @@
                 echo '</td><td>';
                 echo htmlspecialchars($print['NameCategory']);
                 echo '</tb><td>';
-                echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Play</button>';
+                if ($stt === 1) { 
+                    echo '<button id="playFirstMusic" onclick="playMusic(this)" data-idMusic="' . $print['IdMusic'] . '">Play</button>';
+                }
+                else echo '<button  onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Play</button>';
                 echo '<button onclick="deleteMusicFromDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Remove</button>';
                 echo '</td></tr>';
                 $stt++;
@@ -232,6 +237,11 @@
     //         window.location.href = './Play?id=' + id;
     //     })
     // })
+    function playMusicFromList(){
+        var idFirstMusic= document.getElementById('playFirstMusic').getAttribute('data-idMusic');
+        window.location.href= './Play?id='+ idFirstMusic + '&idList='+<?php echo $_GET['id']; ?>;
+    }
+    
     function playMusic(button) {
         var idMusic = button.getAttribute('data-idMusic');
         window.location.href = './Play?id=' + idMusic;

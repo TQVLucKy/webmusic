@@ -26,16 +26,28 @@ class MusicModel extends DB
 
     public function getall()
     {
-        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist,category.NameCategory,storemusic.state
-        FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
-		join category on song_artist_category.IdCategory=category.IdCategory
-        join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
-        GROUP BY storemusic.IdMusic, storemusic.NameMusic, storemusic.NameImageMusic, category.NameCategory, storemusic.state";
-        $result = mysqli_query($this->con, $sql);
+        $idList = isset($_GET['idList']) ? htmlspecialchars($_GET['idList']) : null;
+        if ($idList === null) {
+            $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist,storemusic.state
+        FROM song_artist_category
+        JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+        JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+        GROUP BY storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic";
+        } else {
+            $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist,storemusic.state
+        FROM listmusic
+        JOIN song_artist_category on listmusic.IdMusic=song_artist_category.IdMusic
+        JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+        JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+        WHERE listmusic.IdList=?
+        GROUP BY storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic";
+        }
+        $stmt = $this->con->prepare($sql);
+        if ($idList !== null)
+            $stmt->bind_param('i', $idList);
 
-        // Kiểm tra và xử lý kết quả trả về
-
-        //sử dụng cái này và rồi get id rồi trả về như cái song.js
+        $stmt->execute();
+        $result = $stmt->get_result();
         $songs = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -52,6 +64,35 @@ class MusicModel extends DB
         }
         return $songs;
     }
+
+    // public function getall()
+    // {
+    //     $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist,category.NameCategory,storemusic.state
+    //     FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
+	// 	join category on song_artist_category.IdCategory=category.IdCategory
+    //     join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
+    //     GROUP BY storemusic.IdMusic, storemusic.NameMusic, storemusic.NameImageMusic, category.NameCategory, storemusic.state";
+    //     $result = mysqli_query($this->con, $sql);
+
+    //     // Kiểm tra và xử lý kết quả trả về
+
+    //     //sử dụng cái này và rồi get id rồi trả về như cái song.js
+    //     $songs = array();
+    //     if ($result->num_rows > 0) {
+    //         while ($row = $result->fetch_assoc()) {
+    //             $song = array(
+    //                 "id" => $row["IdMusic"],
+    //                 "name" => $row["NameMusic"],
+    //                 "artist" => $row["NameArtist"],
+    //                 "path" => "../music/{$row['NameMusic']}-{$row['NameArtist']}.mp3",
+    //                 "image" => $row["NameImageMusic"],
+    //                 "favorite" => $row["state"]
+    //             );
+    //             array_push($songs, $song);
+    //         }
+    //     }
+    //     return $songs;
+    // }
     // get list from library
     public function getListMusic()
     {
@@ -178,9 +219,9 @@ class MusicModel extends DB
                 JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
                 WHERE NameMusic like ? Or artist.NameArtist like ?
                 GROUP BY storemusic.IdMusic";
-        $stmt= $this->con->prepare($sql);
-        $val="%".$val."%";
-        $stmt->bind_param("ss",$val,$val);
+        $stmt = $this->con->prepare($sql);
+        $val = "%" . $val . "%";
+        $stmt->bind_param("ss", $val, $val);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -552,5 +593,46 @@ class MusicModel extends DB
             ];
         }
         return $artistAll;
+    }
+
+    public function getSongFromList($idMusic, $idList = null)
+    {
+        if ($idList != null) {
+            $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist,storemusic.state
+        FROM listmusic
+        JOIN song_artist_category on listmusic.IdMusic=song_artist_category.IdMusic
+        JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+        JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+        WHERE song_artist_category.IdMusic=? AND listmusic.IdList=?
+        GROUP BY storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param("ii", $idMusic, $idList);
+        } else {
+            $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist,storemusic.state
+        FROM song_artist_category
+        JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
+        JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+        GROUP BY storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param("i", $idMusic);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $songs = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $song = array(
+                    "id" => $row["IdMusic"],
+                    "name" => $row["NameMusic"],
+                    "artist" => $row["NameArtist"],
+                    "path" => "../music/{$row['NameMusic']}-{$row['NameArtist']}.mp3",
+                    "image" => $row["NameImageMusic"],
+                    "favorite" => $row["state"]
+                );
+                array_push($songs, $song);
+            }
+        }
+        return $songs;
     }
 }

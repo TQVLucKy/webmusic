@@ -24,14 +24,15 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
         storemusic.NameMusic, 
         GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, 
         category.NameCategory
-    FROM song_artist_category
+    FROM listmusic 
+    JOIN song_artist_category on listmusic.IdMusic=song_artist_category.IdMusic
     JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
     JOIN category ON song_artist_category.IdCategory = category.IdCategory
     JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+    WHERE listmusic.IdList = ?
     GROUP BY storemusic.IdMusic, storemusic.NameMusic, category.NameCategory
     ) AS subquery
     WHERE 
-        listmusic.IdMusic = ?
         subquery.NameMusic LIKE ? 
         OR subquery.NameCategory LIKE ? 
         OR subquery.NameArtist LIKE ?";
@@ -52,7 +53,7 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
                 echo htmlspecialchars($row['NameArtist']);
                 echo '</td><td>';
                 echo htmlspecialchars($row['NameCategory']);
-                echo '</tb><td>';
+                echo '</td><td>';
                 echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($row['IdMusic']).'">Play</button>';
                 echo '<button onclick="deleteMusicFromDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($row['IdMusic']) . '">Remove</button>';
                 echo '</td></tr>';
