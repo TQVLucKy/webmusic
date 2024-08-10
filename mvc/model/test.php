@@ -26,6 +26,7 @@ if (isset($_POST['submitLogin'])) {
     if ($result) {
         $_SESSION["loginedin"] = true;
         $_SESSION["username"] = $_POST['name'];
+        $_SESSION['userid'] = $result;
     } else  echo false;
 }
 

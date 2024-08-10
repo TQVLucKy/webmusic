@@ -14,8 +14,20 @@ class MusicModel extends DB
 
     public function Library()
     {
-        $qr = "select * from library";
-        return mysqli_query($this->con, $qr);
+        $sql = "SELECT library.IdList, library.NameList
+            FROM library 
+            JOIN account_library ON library.IdList = account_library.IdList
+            WHERE account_library.IdAccount = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('i', $_SESSION['userid']);
+        $stmt->execute();
+        $result = $stmt->get_result(); // Lấy kết quả từ câu truy vấn
+
+        if ($result) {
+            return $result->fetch_all(MYSQLI_ASSOC); // Trả về tất cả kết quả dưới dạng mảng liên kết
+        } else {
+            return [];
+        }
     }
 
     public function Album()
@@ -69,7 +81,7 @@ class MusicModel extends DB
     // {
     //     $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist,category.NameCategory,storemusic.state
     //     FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
-	// 	join category on song_artist_category.IdCategory=category.IdCategory
+    // 	join category on song_artist_category.IdCategory=category.IdCategory
     //     join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
     //     GROUP BY storemusic.IdMusic, storemusic.NameMusic, storemusic.NameImageMusic, category.NameCategory, storemusic.state";
     //     $result = mysqli_query($this->con, $sql);
@@ -101,8 +113,12 @@ class MusicModel extends DB
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
         JOIN listmusic on song_artist_category.IdMusic=listmusic.IdMusic
-        join library on listmusic.IdList=library.IdList";
-        return mysqli_query($this->con, $sql);
+        join library on listmusic.IdList=library.IdList
+        join account_library on library.IdList= account_library.IdList
+        WHERE IdAccount=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('i', $_SESSION['userid']);
+        return $stmt->execute();
     }
 
 
@@ -240,9 +256,18 @@ class MusicModel extends DB
     public function addList($name)
     {
         // Thêm danh sách mới vào database
-        $sql = "insert into library(NameList) values ('$name')";
-        if (mysqli_query($this->con, $sql)) {
+        $sql = "insert into library(NameList) values (?)";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('s', $name);
+        if ($stmt->execute()) {
+            $idList = $this->con->insert_id;
             echo "danh sách tạo thành công.";
+
+            $sql = "insert into account_library (IdList,IdAccount) values (?,?)";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param('ii', $idList, $_SESSION['userid']);
+            if (!$stmt->execute())
+                echo "Lỗi: " . $sql . "<br>" . $this->con->error;
         } else {
             echo "Lỗi: " . $sql . "<br>" . $this->con->error;
         }

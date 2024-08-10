@@ -18,13 +18,10 @@ class UserModel extends DB
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, "ss", $username, $password);
             mysqli_stmt_execute($stmt);
-            mysqli_stmt_store_result($stmt);
-
-            $num_rows = mysqli_stmt_num_rows($stmt);
-
+            mysqli_stmt_bind_result($stmt, $idAccount);
+            mysqli_stmt_fetch($stmt);
             mysqli_stmt_close($stmt);
-
-            return $num_rows > 0;
+            return $idAccount;
         } else {
             false;
         }

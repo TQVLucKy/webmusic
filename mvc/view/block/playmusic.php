@@ -9,6 +9,11 @@
         // print_r($_GET);     
         // echo "ID: ".$_GET['url'];
         ?> -->
+
+
+<!-- bắt đầu phân chia session,cookie các chức năng của người dùng, admin
+thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chút  -->
+<!-- thêm các nút tắt ở các bảng -->
 <div class="playmusic">
     <div class="music">
         <div class="container">
