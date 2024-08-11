@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -31,14 +31,14 @@
         <button class="dang-nhap btn btn-secondary" onclick="showLogin()">Đăng Nhập</button>
     </div>
     <div class="account-login" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
-        <img onclick="info()" style="max-width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
+        <img style="width:50px;height:50px;border-radius: 50%;" src=../img/1702540646.jpg>
         <div class="account-info" id="info" style="display: none;">
             <button class="change-password" onclick="FormChangePassword()">Đổi mật khẩu</button></br>
             <button class="log-out" onclick="Logout()">Đăng xuất</button>
         </div>
     </div>
 </div>
-<div class="login" id="login" style="display:none">
+<div class="musicForm login" id="login" style="display:none">
     <h2 class="text-center">Login my website</h2>
     <form id="loginForm" method="POST">
         <label for="loginName">Tên đăng nhập:</label>
@@ -49,7 +49,7 @@
     </form>
 </div>
 <!-- làm tiếp register và sau đó tối ưu lại đn, đk, đx.  -->
-<div class="sign-up" id="signUp" style="display:none">
+<div class="musicForm sign-up" id="signUp" style="display:none">
     <h2 class="text-center">Register my website</h2>
     <form id="signUpForm" method="POST">
         <label for="signUpName">Tên đăng nhập:</label>
@@ -59,11 +59,25 @@
         <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
     </form>
 </div>
+
+<div id="overlay"></div>
+
 <script>
+    var overlay = document.getElementById('overlay');
+    overlay.addEventListener('click', function() {
+        document.querySelectorAll('.musicForm').forEach(function(form) {
+            form.style.display = 'none';
+        });
+        overlay.style.display = 'none';
+        document.getElementById('create').style.display = "none";
+    });
+
     function showLogin() {
         var form = document.getElementById("login");
         if (form.style.display === "none") {
             form.style.display = "block";
+            overlay.style.display = 'block';
+
         } else {
             form.style.display = "none";
         }
@@ -71,7 +85,7 @@
     // login form
     $(document).ready(function() {
         $('#loginForm').submit(function(event) {
-            // Ngăn chặn form gửi đi mặc định
+            // Ngăn chặn form gửi đi mặc định 
             event.preventDefault();
             // Lấy dữ liệu từ form
             var name = $('input[name="loginName"]').val();
@@ -127,11 +141,20 @@
             </div>
         </div>
         `;
+        overlay.style.display = 'block';
+
         document.body.appendChild(formchangepassword);
         // Gán sự kiện submit cho form
+
+        overlay.addEventListener('click', function() {
+            formchangepassword.remove();
+            overlay.style.display = 'none';
+        });
+
         $(formchangepassword).submit(function(event) {
             event.preventDefault();
-            var userName= <?php if(isset($_SESSION["username"])) echo $_SESSION["username"]; else echo '-1';?>;
+            var userName = <?php if (isset($_SESSION["username"])) echo $_SESSION["username"];
+                            else echo '-1'; ?>;
             var passOld = $('input[name="passOld"]').val();
             var passNew1 = $('input[name="passNew1"]').val();
             var passNew2 = $('input[name="passNew2"]').val();
@@ -139,7 +162,7 @@
                 type: 'POST',
                 url: './model/test',
                 data: {
-                    userName:userName,
+                    userName: userName,
                     passOld: passOld,
                     passNew1: passNew1,
                     passNew2: passNew2,
@@ -147,8 +170,8 @@
                 },
                 success: function(response) {
                     // alert(response);
-                    console.log(response);
-                    // window.location.href="./";
+                    formchangepassword.remove();
+                    overlay.style.display = 'none';
                 }
             });
         });
@@ -256,12 +279,32 @@
         window.history.next();
     }
 
-    function info() {
-        var form = document.getElementById("info");
-        if (form.style.display === "none") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
-    }
+    // function info() {
+    //     var form = document.getElementById("info");
+    //     if (form.style.display === "none") {
+    //         form.style.display = "block";
+    //     } else {
+    //         form.style.display = "none";
+    //     }
+    // }
+    $(document).ready(function() {
+        $('.account-login').on('click', function(event) {
+            event.stopPropagation();
+            var form = $('#info');
+            if (form.is(':visible')) {
+                form.hide();
+            } else {
+                form.show();
+            }
+        });
+        $(document).on('click', function(event) {
+            var form = $('#info');
+            var target = $(event.target);
+
+            // Nếu không click vào form hoặc nút login thì ẩn form
+            if (!target.closest('#info').length && !target.closest('.account-login').length) {
+                form.hide();
+            }
+        });
+    });
 </script>

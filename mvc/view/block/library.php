@@ -1,6 +1,6 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
-    <script type="text/javascript" src="../public/js/library.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
+    <!-- <script type="text/javascript" src="../public/js/library.js"></script> -->
 </head>
 
 <div class="container-fluid library col-md-2 pt-1">
@@ -47,15 +47,15 @@
     </div> -->
 </div>
 <div id="create" style="display: none;">
-    <button id="addMusic" onclick="addMusic()">thêm bài nhạc</button><br>
-    <button type="button" onclick="delMusic()">Xóa bài nhạc</button><br>
-    <button id="addList" onclick="addList()">Thêm danh sách</button><br>
-    <button id="addAlbum" onclick="addAlbum()">Thêm album</button>
-    <button id="addArtist" onclick="addArtist()">Thêm ca sĩ</button>
+    <button class="musicBtn" id="addMusic" onclick="addMusic()">Thêm bài nhạc</button><br>
+    <button class="musicBtn" id="delMusic" onclick="delMusic()">Xóa bài nhạc</button><br>
+    <button class="musicBtn" id="addList" onclick="addList()"> Thêm danh sách</button><br>
+    <button class="musicBtn" id="addAlbum" onclick="addAlbum()">Thêm album</button>
+    <button class="musicBtn" id="addArtist" onclick="addArtist()">Thêm ca sĩ</button>
 </div>
 
 <!-- show create music -->
-<form class="container-fluid add-music" id="showCreate" style="display:none;" method="post" enctype="multipart/form-data">
+<form class="musicForm add-music" id="showCreate" style="display:none;" method="post" enctype="multipart/form-data">
     <label for="musicName">Tên bài hát:</label>
     <input type="text" name="musicName"><br>
     <label for="music">Chọn nhạc:</label>
@@ -73,14 +73,14 @@
 </form>
 
 <!-- show list -->
-<form class="container-fluid add-list" id="showList" style="display:none;" method="get">
+<form class="musicForm add-list" id="showList" style="display:none;" method="get" data-target="#musicForm1">
     <label for="nameList">Tên danh sách:</label>
     <input type="text" name="nameList">
     <input type="submit" name="submitList" value="Tạo">
 </form>
 
 <!-- show album -->
-<form class="container-fluid add-album" id="showAlbum" style="display:none;" method="get">
+<form class="musicForm add-album" id="showAlbum" style="display:none;" method="get">
     <label for="nameAlbum">Tên Album:</label>
     <input type="text" name="nameAlbum">
 
@@ -88,24 +88,32 @@
 </form>
 
 <!-- show add artist -->
-<form class="contrainer-fluid add-artist" id="showAddArtist" style="display: none;" method="Post">
+<form class="musicForm add-artist" id="showAddArtist" style="display: none;" method="Post">
     <label for="nameArtist">Tên ca sĩ:</label>
     <input type="text" name="nameArtist"></br>
     <label for="imageArtist">Chọn ảnh đại diện:</label>
     <input type="file" name="imageArtist"></br>
     <input type="submit" name="submitAddArtist" value="Thêm">
 </form>
+
+
+<div id="overlay"></div>
+
 <script>
+    var overlay = document.getElementById('overlay');
+
     function addAlbum() {
         document.getElementById('showAlbum').style.display = "block";
         document.getElementById('showAlbum').style.position = "absolute";
-        document.getElementById('showAlbum').style.zIndex = "1";
+        overlay.style.display = 'block';
+
     }
 
     function addArtist() {
         document.getElementById('showAddArtist').style.display = "block";
         document.getElementById('showAddArtist').style.position = "absolute";
-        document.getElementById('showAddArtist').style.zIndex = "1";
+        overlay.style.display = 'block';
+
     }
 
     $(document).ready(function() {
@@ -249,29 +257,22 @@
     });
 
 
-    var create = document.getElementById('create');
-    var clicked = true;
-
-    document.addEventListener("click", function() {
-        if (clicked) {
-            document.getElementById('create').style.display = "none";
+    // nhấn vào chỉ hiển thị, còn mất thì không được
+    function Show() {
+        var create = document.getElementById('create');
+        if (create.style.display == "none") {
+            create.style.display = "block";
+        } else {
+            create.style.display = "none";
         }
 
-    })
-
-    function Show() {
-        document.getElementById('create').style.display = "block";
-        document.getElementById('create').style.position = "absolute";
-        if (clicked)
-            clicked = false;
-        else clicked = true;
-
     };
+
 
     function addMusic() {
         document.getElementById('showCreate').style.display = "block";
         document.getElementById('showCreate').style.position = "absolute";
-        document.getElementById('showCreate').style.zIndex = "1";
+        overlay.style.display = 'block';
     }
 
     function delMusic() {
@@ -282,6 +283,13 @@
     function addList() {
         document.getElementById('showList').style.display = "block";
         document.getElementById('showList').style.position = "absolute";
-        document.getElementById('showList').style.zIndex = "1";
+        overlay.style.display = 'block';
     }
+    overlay.addEventListener('click', function() {
+        document.querySelectorAll('.musicForm').forEach(function(form) {
+            form.style.display = 'none';
+        });
+        overlay.style.display = 'none';
+        document.getElementById('create').style.display = "none";
+    });
 </script>
