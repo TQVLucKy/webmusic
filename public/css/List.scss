@@ -13,4 +13,8 @@
         text-align: left;
         padding: 8px;
     }
+    th:last-child, td:last-child{
+        white-space: nowrap;
+        width: 100px;
+    }
 }

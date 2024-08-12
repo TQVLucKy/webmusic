@@ -418,7 +418,6 @@ $font-size: 24px;
 
 .contact {
     display: flex;
-
     .btn {
         font-size: 1.5em;
         width: 50px;
@@ -469,14 +468,14 @@ $font-size: 24px;
 }
 
 #List {
+    position: absolute;
     left: 100px;
     top: 235px;
     background-color: white;
     color: black;
     width: 150px;
     padding: 0;
-    z-index: 1;
-
+    z-index: 1001;
     .itemslist {
         color: black;
         border: none;

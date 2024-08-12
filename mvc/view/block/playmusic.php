@@ -33,9 +33,9 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                     </button>
                     <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
                     <div class="volume-container">
-                <button class="volume-button"><i class="fa-solid fa-volume-high" style="color: #ffffff;"></i></button>
-                <input type="range" class="volume-slider" min="0" max="100" value="50">
-            </div>
+                        <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
+                        <input type="range" class="volume-slider" min="0" max="100" value="50">
+                    </div>
                 </div>
 
             </div>
@@ -48,9 +48,19 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         echo " onclick=updateFavorite()>";
         echo "<i class='fa fa-heart'></i></button>";
         ?>
-        <button class="material-icons" onclick=addMusicToLibrary()>add</button>
-
+        <button class="material-icons" onclick=showLibrary()>add</button>
+        <div id="list" style="display: none;">
+            <?php
+            foreach ($data["Lib"] as $print) {
+                echo '<div class="items-list" id="idList" onclick="addToLibrary(' . $print['IdList'] . ')">';
+                echo $print['NameList'];
+                echo '</div>';
+            }
+            ?>
+        </div>
     </div>
+    <!-- add song to library -->
+
     <!-- mini music -->
     <audio src="" id="audio"></audio>
     <div class="music-slider" id="music-slider" style="display: none;">
@@ -67,22 +77,13 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
             </button>
             <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
             <div class="volume-container">
-                <button class="volume-button"><i class="fa-solid fa-volume-high" style="color: #ffffff;"></i></button>
+                <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
                 <input type="range" class="volume-slider" min="0" max="100" value="50" orient="vertical">
             </div>
         </div>
     </div>
 
-    <!-- add song to library -->
-    <div id="list" style="display: none;">
-        <?php
-        foreach ($data["Lib"] as $print) {
-            echo '<div class="items-list" id="idList" onclick=AddToLibrary(' . $print['IdList'] . ')>';
-            echo $print['NameList'];
-            echo '</div>';
-        }
-        ?>
-    </div>
+
     <div class="artists">
         <div id="artistList"></div>
     </div>
@@ -178,22 +179,14 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         getRecommendedByArtist(48, <?php echo $_GET["id"] ?>);
     });
 
-    var list = document.getElementById('list');
-    var clickedList = true;
 
-    function handleListClick() {
-        if (clickedList) {
-            document.getElementById('list').style.display = "none";
-        }
-    }
-    document.addEventListener("click", handleListClick);
 
-    function addMusicToLibrary() {
-        document.getElementById('list').style.display = "block";
-        document.getElementById('list').style.position = "absolute";
-        if (clickedList)
-            clickedList = false;
-        else clickedList = true;
+    function showLibrary() {
+        var list = document.getElementById('list');
+        if (list.style.display === "none") {
+            list.style.display = "block";
+        } else
+            list.style.display = "none";
     };
 
     let songs = <?php echo json_encode($data["g"]); ?>;
@@ -209,7 +202,9 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     const btnplay = document.querySelectorAll('.btn-play');
     const btnback = document.querySelectorAll('.btnback');
     const btnnext = document.querySelectorAll('.btnnext');
-    const volumeSlider = document.querySelectorAll('.volume-slider')
+    const volumeSlider = document.querySelectorAll('.volume-slider');
+    const volumeButton = document.querySelectorAll('.volume-button');
+    const volumeIcon = document.querySelectorAll('.volume-icon');
     // window.addEventListener("scroll", () => {
     //     if (document.body.scrollTop>200)
     //         document.getElementById('1').style.display = 'block';
@@ -230,8 +225,6 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 console.log(response);
             }
         });
-        clickedList = true;
-        handleListClick();
     }
     //xử lý favorite
     function updateFavorite() {
@@ -414,6 +407,9 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     // }
 
     //Next and PreView
+
+    // đổi lại: khi next hoặc prev sẽ thay đổi thông tin của tác giả, recommended, các bài nhạc của tác giả.
+    // hoặc là sẽ reload lại trang luôn?
     btnnext.forEach(element => {
         element.addEventListener('click', () => {
             boxdisk.classList.remove('play');
@@ -453,10 +449,47 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     //     setSong(randomSong);
     // })
 
+    let prevVolume = music.volume;
+    let isMuted = false;
+
+    function updateVolumeIcon(volume) {
+        volumeIcon.forEach(icon => {
+            if (volume >= 0.5) {
+                icon.classList.remove('fa-volume-mute', 'fa-volume-low');
+                icon.classList.add('fa-volume-high');
+            } else if (volume > 0) {
+                icon.classList.remove('fa-volume-mute', 'fa-volume-high');
+                icon.classList.add('fa-volume-low');
+            } else {
+                icon.classList.remove('fa-volume-low', 'fa-volume-high');
+                icon.classList.add('fa-volume-mute');
+            }
+        })
+    }
 
     volumeSlider.forEach(slider => {
         slider.addEventListener('input', function() {
-            music.volume = slider.value;
+            music.volume = slider.value / 100;
+            previousVolume = music.volume;
+            updateVolumeIcon(music.volume)
         });
     });
+    volumeButton.forEach(button => {
+        button.addEventListener('click', function() {
+            if (isMuted) {
+                music.volume = prevVolume;
+                volumeSlider.forEach(slider => {
+                    slider.value = prevVolume * 100;
+                });
+            } else {
+                prevVolume = music.volume;
+                music.volume = 0;
+                volumeSlider.forEach(slider => {
+                    slider.value = 0;
+                });
+            }
+            isMuted = !isMuted;
+            updateVolumeIcon(music.volume);
+        });
+    })
 </script>

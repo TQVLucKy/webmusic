@@ -108,17 +108,33 @@ class MusicModel extends DB
     // get list from library
     public function getListMusic()
     {
-        $sql = "SELECT *
+        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,artist.NameArtist,category.NameCategory,GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist
         FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
         JOIN listmusic on song_artist_category.IdMusic=listmusic.IdMusic
         join library on listmusic.IdList=library.IdList
         join account_library on library.IdList= account_library.IdList
-        WHERE IdAccount=?";
+        WHERE IdAccount=? And listmusic.IdList=?
+        GROUP BY storemusic.IdMusic,storemusic.IdMusic,artist.NameArtist,category.NameCategory";
         $stmt = $this->con->prepare($sql);
-        $stmt->bind_param('i', $_SESSION['userid']);
-        return $stmt->execute();
+        $stmt->bind_param('ii', $_SESSION['userid'],$_GET['id']);
+        $stmt->execute();
+        $result= $stmt->get_result();
+
+        $listMusic = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $list = array(
+                    "IdMusic" => $row["IdMusic"],
+                    "NameMusic" => $row["NameMusic"],
+                    "NameArtist" => $row["NameArtist"],
+                    "NameCategory"=> $row["NameCategory"]
+                );
+                array_push($listMusic, $list);
+            }
+        }
+        return $listMusic;
     }
 
 
@@ -147,7 +163,6 @@ class MusicModel extends DB
     // Thêm nhạc vào danh sách phát
     public function addMusicToLibrary($IdList, $IdMusic)
     {
-
         //Sau này sẽ thay đổi lại: khi đã lưu ở trong library nào đó
         //thì khi nhấn vào lại sẽ chuyển sang hủy thêm nào library đó
         //or đã tồn tại trong 1 library thì chuyển nút thêm thành hủy (1 trong 2 cách)
@@ -155,7 +170,10 @@ class MusicModel extends DB
         //chỉnh sửa khi thêm music và xem lại add music
         //làm view show library
         // Kiểm tra xem IdList và IdMusic đã tồn tại chưa
-        $query = "SELECT COUNT(*) AS count FROM listmusic WHERE IdList = '$IdList' AND IdMusic = '$IdMusic'";
+        $userId = $_SESSION['userid'];
+        $query = "SELECT COUNT(*) AS count FROM listmusic
+            JOIN account_library on listmusic.IdList=account_library.IdList
+            WHERE listmusic.IdList = '$IdList' AND IdMusic = '$IdMusic' AND IdAccount='$userId'";
         $result = mysqli_query($this->con, $query);
 
         if ($result) {

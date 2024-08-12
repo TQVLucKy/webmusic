@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../public/css/List.css">
+<link rel="stylesheet" type="text/css" href="../public/css/List.scss">
 <script type="text/javascript" src="../public/js/List.js"></script>
 <!-- STT         Name        Artist      play        remove -->
 
@@ -46,8 +46,8 @@
                 if ($stt === 1) { 
                     echo '<button id="playFirstMusic" onclick="playMusic(this)" data-idMusic="' . $print['IdMusic'] . '">Play</button>';
                 }
-                else echo '<button  onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Play</button>';
-                echo '<button onclick="deleteMusicFromDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '" data-idArtist="' . htmlspecialchars($print['IdArtist']) . '" data-idCategory="' . htmlspecialchars($print['IdCategory']) . '">Remove</button>';
+                else echo '<button  onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Play</button>';
+                echo '<button onclick="deleteMusicFromDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Remove</button>';
                 echo '</td></tr>';
                 $stt++;
             }

@@ -12,4 +12,8 @@
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+.list-library th:last-child, .list-library td:last-child {
+  white-space: nowrap;
+  width: 100px;
 }/*# sourceMappingURL=List.css.map */
