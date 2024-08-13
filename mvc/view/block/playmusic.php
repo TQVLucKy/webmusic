@@ -190,7 +190,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     };
 
     let songs = <?php echo json_encode($data["g"]); ?>;
-    let currentSong = 0;
+    let currentSong = 1;
 
     const music = document.querySelector('#audio');
     const seekbar = document.querySelectorAll('.seek-bar');
@@ -283,6 +283,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         })
     });
     //media
+
     const updateCurrentMusicInfo = () => {
         songname.forEach(element => {
             element.innerHTML = songs[currentSong].name;
@@ -299,14 +300,15 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     }
 
     const setSong = (i) => {
-        seekbar.value = 0;
         let song = songs[i];
         currentSong = i;
+        seekbar.value = 0;
+
         updateCurrentMusicInfo();
         music.src = song.path;
         boxdisk.style.backgroundImage = 'url(../img/' + song.image + ')';
-
         currenttimes.innerHTML = '00:00';
+
         setTimeout(() => {
             seekbar.forEach(element => {
                 element.max = music.duration;
@@ -314,26 +316,21 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
             musictime.forEach(element => {
                 element.innerHTML = formatTimes(music.duration);
             })
+
+            if (music.paused) {
+            music.play();
+            btnplay.forEach(btn => {
+                btn.classList.toggle('pause');
+            });
+            boxdisk.classList.toggle('play');
+        }
         }, 300);
 
         //tự động phát khi chọn/chuyển bài
-        setTimeout(() => {
-            if (music.paused) {
-                music.play();
-                btnplay.forEach(element1 => {
-                    element1.classList.toggle('pause');
-                });
-                boxdisk.classList.toggle('play');
-            }
-        }, 300);
+        
     }
 
-
-    var url = new URL(window.location.href);
-    console.log(url);
-    var id = url.searchParams.get("id");
-    setSongById(id);
-
+    
     window.addEventListener('load', () => {
         if (music.paused) {
             music.play();
@@ -409,37 +406,57 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     //Next and PreView
 
     // đổi lại: khi next hoặc prev sẽ thay đổi thông tin của tác giả, recommended, các bài nhạc của tác giả.
-    // hoặc là sẽ reload lại trang luôn?
+    // hoặc là sẽ reload lại trang luôn? (COMPLITE)
+
+    // Nếu còn thời gian thì chỉnh sửa lại cái tên của các bài nhạc
+    // ý tưởng sửa là thêm 1 cái cột có tên là NumberNameSong và cho số random như cái ảnh
+    // sau khi 
+
+    //nhóm trang thêm số thứ tự(đại loại vậy), khi mà phát theo nhóm hay gì đó sẽ dựa vào đó để lấy ra
+    // ví dụ như phát bài tiếp theo theo danh sách thể loại, tác giả, hoặc random luôn
+    // thế thì phải thêm nút chuyển sang trạng cái random.
     btnnext.forEach(element => {
-        element.addEventListener('click', () => {
-            boxdisk.classList.remove('play');
-            console.log(boxdisk);
+        element.addEventListener('click', async () => {
+            let nextSongId;
+
+            // Lấy id của bài tiếp theo từ server hoặc cơ sở dữ liệu
             if (currentSong >= songs.length - 1) {
-                currentSong = 0;
+                let nextSong = await fetchNextSong(songs[currentSong].id);
+                nextSongId = nextSong.id;
             } else {
-                currentSong++;
+                nextSongId = songs[currentSong + 1].id;
             }
-            btnplay.forEach(btn => {
-                btn.classList.add('pause');
-            });
-            setSong(currentSong);
-        })
+            btnplay.forEach(btn => btn.classList.add('pause'));
+            // Điều hướng đến trang mới với id của bài hát tiếp theo
+            let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + nextSongId;
+            window.location.href = newUrl;
+        });
     })
 
     btnback.forEach(element => {
-        element.addEventListener('click', () => {
-            boxdisk.classList.remove('play');
+        element.addEventListener('click', async () => {
+            let prevSongId;
+
+            // Lấy id của bài trước đó từ server hoặc cơ sở dữ liệu
             if (currentSong <= 0) {
-                currentSong = songs.length + 1;
+                let prevSong = await fetchPreviousSong(songs[currentSong].id);
+                prevSongId = prevSong.id;
             } else {
-                currentSong--;
+                prevSongId = songs[currentSong - 1].id;
             }
-            btnplay.forEach(btn => {
-                btn.classList.add('pause');
-            });
-            setSong(currentSong);
-        })
+            btnplay.forEach(btn => btn.classList.add('pause'));
+            // Điều hướng đến trang mới với id của bài hát trước đó
+            let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + prevSongId;
+            window.location.href = newUrl;
+        });
     });
+
+
+    var url = new URL(window.location.href);
+    console.log(url);
+    var id = url.searchParams.get("id");
+    setSongById(id);
+
 
     //random music
     // btnrandom.addEventListener('click', () => {
