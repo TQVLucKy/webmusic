@@ -25,16 +25,19 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 <input type="range" value="0" class="seek-bar" />
                 <span class="current-music">tên bài</span>
                 <span class="current-artist">ca sĩ</span>
+                <span class="current-view">view</span>
                 <div class="controls">
-                    <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
-                    <button class="btn-play pause">
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
-                    <div class="volume-container">
-                        <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
-                        <input type="range" class="volume-slider" min="0" max="100" value="50">
+                    <div class="btn-control">
+                        <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
+                        <button class="btn-play pause">
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
+                        <div class="volume-container">
+                            <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
+                            <input type="range" class="volume-slider" min="0" max="100" value="50">
+                        </div>
                     </div>
                 </div>
 
@@ -69,7 +72,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         <input type="range" value="0" class="seek-bar" />
         <span class="current-music">tên bài</span>
         <span class="current-artist">ca sĩ</span>
-        <div class="controls">
+        <div class="controls-mini">
             <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
             <button class="btn-play pause">
                 <span></span>
@@ -93,9 +96,6 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         <script src="../public/js/playmusic.js"></script>
     </div>
     <div class="popular-music-artist">
-        <p>Các bản nhạc thịnh hành của</p>
-        <h2 class="current-artist">ca sĩ</h2>
-        <div id="recommendedByArtist"></div>
     </div>
 </div>
 <script>
@@ -109,12 +109,14 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
             },
             success: function(data) {
                 const getArtists = JSON.parse(data);
-                getArtists.forEach(function(item) {
-                    $('#artistList').append(`<img src="../img/1722584840.jpg" style="width:100px;height:100px">
+                if (getArtists && Array.isArray(getArtists)) {
+                    getArtists.forEach(function(item) {
+                        $('#artistList').append(`<img src="../img/1722584840.jpg" style="width:100px;height:100px">
                     <a class="artist-item" href="./Artist?id=${item['IdArtists']}">
                     ${item['NameArtists']}
                     </a>`);
-                });
+                    });
+                } else console.log("Không tìm thấy nghệ sĩ cho bài hát này.");
             }
         });
     }
@@ -136,11 +138,12 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 const recommendations = JSON.parse(data);
                 recommendations.forEach(function(item) {
                     $('#recommendations').append(`<a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
-            <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
+            <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px;">
             <div>
                 <h5>${item['NameMusic']}</h5>
                 <p style="opacity:0.8;">${item['NameArtists']}</p>
             </div>
+            <span class="song-view">${item['View']}</span>
             </a>`);
                 });
             }
@@ -151,32 +154,43 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     });
 
     //recommended by artist
-    function getRecommendedByArtist(artistId, songId) {
+    function getRecommendedByArtist(songId) {
         $.ajax({
             url: './model/test?action=getRecommendedByArtist',
             type: 'GET',
             data: {
-                artist_id: artistId,
                 song_id: songId
             },
             success: function(data) {
-                console.log(data);
+                console.log("Kiem tra:" + data);
                 const recommendedByArtist = JSON.parse(data);
-                recommendedByArtist.forEach(function(item) {
-                    $('#recommendedByArtist').append(`<a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
-            <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
-            <div>
-                <h5>${item['NameMusic']}</h5>
-                <p style="opacity:0.8;">${item['NameArtists']}</p>
-            </div>
-            </a>`);
-                });
+                if (recommendedByArtist && Array.isArray(recommendedByArtist)) {
+                    if (recommendedByArtist[0]['NameArtists']) {
+                        $('.popular-music-artist').append(`
+                        <p>Các bản nhạc thịnh hành của</p>
+                        <div class="famous-artist"></div>
+                        <div id="recommendedByArtist"></div>`);
+                        $('.famous-artist').append(`<h2 class="current-artist-famous">${recommendedByArtist[0]['NameArtists']}</h2>`)
+                        recommendedByArtist.forEach(function(item) {
+
+                            $('.popular-music-artist').append(`
+                    <a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
+                        <img src="../img/${item['NameImageMusic']}" style="width:50px;height:50px">
+                        <div>
+                            <h5>${item['NameMusic']}</h5>
+                            <p style="opacity:0.8;">${item['NameArtists']}</p>
+                        </div>
+                        <span class="song-view">${item['View']}</span>
+                    </a>`);
+                        });
+                    }
+                } else console.log("Không tìm thấy bài hát đề xuất.");
             }
         });
     }
 
     $(document).ready(function() {
-        getRecommendedByArtist(48, <?php echo $_GET["id"] ?>);
+        getRecommendedByArtist(<?php echo $_GET["id"] ?>);
     });
 
 
@@ -196,6 +210,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     const seekbar = document.querySelectorAll('.seek-bar');
     const artist = document.querySelectorAll('.current-artist');
     const songname = document.querySelectorAll('.current-music');
+    const currentview = document.querySelector('.current-view');
     const boxdisk = document.querySelector('.box-disk');
     const currenttimes = document.querySelectorAll('.current-time');
     const musictime = document.querySelectorAll('.music-time');
@@ -291,6 +306,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         artist.forEach(element => {
             element.innerHTML = songs[currentSong].artist;
         })
+        currentview.innerHTML = songs[currentSong].view
     };
     const setSongById = (id) => {
         let index = songs.findIndex(song => song.id == id);
@@ -318,19 +334,19 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
             })
 
             if (music.paused) {
-            music.play();
-            btnplay.forEach(btn => {
-                btn.classList.toggle('pause');
-            });
-            boxdisk.classList.toggle('play');
-        }
+                music.play();
+                btnplay.forEach(btn => {
+                    btn.classList.toggle('pause');
+                });
+                boxdisk.classList.toggle('play');
+            }
         }, 300);
 
         //tự động phát khi chọn/chuyển bài
-        
+
     }
 
-    
+
     window.addEventListener('load', () => {
         if (music.paused) {
             music.play();
@@ -379,10 +395,23 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
             music.currentTime = element.value;
         });
     });
+
+    function increaseViews() {
+        const currentSongId = songs[currentSong].id;
+        $.ajax({
+            type: 'GET',
+            url: './model/test?action=increaseViews',
+            data: {
+                currentSongId: currentSongId
+            }
+        })
+      
+    }
     // Tự động chuyển bài khi kết thúc bài hiện tại
     music.addEventListener('ended', () => {
         if (btnnext.length > 0) {
-            btnnext[0].click();
+            increaseViews();
+            // btnnext[0].click();
         }
     });
 
@@ -412,9 +441,13 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     // ý tưởng sửa là thêm 1 cái cột có tên là NumberNameSong và cho số random như cái ảnh
     // sau khi 
 
-    //nhóm trang thêm số thứ tự(đại loại vậy), khi mà phát theo nhóm hay gì đó sẽ dựa vào đó để lấy ra
-    // ví dụ như phát bài tiếp theo theo danh sách thể loại, tác giả, hoặc random luôn
+    //nhóm trang thêm số thứ tự(đại loại vậy), khi mà phát theo nhóm hay gì đó sẽ dựa vào đó để lấy ra (complite)
+    // ví dụ như phát bài tiếp theo theo danh sách thể loại, tác giả, hoặc random luôn  (việc lấy ra như thế nào thì hên xui chưa biết)
     // thế thì phải thêm nút chuyển sang trạng cái random.
+
+
+
+    //Về sau nhớ thêm chế độ random bài hát không theo trình tự.
     btnnext.forEach(element => {
         element.addEventListener('click', async () => {
             let nextSongId;

@@ -124,10 +124,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
     if ($_GET['action'] == "getRecommendedByArtist") {
         $controler = new MusicModel();
-        $recommendedByArtist = $controler->getRecommendedByArtist($_GET["artist_id"], $_GET["song_id"]);
-        echo json_encode($recommendedByArtist, JSON_UNESCAPED_UNICODE);
+        $idArtist = $controler->getArtist($_GET["song_id"]);
+
+        if ($idArtist !== null && !empty($idArtist)) {
+            $recommendedByArtist = $controler->getRecommendedByArtist($idArtist['IdArtists'], $_GET["song_id"]);
+            echo json_encode($recommendedByArtist, JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode([], JSON_UNESCAPED_UNICODE); // Trả về mảng rỗng nếu không tìm thấy nghệ sĩ
+        }
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
     if ($_GET['action'] == "getArtists") {
@@ -151,8 +158,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
             $songs = $controler->getSongFromList($_GET['id']);
         else
             $songs = $controler->getSongFromList($_GET['id'], $_GET['idList']);
-
-
         echo json_encode($songs, JSON_UNESCAPED_UNICODE);
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
+    if ($_GET['action'] == 'increaseViews') {
+        $controler = new MusicModel();
+        $controler->increaseViews($_GET['currentSongId']);
     }
 }

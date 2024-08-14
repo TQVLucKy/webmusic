@@ -16,8 +16,14 @@
   border-radius: 10px;
 }
 
+img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .playmusic {
   overflow-y: scroll;
+  overflow-x: hidden;
   max-height: 600px;
 }
 
@@ -54,7 +60,8 @@
 }
 .music .container .title .current-time,
 .music .container .title .music-time,
-.music .container .title .current-artist {
+.music .container .title .current-artist,
+.music .container .title .current-view {
   font-size: 15px;
 }
 .music .container .title .music-time {
@@ -66,7 +73,8 @@
   font-size: 20px;
 }
 .music .container .title .current-music,
-.music .container .title .current-artist {
+.music .container .title .current-artist,
+.music .container .title .current-view {
   display: flex;
   justify-content: center;
 }
@@ -87,12 +95,17 @@
   box-shadow: -1000px 0 0 1000px white;
 }
 .music .container .title .controls {
-  width: 300px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  margin: 15px 360px;
+  justify-content: center;
+  align-items: center;
 }
-.music .container .title .controls .btn-play {
+.music .container .title .controls .btn-control {
+  display: inherit;
+  align-items: center;
+  gap: 20px;
+}
+.music .container .title .controls .btn-control .btn-play {
   position: relative;
   width: 50px;
   height: 50px;
@@ -101,12 +114,12 @@
   cursor: pointer;
   border: none;
 }
-.music .container .title .controls .btn-play:hover {
+.music .container .title .controls .btn-control .btn-play:hover {
   background-color: gray;
   opacity: 0.5;
   transition: 1s;
 }
-.music .container .title .controls .btn-play span {
+.music .container .title .controls .btn-control .btn-play span {
   position: absolute;
   top: 20%;
   left: 25%;
@@ -119,41 +132,14 @@
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.music .container .title .controls .btn-play span:nth-child(2) {
+.music .container .title .controls .btn-control .btn-play span:nth-child(2) {
   left: 55%;
   transform-origin: center;
 }
-.music .container .title .controls .volume-container {
-  position: relative;
-  display: inline-block;
-}
-.music .container .title .controls .volume-container .volume-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
-.music .container .title .controls .volume-container .volume-button i {
-  font-size: 24px;
-}
-.music .container .title .controls .volume-container .volume-slider {
-  width: 70px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.music .container .title .controls .volume-container .volume-slider:hover {
-  opacity: 1;
-  visibility: visible;
-}
-.music .container .title .controls .volume-container:hover .volume-slider {
-  opacity: 1;
-  visibility: visible;
-}
-.music .container .title .btn-play.pause span:nth-child(2) {
+.music .container .title .controls .btn-control .btn-play.pause span:nth-child(2) {
   transform: translateY(-50%) scaleY(0);
 }
-.music .container .title .btn-play.pause span:nth-child(1) {
+.music .container .title .controls .btn-control .btn-play.pause span:nth-child(1) {
   width: 35%;
   top: 47%;
   left: 53%;
@@ -162,7 +148,7 @@
   -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
           clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
 }
-.music .container .title .btn {
+.music .container .title .controls .btn-control .btn {
   width: 40px;
   height: 40px;
   background: gray;
@@ -171,13 +157,39 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 5px;
   color: white;
 }
-.music .container .title .btn:hover {
+.music .container .title .controls .btn-control .btn:hover {
   background-color: black;
   opacity: 0.5;
   transition: 1s;
+}
+.music .container .title .controls .btn-control .volume-container {
+  position: relative;
+  display: inline-block;
+}
+.music .container .title .controls .btn-control .volume-container .volume-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+.music .container .title .controls .btn-control .volume-container .volume-button i {
+  font-size: 24px;
+}
+.music .container .title .controls .btn-control .volume-container .volume-slider {
+  width: 70px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.music .container .title .controls .btn-control .volume-container .volume-slider:hover {
+  opacity: 1;
+  visibility: visible;
+}
+.music .container .title .controls .btn-control .volume-container:hover .volume-slider {
+  opacity: 1;
+  visibility: visible;
 }
 
 @keyframes rotate {
@@ -232,13 +244,13 @@
   display: flex;
   justify-content: center;
 }
-.music-slider .controls {
+.music-slider .controls-mini {
   width: 90%;
   display: flex;
   justify-content: center;
   margin: 15px 35px;
 }
-.music-slider .controls .btn-play {
+.music-slider .controls-mini .btn-play {
   position: relative;
   margin: 5px 10px 0 10px;
   width: 30px;
@@ -248,12 +260,12 @@
   cursor: pointer;
   border: none;
 }
-.music-slider .controls .btn-play:hover {
+.music-slider .controls-mini .btn-play:hover {
   background-color: black;
   opacity: 0.5;
   transition: 1s;
 }
-.music-slider .controls .btn-play span {
+.music-slider .controls-mini .btn-play span {
   position: absolute;
   top: 20%;
   left: 25%;
@@ -266,14 +278,14 @@
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.music-slider .controls .btn-play span:nth-child(2) {
+.music-slider .controls-mini .btn-play span:nth-child(2) {
   left: 55%;
   transform-origin: center;
 }
-.music-slider .controls .btn-play.pause span:nth-child(2) {
+.music-slider .controls-mini .btn-play.pause span:nth-child(2) {
   transform: translateY(-50%) scaleY(0);
 }
-.music-slider .controls .btn-play.pause span:nth-child(1) {
+.music-slider .controls-mini .btn-play.pause span:nth-child(1) {
   width: 35%;
   top: 47%;
   left: 53%;
@@ -282,7 +294,7 @@
   -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
           clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
 }
-.music-slider .controls .btn {
+.music-slider .controls-mini .btn {
   width: 30px;
   height: 30px;
   background: gray;
@@ -294,26 +306,26 @@
   margin-top: 5px;
   color: white;
 }
-.music-slider .controls .btn:hover {
+.music-slider .controls-mini .btn:hover {
   background-color: black;
   opacity: 0.5;
   transition: 1s;
 }
-.music-slider .controls .volume-container {
+.music-slider .controls-mini .volume-container {
   position: relative;
   display: inline-block;
 }
-.music-slider .controls .volume-container .volume-button {
+.music-slider .controls-mini .volume-container .volume-button {
   background: none;
   border: none;
   font-size: 24px;
   transform: rotate(-90deg);
   cursor: pointer;
 }
-.music-slider .controls .volume-container .volume-button i {
+.music-slider .controls-mini .volume-container .volume-button i {
   font-size: 24px;
 }
-.music-slider .controls .volume-container .volume-slider {
+.music-slider .controls-mini .volume-container .volume-slider {
   position: absolute;
   top: -35px;
   left: -3px;
@@ -323,11 +335,11 @@
   visibility: hidden;
   transition: opacity 0.5s ease;
 }
-.music-slider .controls .volume-container .volume-slider:hover {
+.music-slider .controls-mini .volume-container .volume-slider:hover {
   opacity: 1;
   visibility: visible;
 }
-.music-slider .controls .volume-container:hover .volume-slider {
+.music-slider .controls-mini .volume-container:hover .volume-slider {
   opacity: 1;
   visibility: visible;
 }
@@ -412,15 +424,36 @@
   text-decoration: none;
   color: inherit;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   max-height: 60px;
   padding: 5px 0;
-  margin: 5px 0 0 15px;
+  margin: 5px 5px 0 15px;
+  position: relative;
+}
+.recommendation-item img {
+  margin-right: 10px;
+}
+.recommendation-item div {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.recommendation-item div h5,
+.recommendation-item div p {
+  margin: 0;
 }
 .recommendation-item:hover {
   text-decoration: none;
   color: inherit;
   background-color: rgba(17, 17, 17, 0.1);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.recommendation-item .song-view {
+  position: absolute;
+  left: 75%;
+  transform: translateX(-50%);
+  margin-left: 0;
 }
 
 .artists #artistList {
