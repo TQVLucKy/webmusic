@@ -28,6 +28,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 <span class="current-view">view</span>
                 <div class="controls">
                     <div class="btn-control">
+                        <button class="btn btn-random"><i class="fa-solid fa-shuffle"></i></button>
                         <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
                         <button class="btn-play pause">
                             <span></span>
@@ -217,6 +218,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     const btnplay = document.querySelectorAll('.btn-play');
     const btnback = document.querySelectorAll('.btnback');
     const btnnext = document.querySelectorAll('.btnnext');
+    const btnrandom = document.querySelector('.btn-random');
     const volumeSlider = document.querySelectorAll('.volume-slider');
     const volumeButton = document.querySelectorAll('.volume-button');
     const volumeIcon = document.querySelectorAll('.volume-icon');
@@ -405,13 +407,13 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 currentSongId: currentSongId
             }
         })
-      
+
     }
     // Tự động chuyển bài khi kết thúc bài hiện tại
     music.addEventListener('ended', () => {
         if (btnnext.length > 0) {
             increaseViews();
-            // btnnext[0].click();
+            btnnext[0].click();
         }
     });
 
@@ -447,22 +449,60 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
 
 
 
-    //Về sau nhớ thêm chế độ random bài hát không theo trình tự.
+    //random music
+    let isRandom = JSON.parse(localStorage.getItem('isRandom')) || false;
+    document.addEventListener('DOMContentLoaded', () => {
+
+        if (isRandom) {
+            btnrandom.classList.add('active');
+        } else {
+            btnrandom.classList.remove('active');
+        }
+
+        btnrandom.addEventListener('click', () => {
+            isRandom = !isRandom;
+            localStorage.setItem('isRandom', JSON.stringify(isRandom));
+
+            if (isRandom) {
+                btnrandom.classList.add('active');
+            } else {
+                btnrandom.classList.remove('active');
+            }
+        });
+    });
+
     btnnext.forEach(element => {
         element.addEventListener('click', async () => {
-            let nextSongId;
-
-            // Lấy id của bài tiếp theo từ server hoặc cơ sở dữ liệu
-            if (currentSong >= songs.length - 1) {
-                let nextSong = await fetchNextSong(songs[currentSong].id);
-                nextSongId = nextSong.id;
+            if (isRandom) {
+                let nextSongId;
+                if (currentSong >= songs.length - 1) {
+                    let nextSong = await fetchNextSong(songs[currentSong].id);
+                    nextSongId = nextSong.id;
+                } else {
+                    nextSongId = songs[currentSong + 1].id;
+                }
+                btnplay.forEach(btn => btn.classList.add('pause'));
+                let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + nextSongId;
+                window.location.href = newUrl;
             } else {
-                nextSongId = songs[currentSong + 1].id;
+                const currentSongId = songs[currentSong].id;
+                fetch('./model/test', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            IdMusic: currentSongId,
+                            action: "randomsong"
+                        })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + data.song.IdMusic;
+                            window.location.href = newUrl;
+                        }
+                    });
             }
-            btnplay.forEach(btn => btn.classList.add('pause'));
-            // Điều hướng đến trang mới với id của bài hát tiếp theo
-            let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + nextSongId;
-            window.location.href = newUrl;
         });
     })
 
@@ -491,13 +531,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     setSongById(id);
 
 
-    //random music
-    // btnrandom.addEventListener('click', () => {
-    //     randomSong = songs[floor.random() * (songs.length() - 1) + 1];
-    //     while (randomSong == currentSong)
-    //         randomSong = songs[floor.random() * (songs.length() - 1) + 1];
-    //     setSong(randomSong);
-    // })
+
 
     let prevVolume = music.volume;
     let isMuted = false;

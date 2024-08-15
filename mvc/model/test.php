@@ -167,3 +167,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
         $controler->increaseViews($_GET['currentSongId']);
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['action']) && $data['action'] == "randomsong") {
+        $controller = new MusicModel();
+        $controller->getRandomMusic($data["IdMusic"]);
+    }
+}

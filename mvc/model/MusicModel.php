@@ -548,14 +548,17 @@ class MusicModel extends DB
         $IdArtist = $current_song['IdArtist'];
 
         // Lấy các bài hát gợi ý dựa trên thể loại và ca sĩ
-        $sql = "SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtists,storemusic.View
+        $sql = "SELECT IdMusic, NameImageMusic, NameMusic, NameArtists, View
+                FROM (SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtists,storemusic.View
                 FROM song_artist_category 
                 JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
                 JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
                 WHERE (song_artist_category.IdCategory = ? OR song_artist_category.IdArtist = ?) AND storemusic.IdMusic != ?
                 GROUP BY storemusic.IdMusic
                 ORDER BY RAND()
-                LIMIT 5"; // Giới hạn 10 bài hát gợi ý
+                LIMIT 5
+                ) AS result
+                ORDER BY View DESC"; // Giới hạn 10 bài hát gợi ý
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("iii", $IdCategory, $IdArtist, $song_id);
         $stmt->execute();
@@ -581,6 +584,7 @@ class MusicModel extends DB
                 JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
                 WHERE song_artist_category.IdArtist = ? AND storemusic.IdMusic != ?
                 GROUP BY storemusic.IdMusic
+                ORDER BY storemusic.View DESC
                 LIMIT 5";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("ii", $artist_id, $song_id);
@@ -662,12 +666,13 @@ class MusicModel extends DB
     }
 
 
-    public function increaseViews($IdMusic){
-        $sql="UPDATE storemusic
+    public function increaseViews($IdMusic)
+    {
+        $sql = "UPDATE storemusic
             SET	View=View+1
             WHERE IdMusic=?";
-        $stmt= $this->con->prepare($sql);
-        $stmt->bind_param("i",$IdMusic);
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdMusic);
         $stmt->execute();
     }
 
@@ -710,5 +715,44 @@ class MusicModel extends DB
             }
         }
         return $songs;
+    }
+
+    public function getRandomMusic($IdMusic)
+    {
+        $sql = "SELECT 
+        GROUP_CONCAT(DISTINCT IdArtist) as artists, 
+        GROUP_CONCAT(DISTINCT IdCategory) as categories 
+    FROM song_artist_category 
+    WHERE IdMusic = ?";
+
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('i', $IdMusic);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $musicData = $result->fetch_assoc();
+
+        if ($musicData) {
+            $artists = $musicData['artists'];  // Chuỗi các IdArtist, ngăn cách bởi dấu phẩy
+            $categories = $musicData['categories']; // Chuỗi các IdCategory, ngăn cách bởi dấu phẩy
+
+            // Truy vấn để tìm bài nhạc ngẫu nhiên dựa trên IdArtist và IdCategory
+            $sql = "SELECT IdMusic
+            FROM song_artist_category
+            WHERE IdMusic != ? 
+            AND (FIND_IN_SET(IdArtist, ?) OR FIND_IN_SET(IdCategory, ?))
+            ORDER BY RAND()
+            LIMIT 1";
+
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param('iss', $IdMusic, $artists, $categories);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $song = $result->fetch_assoc();
+            if ($song) {
+                echo json_encode(['success' => true, 'song' => $song]);
+            } else {
+                echo json_encode(['success' => false]);
+            }
+        }
     }
 }
