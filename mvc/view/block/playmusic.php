@@ -74,15 +74,18 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         <span class="current-music">tên bài</span>
         <span class="current-artist">ca sĩ</span>
         <div class="controls-mini">
-            <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
-            <button class="btn-play pause">
-                <span></span>
-                <span></span>
-            </button>
-            <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
-            <div class="volume-container">
-                <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
-                <input type="range" class="volume-slider" min="0" max="100" value="50" orient="vertical">
+            <div class="btn-control">
+                <button class="btn btn-random"><i class="fa-solid fa-shuffle"></i></button>
+                <button class="btn btnback"><i class="fa fa-chevron-left"></i></button>
+                <button class="btn-play pause">
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btnnext"><i class="fa fa-chevron-right"></i></button>
+                <div class="volume-container">
+                    <button class="volume-button"><i class="fa-solid fa-volume-high volume-icon" style="color: #ffffff;"></i></button>
+                    <input type="range" class="volume-slider" min="0" max="100" value="50" orient="vertical">
+                </div>
             </div>
         </div>
     </div>
@@ -218,7 +221,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     const btnplay = document.querySelectorAll('.btn-play');
     const btnback = document.querySelectorAll('.btnback');
     const btnnext = document.querySelectorAll('.btnnext');
-    const btnrandom = document.querySelector('.btn-random');
+    const btnrandom = document.querySelectorAll('.btn-random');
     const volumeSlider = document.querySelectorAll('.volume-slider');
     const volumeButton = document.querySelectorAll('.volume-button');
     const volumeIcon = document.querySelectorAll('.volume-icon');
@@ -239,7 +242,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 idMusic: <?php echo $_GET["id"] ?>
             },
             success: function(response) {
-                console.log(response);
+                alert("Thêm vào thành công");
             }
         });
     }
@@ -436,8 +439,6 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
 
     //Next and PreView
 
-    // đổi lại: khi next hoặc prev sẽ thay đổi thông tin của tác giả, recommended, các bài nhạc của tác giả.
-    // hoặc là sẽ reload lại trang luôn? (COMPLITE)
 
     // Nếu còn thời gian thì chỉnh sửa lại cái tên của các bài nhạc
     // ý tưởng sửa là thêm 1 cái cột có tên là NumberNameSong và cho số random như cái ảnh
@@ -447,28 +448,31 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     // ví dụ như phát bài tiếp theo theo danh sách thể loại, tác giả, hoặc random luôn  (việc lấy ra như thế nào thì hên xui chưa biết)
     // thế thì phải thêm nút chuyển sang trạng cái random.
 
+    // làm thêm 1 page category, hiển thị nhạc theo thể loại đấy
 
+    // xem lại db và tách ra thành các bảng cho phù hợp
+    // Chỉnh lại thêm album, hình như nó vẫn bị lỗi 
+    // phát hiện 1 lỗi: hiện tại dù là acc admin thì vẫn hiển thị là thư viện
 
+    // xem lại session: khi đăng nhập vào một tài khoản nào đó méo đc trừ tài khoản admin
     //random music
     let isRandom = JSON.parse(localStorage.getItem('isRandom')) || false;
     document.addEventListener('DOMContentLoaded', () => {
 
-        if (isRandom) {
-            btnrandom.classList.add('active');
-        } else {
-            btnrandom.classList.remove('active');
-        }
-
-        btnrandom.addEventListener('click', () => {
-            isRandom = !isRandom;
-            localStorage.setItem('isRandom', JSON.stringify(isRandom));
-
-            if (isRandom) {
-                btnrandom.classList.add('active');
-            } else {
-                btnrandom.classList.remove('active');
-            }
+        btnrandom.forEach(btn => {
+            btn.classList.toggle('active', isRandom);
         });
+
+        btnrandom.forEach(btn => {
+            btn.addEventListener('click', () => {
+                isRandom = !isRandom;
+                localStorage.setItem('isRandom', JSON.stringify(isRandom));
+                btnrandom.forEach(btn => {
+                    btn.classList.toggle('active', isRandom);
+                });
+            });
+        });
+
     });
 
     btnnext.forEach(element => {

@@ -5,9 +5,31 @@
 }
 .library .title {
   align-items: baseline;
+  position: relative;
 }
-.library .material-icons {
+.library .title .material-icons {
   color: rgb(190, 182, 182);
+}
+.library .title #create {
+  position: absolute;
+  left: 90%;
+  top: 25%;
+  background-color: white;
+  color: black;
+  width: 150px;
+  padding: 0;
+  z-index: 1;
+}
+.library .title #create button {
+  color: black;
+  border: none;
+  background-color: inherit;
+  text-align: left;
+  margin: 0px;
+  width: 100%;
+}
+.library .title #create button:hover {
+  background-color: gray;
 }
 .library button {
   color: black;
@@ -26,28 +48,6 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-}
-
-#create {
-  position: absolute;
-  left: 215px;
-  top: 75px;
-  background-color: white;
-  color: black;
-  width: 150px;
-  padding: 0;
-  z-index: 1;
-}
-#create button {
-  color: black;
-  border: none;
-  background-color: inherit;
-  text-align: left;
-  margin: 0px;
-  width: 100%;
-}
-#create button:hover {
-  background-color: gray;
 }
 
 .musicForm {

@@ -145,8 +145,8 @@ class MusicModel extends DB
         $sql = "SELECT * FROM song_artist_category join artist on song_artist_category.IdArtist= artist.IdArtist
 		join category on song_artist_category.IdCategory=category.IdCategory
         join storemusic on song_artist_category.IdMusic=storemusic.IdMusic
-        join album_song_account on song_artist_category.IdMusic=album_song_account.IdMusic
-        join album on album_song_account.IdAlbum=album.IdAlbum";
+        join album_song on song_artist_category.IdMusic=album_song.IdMusic
+        join album on album_song.IdAlbum=album.IdAlbum";
         return mysqli_query($this->con, $sql);
     }
 
@@ -201,7 +201,7 @@ class MusicModel extends DB
         //chỉnh sửa khi thêm music và xem lại add music
         //làm view show library
         // Kiểm tra xem IdList và IdMusic đã tồn tại chưa
-        $query = "SELECT COUNT(*) AS count FROM album_song_account WHERE IdAlbum = '$IdAlbum' AND IdMusic = '$IdMusic'";
+        $query = "SELECT COUNT(*) AS count FROM album_song WHERE IdAlbum = '$IdAlbum' AND IdMusic = '$IdMusic'";
         $result = mysqli_query($this->con, $query);
 
         if ($result) {
@@ -214,7 +214,10 @@ class MusicModel extends DB
                 echo "da ton tai";
             } else {
                 // Thực hiện lệnh INSERT vào cơ sở dữ liệu
-                $sql = "INSERT INTO album_song_account (IdAlbum, IdMusic) VALUES ('$IdAlbum', '$IdMusic')";
+                $sql = "INSERT INTO album_song(IdAlbum, IdMusic) VALUES ('$IdAlbum', '$IdMusic')";
+                mysqli_query($this->con, $sql);
+                $IdAccount = $_SESSION['userid'];
+                $sql = "INSERT INTO account_album(IdAccount, IdAlbum) VALUES ('$IdAccount', '$IdAlbum')";
                 mysqli_query($this->con, $sql);
             }
         } else {
@@ -508,26 +511,47 @@ class MusicModel extends DB
 
     public function DelDanhSachPhat($IdList)
     {
-        $sql1 = "DELETE FROM listmusic
+        $sql = "DELETE FROM listmusic
             WHERE IdList=?";
-        $stmt1 = $this->con->prepare($sql1);
-        $stmt1->bind_param("i", $IdList);
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdList);
+        $stmt->execute();
 
-        $sql2 = "DELETE FROM library
+        $sql = "DELETE FROM account_library
         WHERE IdList=?";
-        $stmt2 = $this->con->prepare($sql2);
-        $stmt2->bind_param("i", $IdList);
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdList);
+        $stmt->execute();
 
-        if ($stmt1->execute()) {
-            echo "Xóa dữ liệu trong ListMusic thành công";
-            if ($stmt2->execute())
-                echo "Xóa dữ liệu trong library thành công";
-            else
-                echo "Error: " . $stmt2->error;
-        } else
-            echo "Error: " . $stmt1->error;
+        $sql = "DELETE FROM library
+        WHERE IdList=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->execute();
+        $stmt->bind_param("i", $IdList);
     }
 
+
+    public function DelAlbum($IdAlbum)
+    {
+        $sql = "DELETE FROM album_song
+        WHERE IdAlbum=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdAlbum);
+        $stmt->execute();
+
+        $sql = "DELETE FROM account_album
+        WHERE IdAlbum=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdAlbum);
+        $stmt->execute();
+
+        $sql = "DELETE FROM album
+        WHERE IdAlbum=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->execute();
+        $stmt->bind_param("i", $IdAlbum);
+    }
+    
     public function updateFavorite($IdMusic)
     {
         $sql = "UPDATE storemusic SET state = IF(state = 1, 0, 1) WHERE IdMusic = $IdMusic";

@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
     <!-- <script type="text/javascript" src="../public/js/library.js"></script> -->
 </head>
 
@@ -12,6 +12,18 @@
         <button class="material-icons"
             <?php if (isset($_SESSION["loginedin"])) echo 'onclick="Show()"';
             else echo 'onclick="showLogin()"' ?>>add</button>
+        <div id="create" style="display: none;">
+            <?php if ($_SESSION['userid'] == 1): ?>
+                <button class="musicBtn" id="addMusic" onclick="addMusic()">Thêm bài nhạc</button><br>
+                <button class="musicBtn" id="delMusic" onclick="delMusic()">Xóa bài nhạc</button><br>
+                <button class="musicBtn" id="addAlbum" onclick="addAlbum()">Thêm album</button><br>
+                <button class="musicBtn" id="addList" onclick="addList()">Thêm danh sách</button><br>
+                <button class="musicBtn" id="addArtist" onclick="addArtist()">Thêm ca sĩ</button>
+            <?php else: ?>
+                <button class="musicBtn" id="addList" onclick="addList()">Thêm danh sách</button><br>
+            <?php endif; ?>
+        </div>
+
     </div>
     <div class="listmusic">
         <?php
@@ -45,13 +57,6 @@
         }
         ?>
     </div> -->
-</div>
-<div id="create" style="display: none;">
-    <button class="musicBtn" id="addMusic" onclick="addMusic()">Thêm bài nhạc</button><br>
-    <button class="musicBtn" id="delMusic" onclick="delMusic()">Xóa bài nhạc</button><br>
-    <button class="musicBtn" id="addList" onclick="addList()"> Thêm danh sách</button><br>
-    <button class="musicBtn" id="addAlbum" onclick="addAlbum()">Thêm album</button>
-    <button class="musicBtn" id="addArtist" onclick="addArtist()">Thêm ca sĩ</button>
 </div>
 
 <!-- show create music -->
@@ -276,7 +281,7 @@
     }
 
     function delMusic() {
-        window.location.assign('./DelList');
+        window.location.assign('./DelMusic');
     }
 
 

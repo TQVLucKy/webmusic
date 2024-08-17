@@ -54,9 +54,9 @@
         }
 
         //Hiển thị danh sách bài nhạc để xử lý
-        public function DelList() {
+        public function DelMusic() {
             $this->view("master1",[
-                "page"=>"DelList",
+                "page"=>"DelMusic",
                 "MS"=>$this->a->Music(),
                 "Lib"=> $this->a->Library(),
                 "g"=> $this->a->getall(),

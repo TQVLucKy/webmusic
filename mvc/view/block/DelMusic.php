@@ -22,8 +22,8 @@
             echo $print['NameArtist'];
             echo '</td><td>';
             echo $print['NameCategory'];
-            echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'].'" data-idArtist="'.$print['IdArtist'].'" data-idCategory="'.$print['IdCategory'].'">Play</button>';
-            echo '<button onclick=DeleteMusic(this) data-idMusic="' . $print['IdMusic'].'" data-idArtist="'.$print['IdArtist'].'" data-idCategory="'.$print['IdCategory'].'">Remove</button></td>';
+            echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'].'">Play</button>';
+            echo '<button onclick=DeleteMusic(this) data-idMusic="' . $print['IdMusic'].'">Remove</button></td>';
             echo '</tr>';
             $stt++;
         }

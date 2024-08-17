@@ -1,4 +1,3 @@
-@charset "UTF-8";
 img {
   -o-object-fit: cover;
      object-fit: cover;
@@ -81,7 +80,7 @@ img {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 .music .container .title .controls .btn-control {
   display: inherit;
@@ -150,7 +149,6 @@ img {
 }
 .music .container .title .controls .btn-control .btn-random.active::before {
   content: "\f00d";
-  /* Dấu gạch chéo, sử dụng font icon của FontAwesome */
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   font-size: 40px;
@@ -167,17 +165,23 @@ img {
 .music .container .title .controls .btn-control .volume-container {
   position: relative;
   display: inline-block;
+  width: 40px;
 }
 .music .container .title .controls .btn-control .volume-container .volume-button {
   background: none;
   border: none;
   font-size: 24px;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 }
 .music .container .title .controls .btn-control .volume-container .volume-button i {
   font-size: 24px;
 }
 .music .container .title .controls .btn-control .volume-container .volume-slider {
+  position: absolute;
+  top: 25%;
+  left: 100%;
   width: 70px;
   opacity: 0;
   visibility: hidden;
@@ -209,6 +213,7 @@ img {
   height: auto;
   width: 310px;
   padding: 0 5px;
+  z-index: 1001;
 }
 .music-slider .seek-bar {
   width: 100%;
@@ -245,14 +250,19 @@ img {
   justify-content: center;
 }
 .music-slider .controls-mini {
-  width: 90%;
   display: flex;
   justify-content: center;
-  margin: 15px 35px;
-}
-.music-slider .controls-mini .btn-play {
+  text-align: center;
   position: relative;
-  margin: 5px 10px 0 10px;
+}
+.music-slider .controls-mini .btn-control {
+  display: inherit;
+  align-items: center;
+  gap: 5px;
+}
+.music-slider .controls-mini .btn-control .btn-play {
+  position: relative;
+  margin: 5px 0 0 0;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -260,12 +270,12 @@ img {
   cursor: pointer;
   border: none;
 }
-.music-slider .controls-mini .btn-play:hover {
+.music-slider .controls-mini .btn-control .btn-play:hover {
   background-color: black;
   opacity: 0.5;
   transition: 1s;
 }
-.music-slider .controls-mini .btn-play span {
+.music-slider .controls-mini .btn-control .btn-play span {
   position: absolute;
   top: 20%;
   left: 25%;
@@ -278,14 +288,14 @@ img {
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.music-slider .controls-mini .btn-play span:nth-child(2) {
+.music-slider .controls-mini .btn-control .btn-play span:nth-child(2) {
   left: 55%;
   transform-origin: center;
 }
-.music-slider .controls-mini .btn-play.pause span:nth-child(2) {
+.music-slider .controls-mini .btn-control .btn-play.pause span:nth-child(2) {
   transform: translateY(-50%) scaleY(0);
 }
-.music-slider .controls-mini .btn-play.pause span:nth-child(1) {
+.music-slider .controls-mini .btn-control .btn-play.pause span:nth-child(1) {
   width: 35%;
   top: 47%;
   left: 53%;
@@ -294,7 +304,7 @@ img {
   -webkit-clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
           clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
 }
-.music-slider .controls-mini .btn {
+.music-slider .controls-mini .btn-control .btn {
   width: 30px;
   height: 30px;
   background: gray;
@@ -305,27 +315,44 @@ img {
   cursor: pointer;
   margin-top: 5px;
   color: white;
+  position: relative;
 }
-.music-slider .controls-mini .btn:hover {
+.music-slider .controls-mini .btn-control .btn:hover {
   background-color: black;
   opacity: 0.5;
   transition: 1s;
 }
-.music-slider .controls-mini .volume-container {
+.music-slider .controls-mini .btn-control .btn-random.active::before {
+  content: "\f00d";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+.music-slider .controls-mini .btn-control .volume-container {
   position: relative;
   display: inline-block;
+  width: 40px;
 }
-.music-slider .controls-mini .volume-container .volume-button {
+.music-slider .controls-mini .btn-control .volume-container .volume-button {
   background: none;
   border: none;
   font-size: 24px;
   transform: rotate(-90deg);
   cursor: pointer;
 }
-.music-slider .controls-mini .volume-container .volume-button i {
+.music-slider .controls-mini .btn-control .volume-container .volume-button i {
   font-size: 24px;
 }
-.music-slider .controls-mini .volume-container .volume-slider {
+.music-slider .controls-mini .btn-control .volume-container .volume-slider {
   position: absolute;
   top: -35px;
   left: -3px;
@@ -335,17 +362,18 @@ img {
   visibility: hidden;
   transition: opacity 0.5s ease;
 }
-.music-slider .controls-mini .volume-container .volume-slider:hover {
+.music-slider .controls-mini .btn-control .volume-container .volume-slider:hover {
   opacity: 1;
   visibility: visible;
 }
-.music-slider .controls-mini .volume-container:hover .volume-slider {
+.music-slider .controls-mini .btn-control .volume-container:hover .volume-slider {
   opacity: 1;
   visibility: visible;
 }
 
 .contact {
   display: flex;
+  position: relative;
 }
 .contact .btn {
   font-size: 1.5em;
@@ -368,6 +396,27 @@ img {
 .contact .favorited .button-clicked {
   background-color: blue;
 }
+.contact #list {
+  position: absolute;
+  left: 8%;
+  top: 30%;
+  background-color: white;
+  color: black;
+  width: 150px;
+  padding: 0;
+  z-index: 1;
+}
+.contact #list .items-list {
+  color: black;
+  border: none;
+  background-color: inherit;
+  text-align: left;
+  margin: 0px;
+  width: 100%;
+}
+.contact #list .items-list:hover {
+  background-color: gray;
+}
 .contact .material-icons {
   color: rgb(190, 182, 182);
 }
@@ -382,28 +431,6 @@ img {
   padding-left: 5px;
 }
 .contact .itemslist:hover {
-  background-color: gray;
-}
-
-#List {
-  position: absolute;
-  left: 100px;
-  top: 235px;
-  background-color: white;
-  color: black;
-  width: 150px;
-  padding: 0;
-  z-index: 1001;
-}
-#List .itemslist {
-  color: black;
-  border: none;
-  background-color: inherit;
-  text-align: left;
-  margin: 0px;
-  width: 100%;
-}
-#List .itemslist:hover {
   background-color: gray;
 }
 

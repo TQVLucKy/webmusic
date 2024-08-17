@@ -1,4 +1,3 @@
-
 $transition-duration: 0.5s;
 $font-size: 24px;
 
@@ -120,7 +119,7 @@ img {
                 width: 100%;
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                text-align: center;
 
                 .btn-control {
                     display: inherit;
@@ -195,7 +194,6 @@ img {
 
                     .btn-random.active::before {
                         content: "\f00d";
-                        /* Dấu gạch chéo, sử dụng font icon của FontAwesome */
                         font-family: "Font Awesome 5 Free";
                         font-weight: 900;
                         font-size: 40px;
@@ -213,11 +211,14 @@ img {
                     .volume-container {
                         position: relative;
                         display: inline-block;
+                        width: 40px;
 
                         .volume-button {
                             background: none;
                             border: none;
                             font-size: 24px;
+                            width: 100%;
+                            height: 100%;
                             cursor: pointer;
 
                             i {
@@ -226,6 +227,9 @@ img {
                         }
 
                         .volume-slider {
+                            position: absolute;
+                            top: 25%;
+                            left: 100%;
                             width: 70px;
                             opacity: 0;
                             visibility: hidden;
@@ -275,6 +279,7 @@ img {
     height: auto;
     width: 310px;
     padding: 0 5px;
+    z-index: 1001;
 
     .seek-bar {
         width: 100%;
@@ -317,124 +322,149 @@ img {
     }
 
     .controls-mini {
-        width: 90%;
         display: flex;
         justify-content: center;
-        margin: 15px 35px;
+        text-align: center;
+        position: relative;
 
-        .btn-play {
-            position: relative;
-            margin: 5px 10px 0 10px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: gray;
-            cursor: pointer;
-            border: none;
-
-            &:hover {
-                background-color: black;
-                opacity: 0.5;
-                transition: 1s;
-            }
-
-            span {
-                position: absolute;
-                top: 20%;
-                left: 25%;
-                transform: translateY(-50);
-                width: 8px;
-                height: 20px;
-                border-radius: 2px;
-                background: white;
-                transition: .5s;
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-
-                &:nth-child(2) {
-                    left: 55%;
-                    transform-origin: center;
-                }
-            }
-
-        }
-
-        .btn-play.pause span:nth-child(2) {
-            transform: translateY(-50%) scaleY(0);
-        }
-
-        .btn-play.pause span:nth-child(1) {
-            width: 35%;
-            top: 47%;
-            left: 53%;
-            transform: translate(-50%, -50%);
-            border-radius: 0;
-            clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
-        }
-
-        .btn {
-            width: 30px;
-            height: 30px;
-            background: gray;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
+        .btn-control {
+            display: inherit;
             align-items: center;
-            cursor: pointer;
-            margin-top: 5px;
-            color: white;
+            gap: 5px;
 
-            &:hover {
-                background-color: black;
-                opacity: 0.5;
-                transition: 1s;
-            }
-        }
-
-        .volume-container {
-            position: relative;
-            display: inline-block;
-
-            .volume-button {
-                background: none;
-                border: none;
-                font-size: 24px;
-                transform: rotate(-90deg);
+            .btn-play {
+                position: relative;
+                margin: 5px 0 0 0;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: gray;
                 cursor: pointer;
-
-                i {
-                    font-size: 24px;
-                }
-            }
-
-            .volume-slider {
-                position: absolute;
-                top: -35px; // Điều chỉnh giá trị này để đặt thanh điều chỉnh ở vị trí mong muốn
-                left: -3px;
-                transform: rotate(-90deg);
-                width: 50px;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity $transition-duration ease;
+                border: none;
 
                 &:hover {
+                    background-color: black;
+                    opacity: 0.5;
+                    transition: 1s;
+                }
+
+                span {
+                    position: absolute;
+                    top: 20%;
+                    left: 25%;
+                    transform: translateY(-50);
+                    width: 8px;
+                    height: 20px;
+                    border-radius: 2px;
+                    background: white;
+                    transition: .5s;
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+                    &:nth-child(2) {
+                        left: 55%;
+                        transform-origin: center;
+                    }
+                }
+
+            }
+
+            .btn-play.pause span:nth-child(2) {
+                transform: translateY(-50%) scaleY(0);
+            }
+
+            .btn-play.pause span:nth-child(1) {
+                width: 35%;
+                top: 47%;
+                left: 53%;
+                transform: translate(-50%, -50%);
+                border-radius: 0;
+                clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+            }
+
+            .btn {
+                width: 30px;
+                height: 30px;
+                background: gray;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                margin-top: 5px;
+                color: white;
+                position: relative;
+
+                &:hover {
+                    background-color: black;
+                    opacity: 0.5;
+                    transition: 1s;
+                }
+            }
+
+            .btn-random.active::before {
+                content: "\f00d";
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                color: #fff;
+                justify-content: center;
+                align-items: center;
+            }
+
+
+            .volume-container {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+
+                .volume-button {
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    transform: rotate(-90deg);
+                    cursor: pointer;
+
+                    i {
+                        font-size: 24px;
+                    }
+                }
+
+                .volume-slider {
+                    position: absolute;
+                    top: -35px; // Điều chỉnh giá trị này để đặt thanh điều chỉnh ở vị trí mong muốn
+                    left: -3px;
+                    transform: rotate(-90deg);
+                    width: 50px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity $transition-duration ease;
+
+                    &:hover {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+
+                &:hover .volume-slider {
                     opacity: 1;
                     visibility: visible;
                 }
             }
 
-            &:hover .volume-slider {
-                opacity: 1;
-                visibility: visible;
-            }
         }
-
     }
 }
 
 
 .contact {
     display: flex;
-
+    position: relative;
     .btn {
         font-size: 1.5em;
         width: 50px;
@@ -462,6 +492,30 @@ img {
         }
     }
 
+    #list {
+        position: absolute;
+        left: 8%;
+        top: 30%;
+        background-color: white;
+        color: black;
+        width: 150px;
+        padding: 0;
+        z-index: 1;
+
+        .items-list {
+            color: black;
+            border: none;
+            background-color: inherit;
+            text-align: left;
+            margin: 0px;
+            width: 100%;
+
+            &:hover {
+                background-color: gray;
+            }
+        }
+    }
+
     //add
     .material-icons {
         color: rgb(190, 182, 182);
@@ -484,29 +538,7 @@ img {
     }
 }
 
-#List {
-    position: absolute;
-    left: 100px;
-    top: 235px;
-    background-color: white;
-    color: black;
-    width: 150px;
-    padding: 0;
-    z-index: 1001;
 
-    .itemslist {
-        color: black;
-        border: none;
-        background-color: inherit;
-        text-align: left;
-        margin: 0px;
-        width: 100%;
-
-        &:hover {
-            background-color: gray;
-        }
-    }
-}
 
 .addmusic,
 .addlist {

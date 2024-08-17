@@ -20,7 +20,6 @@ if (isset($_GET['action'])) {
 if (isset($_POST['submitLogin'])) {
     $userModel = new UserModel();
     $result = $userModel->checkUsername($_POST['name'], $_POST['password']);
-
     //sử dụng session để kiểm tra và trả về trang chủ.
     // unset($_SESSION);
     if ($result) {
@@ -82,6 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === "delDanhSachPhat") {
         $controller = new MusicModel();
         $controller->delDanhSachPhat($_POST['idList']);
+    }
+}
+//xóa album
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === "delAlbum") {
+        $controller = new MusicModel();
+        $controller->DelAlbum($_POST['idList']);
     }
 }
 //Thêm nhạc vào danh sách phát
