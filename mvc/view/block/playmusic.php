@@ -451,10 +451,10 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     // làm thêm 1 page category, hiển thị nhạc theo thể loại đấy
 
     // xem lại db và tách ra thành các bảng cho phù hợp
-    // Chỉnh lại thêm album, hình như nó vẫn bị lỗi 
-    // phát hiện 1 lỗi: hiện tại dù là acc admin thì vẫn hiển thị là thư viện
 
-    // xem lại session: khi đăng nhập vào một tài khoản nào đó méo đc trừ tài khoản admin
+    // lỗi mới phát sinh, vấn đề là khi đăng xuất thì session sẽ không có
+    // khi đó thì các hàm ở trong home sẽ không thể sử dụng session đc 
+    // nhưng mà mình thì chạy nó cùng lúc với session :))
     //random music
     let isRandom = JSON.parse(localStorage.getItem('isRandom')) || false;
     document.addEventListener('DOMContentLoaded', () => {

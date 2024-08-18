@@ -101,7 +101,6 @@
                 },
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
-                    showLogin();
                     window.location.href = "";
                 },
                 error: function(xhr, status, error) {

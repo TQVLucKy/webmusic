@@ -8,7 +8,12 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-book-fill " viewBox="0 0 16 16">
             <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
         </svg>
-        <h2>Thư Viện</h2>
+        <?php if (isset($_SESSION['userid'])) {
+            if ($_SESSION['userid'] == 1)
+                echo "<h2>Album</h2>";
+            else echo "<h2>Thư viện</h2>";
+        } else echo "<h2>Thư viện</h2>";
+        ?>
         <button class="material-icons"
             <?php if (isset($_SESSION["loginedin"])) echo 'onclick="Show()"';
             else echo 'onclick="showLogin()"' ?>>add</button>
@@ -28,10 +33,10 @@
     <div class="listmusic">
         <?php
         if (isset($_SESSION["loginedin"])) {
-            if (is_array($data["Lib"]) || is_object($data["Lib"])) {
+            if (!empty($data["Lib"])) {
                 foreach ($data["Lib"] as $print) {
                     echo '<div class="items-list">';
-                    echo '<a href="./List?id=' . $print['IdList'] . '">' . $print['NameList'] . '</a>';
+                    echo '<a href="./List?id=' . $print['Id'] . '">' . $print['Name'] . '</a>';
                     echo '</div>';
                 }
             } else {
@@ -124,16 +129,15 @@
     $(document).ready(function() {
         $('#showAlbum').on('submit', function(e) {
             e.preventDefault();
-            var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
+            var formData = $(this).serialize();
             formData += '&submitAlbum=' + encodeURIComponent('submitAlbum');
             alert(formData);
             $.ajax({
                 type: 'GET',
-                url: './model/test', // File xử lý dữ liệu
+                url: './model/test', 
                 data: formData,
                 success: function(response) {
-                    // Xử lý kết quả trả về
-                    console.log('Kết quả:', response);
+                    window.Location.href="";
                 },
                 error: function() {
                     console.log('Có lỗi xảy ra');
@@ -146,16 +150,16 @@
     $(document).ready(function() {
         $('#showList').on('submit', function(e) {
             e.preventDefault();
-            var formData = $(this).serialize(); // Lấy dữ liệu từ form cụ thể này
+            var formData = $(this).serialize();
             formData += '&submitList=' + encodeURIComponent('submitList');
             alert(formData);
             $.ajax({
                 type: 'GET',
-                url: './model/test', // File xử lý dữ liệu
+                url: './model/test', 
                 data: formData,
                 success: function(response) {
-                    // Xử lý kết quả trả về
-                    console.log('Kết quả:', response);
+                    window.Location.href="";
+
                 },
                 error: function() {
                     console.log('Có lỗi xảy ra');
@@ -168,21 +172,18 @@
     // xử lý create music
     $(document).ready(function() {
         $('#showCreate').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-            var formData = new FormData(this); // Sử dụng FormData để xử lý file
-
-            // Thêm giá trị của nút submit vào formData
+            e.preventDefault(); 
+            var formData = new FormData(this); 
             formData.append('submitMusic', 'submitMusic');
             $.ajax({
                 type: 'POST',
-                url: './model/test', // File xử lý dữ liệu tải lên
+                url: './model/test', 
                 data: formData,
-                contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
-                processData: false, // Không xử lý dữ liệu vì sử dụng FormData
+                contentType: false, 
+                processData: false,
                 success: function(response) {
-                    // Xử lý kết quả trả về từ server ở đây
                     alert("Thêm thành công");
-                    console.log('Kết quả:', response);
+                    window.Location.href="";
                 },
                 error: function(xhr, status, error) {
                     // Xử lý lỗi ở đây
@@ -227,7 +228,6 @@
         xhr.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
                 console.log(this.responseText);
-                // Xử lý kết quả trả về từ server ở đây
             }
         };
 
@@ -237,24 +237,21 @@
     //xử lý thêm artist vào db
     $(document).ready(function() {
         $('#showAddArtist').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-            var formData = new FormData(this); // Sử dụng FormData để xử lý file
+            e.preventDefault();
+            var formData = new FormData(this); 
 
-            // Thêm giá trị của nút submit vào formData
             formData.append('submitAddArtist', 'submitAddArtist');
             $.ajax({
                 type: 'POST',
-                url: './model/test', // File xử lý dữ liệu tải lên
+                url: './model/test', 
                 data: formData,
-                contentType: false, // Không đặt kiểu nội dung vì sử dụng FormData
-                processData: false, // Không xử lý dữ liệu vì sử dụng FormData
+                contentType: false, 
+                processData: false, 
                 success: function(response) {
-                    // Xử lý kết quả trả về từ server ở đây
                     alert("Thêm ca sĩ thành công");
                     console.log('Kết quả:', response);
                 },
                 error: function(xhr, status, error) {
-                    // Xử lý lỗi ở đây
                     console.log('Có lỗi xảy ra:', xhr.responseText);
                 }
             });

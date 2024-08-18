@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="../public/css/List.scss">
-<script type="text/javascript" src="../public/js/List.js"></script>
+<!-- <script type="text/javascript" src="../public/js/List.js"></script> -->
 <!-- STT         Name        Artist      play        remove -->
 <div id="list">
     <?php if ($_SESSION['userid'] != 1): ?>
@@ -56,52 +56,10 @@
         </div>
 
         <!-- phát nhạc theo danh sách
-    ý tưởng: 
-    - Khi nhấn vào nút phát tất cả sẽ nhảy sang trang Play. với id: bài hát hiện tại, idList: danh sách phát
-    - Nếu thế thì phải chỉnh sửa lại trong Play. Khi nào có idList ở play thì lấy giá trị đó và gọi theo ds đó.
-    -->
-        <!-- danh sách phát -->
-        <div id="addmusictoDanhSachPhat" style="display:none;">
-            <div class="header-list">
-                <h1>Danh sách các bài nhạc</h1>
-                <button id="buttonToAddList2">Trở lại danh sách phát</button>
-            </div>
-            <div class="search">
-                <input type="text" class="search-form" placeholder="search...">
-                <div class="result"></div>
-            </div>
-            <div class="list-library">
-                <table id="song-all">
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên</th>
-                        <th>Nghệ sĩ</th>
-                        <th>Thể loại</th>
-                        <th>Thao tác</th>
-                    </tr>
-                    <?php
-                    $stt = 1;
-                    foreach ($data["MS"] as $print) {
-                        echo '<tr><td>';
-                        echo $stt;
-                        echo '</td><td>';
-                        echo htmlspecialchars($print['NameMusic']);
-                        echo '</td><td>';
-                        echo htmlspecialchars($print['NameArtist']);
-                        echo '</td><td>';
-                        echo htmlspecialchars($print['NameCategory']);
-                        echo '</tb><td>';
-                        echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Play</button>';
-                        echo '<button onclick="addMusicToDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Add</button>';
-                        echo '</td></tr>';
-                        $stt++;
-                    }
-                    ?>
-                </table>
-            </div>
-        </div>
-
-
+         ý tưởng: 
+        - Khi nhấn vào nút phát tất cả sẽ nhảy sang trang Play. với id: bài hát hiện tại, idList: danh sách phát
+        - Nếu thế thì phải chỉnh sửa lại trong Play. Khi nào có idList ở play thì lấy giá trị đó và gọi theo ds đó.
+        -->
     <?php else: ?>
         <!-- album -->
         <div class="header-list">
@@ -129,45 +87,9 @@
                     <th>Thao tác</th>
                 </tr>
                 <?php
-                $stt = 1;
-                foreach ($data["getalbum"] as $print) {
-                    echo '<tr><td>';
-                    echo $stt;
-                    echo '</td><td>';
-                    echo $print['NameMusic'];
-                    echo '</td><td>';
-                    echo $print['NameArtist'];
-                    echo '</td><td>';
-                    echo $print['NameCategory'];
-                    echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                    echo '<button onclick=DeleteMusicFromAlbum(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Remove</button></td>';
-                    echo '</tr>';
-                    $stt++;
-                }
-                ?>
-            </table>
-        </div>
-        <!-- album -->
-        <div id="addMusicToAlbum" style="display:none;">
-            <div class="header-list">
-                <h1>Danh sách các bài nhạc</h1>
-                <button id="buttonToAddAlbum2">Trở lại album</button>
-            </div>
-            <div class="search">
-                <input type="text" class="search-form" placeholder="Search...">
-            </div>
-            <div class="list-library">
-                <table>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên</th>
-                        <th>Nghệ sĩ</th>
-                        <th>Thể loại</th>
-                        <th>Thao tác</th>
-                    </tr>
-                    <?php
+                if (count($data["getalbum"]) > 0) {
                     $stt = 1;
-                    foreach ($data["MS"] as $print) {
+                    foreach ($data["getalbum"] as $print) {
                         echo '<tr><td>';
                         echo $stt;
                         echo '</td><td>';
@@ -176,16 +98,97 @@
                         echo $print['NameArtist'];
                         echo '</td><td>';
                         echo $print['NameCategory'];
-                        echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Play</button>';
-                        echo '<button onclick=addMusicToAlbum(this) data-idMusic="' . $print['IdMusic'] . '" data-idArtist="' . $print['IdArtist'] . '" data-idCategory="' . $print['IdCategory'] . '">Add</button></td>';
+                        echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" >Play</button>';
+                        echo '<button onclick=DeleteMusicFromAlbum(this) data-idMusic="' . $print['IdMusic'] . '">Remove</button></td>';
                         echo '</tr>';
                         $stt++;
                     }
-                    ?>
-                </table>
-            </div>
+                } else {
+                    echo "hãy thêm những bài hát đầu tiên vào album";
+                }
+                ?>
+            </table>
         </div>
 </div>
+<!-- danh sách phát -->
+<div id="addmusictoDanhSachPhat" style="display:none;">
+    <div class="header-list">
+        <h1>Danh sách các bài nhạc</h1>
+        <button id="buttonToAddList2">Trở lại danh sách phát</button>
+    </div>
+    <div class="search">
+        <input type="text" class="search-form" placeholder="search...">
+        <div class="result"></div>
+    </div>
+    <div class="list-library">
+        <table id="song-all">
+            <tr>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Nghệ sĩ</th>
+                <th>Thể loại</th>
+                <th>Thao tác</th>
+            </tr>
+            <?php
+            $stt = 1;
+            foreach ($data["MS"] as $print) {
+                echo '<tr><td>';
+                echo $stt;
+                echo '</td><td>';
+                echo htmlspecialchars($print['NameMusic']);
+                echo '</td><td>';
+                echo htmlspecialchars($print['NameArtist']);
+                echo '</td><td>';
+                echo htmlspecialchars($print['NameCategory']);
+                echo '</tb><td>';
+                echo '<button onclick="playMusic(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Play</button>';
+                echo '<button onclick="addMusicToDanhSachPhat(this)" data-idMusic="' . htmlspecialchars($print['IdMusic']) . '">Add</button>';
+                echo '</td></tr>';
+                $stt++;
+            }
+            ?>
+        </table>
+    </div>
+</div>
+<!-- album -->
+<div id="addMusicToAlbum" style="display:none;">
+    <div class="header-list">
+        <h1>Danh sách các bài nhạc</h1>
+        <button id="buttonToAddAlbum2">Trở lại album</button>
+    </div>
+    <div class="search">
+        <input type="text" class="search-form" placeholder="Search...">
+    </div>
+    <div class="list-library">
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Nghệ sĩ</th>
+                <th>Thể loại</th>
+                <th>Thao tác</th>
+            </tr>
+            <?php
+            $stt = 1;
+            foreach ($data["MS"] as $print) {
+                echo '<tr><td>';
+                echo $stt;
+                echo '</td><td>';
+                echo $print['NameMusic'];
+                echo '</td><td>';
+                echo $print['NameArtist'];
+                echo '</td><td>';
+                echo $print['NameCategory'];
+                echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '">Play</button>';
+                echo '<button onclick=addMusicToAlbum(this) data-idMusic="' . $print['IdMusic'] . '">Add</button></td>';
+                echo '</tr>';
+                $stt++;
+            }
+            ?>
+        </table>
+    </div>
+</div>
+
 <?php endif; ?>
 
 <script>
@@ -265,7 +268,7 @@
         })
     }
 
-    function delAlbum(){
+    function delAlbum() {
         $.ajax({
             url: './model/test',
             type: 'POST',
@@ -349,24 +352,30 @@
     //Mai làm thêm nhạc vào danh sách phát và xóa nhạc trong danh sách phát.
     // Chuyển qua lại giữa 2 bảng danh sách và thêm.
     //danh sách phát
-    document.querySelector('#buttonToAddList1').addEventListener("click", () => {
-        document.getElementById('list').style.display = 'none';
-        document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
-    })
-    document.querySelector('#buttonToAddList2').addEventListener("click", () => {
-        document.getElementById('list').style.display = 'block';
-        document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
-        window.location.reload();
-    })
+
 
     //album
-    // document.querySelector('#buttonToAddAlbum1').addEventListener("click", () => {
-    //     document.getElementById('list').style.display = 'none';
-    //     document.getElementById('addMusicToAlbum').style.display = 'block';
-    // })
-    // document.querySelector('#buttonToAddAlbum2').addEventListener("click", () => {
-    //     document.getElementById('list').style.display = 'block';
-    //     document.getElementById('addMusicToAlbum').style.display = 'none';
-    //     window.location.reload();
-    // })
+    document.addEventListener("DOMContentLoaded", () => {
+        if (<?php echo $_SESSION['userid']; ?> != 1) {
+            document.querySelector('#buttonToAddList1').addEventListener("click", () => {
+                document.getElementById('list').style.display = 'none';
+                document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
+            });
+            document.querySelector('#buttonToAddList2').addEventListener("click", () => {
+                document.getElementById('list').style.display = 'block';
+                document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
+                window.location.reload();
+            });
+        } else {
+            document.querySelector('#buttonToAddAlbum1').addEventListener("click", () => {
+                document.getElementById('list').style.display = 'none';
+                document.getElementById('addMusicToAlbum').style.display = 'block';
+            });
+            document.querySelector('#buttonToAddAlbum2').addEventListener("click", () => {
+                document.getElementById('list').style.display = 'block';
+                document.getElementById('addMusicToAlbum').style.display = 'none';
+                window.location.reload();
+            });
+        }
+    });
 </script>

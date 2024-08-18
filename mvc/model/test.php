@@ -26,7 +26,7 @@ if (isset($_POST['submitLogin'])) {
         $_SESSION["loginedin"] = true;
         $_SESSION["username"] = $_POST['name'];
         $_SESSION['userid'] = $result;
-    } else  echo false;
+    } else  echo "false";
 }
 
 if (isset($_GET["logout"])) {
