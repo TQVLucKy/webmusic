@@ -1,14 +1,10 @@
-.menu .list-music {
-  overflow-y: scroll;
-  max-height: 600px;
-}
-.menu .list-music .items {
+.list-music .items {
   display: grid;
   max-width: 100%;
   margin: 0 auto;
   grid-template-columns: repeat(auto-fit, 235px);
 }
-.menu .list-music .items .item {
+.list-music .items .item {
   border-radius: 15px;
   cursor: pointer;
   height: auto;
@@ -17,19 +13,14 @@
   padding: 15px;
   gap: 2rem;
 }
-.menu .list-music .items .item:hover {
+.list-music .items .item:hover {
   background-color: rgb(38, 38, 38);
 }
-.menu .list-music .items .item .name-info {
+.list-music .items .item .name-info {
   display: inline;
   align-items: center;
 }
-.menu .list-music .items .item p {
+.list-music .items .item p {
   color: rgb(190, 182, 182);
   font-size: 0.9em;
-}
-
-body {
-  color: rgb(190, 182, 182);
-  background-color: black;
-}/*# sourceMappingURL=home.css.map */
+}/*# sourceMappingURL=Category.css.map */

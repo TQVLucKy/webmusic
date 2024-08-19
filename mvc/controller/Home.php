@@ -13,7 +13,8 @@
             "page"=>"home",
             "MS" => $this->a->Music(),
             "Lib"=> $this->a->Library(),
-            "Album"=> $this->a->Album()
+            "Album"=> $this->a->Album(),
+            "Category"=> $this->a->Category()
             ]);
         }
         function Play(){
@@ -21,10 +22,21 @@
                 "page"=>"playmusic",
                 "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
-                "g"=> $this->a->getall()
+                "g"=> $this->a->getall(),
+                "Category"=> $this->a->Category()
                 ]);
         }
-
+        function Category(){
+            // View
+            $this->view("master1",[
+            "page"=>"Category",
+            "MS" => $this->a->Music(),
+            "Lib"=> $this->a->Library(),
+            "Album"=> $this->a->Album(),
+            "Category"=> $this->a->Category(),
+            "getCategory" => $this->a->getCategory()
+            ]);
+        }
         function List(){
             $this->view("master1",[
                 "page"=>"List",
@@ -34,13 +46,15 @@
                 "getlist" => $this->a->getListMusic(),
                 "Album"=> $this->a->Album(),
                 "getalbum" => $this->a->getAlbumMusic(),
+                "Category"=> $this->a->Category()
                 ]);
         }
 
         function Artist(){
             $this->view("master1",[
                 "page"=>"Artist",
-                "Lib"=> $this->a->Library()
+                "Lib"=> $this->a->Library(),
+                "Category"=> $this->a->Category()
             ]);
         }
         function ShowSearch(){
@@ -49,7 +63,8 @@
                 "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
                 "g"=> $this->a->getall(),
-                "getlist" => $this->a->getListMusic()
+                "getlist" => $this->a->getListMusic(),
+                "Category"=> $this->a->Category()
                 ]);
         }
 
@@ -60,6 +75,7 @@
                 "MS"=>$this->a->Music(),
                 "Lib"=> $this->a->Library(),
                 "g"=> $this->a->getall(),
+                "Category"=> $this->a->Category()
             ]);
         }
         public function createList($name) {

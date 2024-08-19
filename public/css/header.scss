@@ -27,6 +27,45 @@
         }
     }
 
+    .category-list {
+        position: relative;
+        #showCategoryBtn{
+            border-radius: 5px;
+            background-color: gray;
+            border: none;
+            color: inherit;
+            font-size: 1.1em;
+            &:hover{
+                background-color: inherit;
+            }
+        }
+        #CategoryList {
+            position: absolute;
+            top: 35px;
+            left: 0;
+            width: 400px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background-color:#ccc;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            .CategoryItem {
+                padding: 10px;
+                background-color: rgba(17, 17, 17,0.8);
+                text-align: center;
+                &:hover{
+                    background-color: rgb(17, 17, 17);
+                }
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+    }
+
     .h1 {
         text-decoration: none;
 
@@ -38,6 +77,7 @@
     .account button {
         width: 100px;
         align-items: center;
+
         &:hover {
             background-color: black;
         }
@@ -161,7 +201,7 @@
     z-index: 1000;
 }
 
-.musicForm{
+.musicForm {
     display: block;
     position: fixed;
     top: 50%;
@@ -173,6 +213,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
+
 #overlay {
     display: none;
     position: fixed;

@@ -448,13 +448,9 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
     // ví dụ như phát bài tiếp theo theo danh sách thể loại, tác giả, hoặc random luôn  (việc lấy ra như thế nào thì hên xui chưa biết)
     // thế thì phải thêm nút chuyển sang trạng cái random.
 
-    // làm thêm 1 page category, hiển thị nhạc theo thể loại đấy
-
     // xem lại db và tách ra thành các bảng cho phù hợp
 
-    // lỗi mới phát sinh, vấn đề là khi đăng xuất thì session sẽ không có
-    // khi đó thì các hàm ở trong home sẽ không thể sử dụng session đc 
-    // nhưng mà mình thì chạy nó cùng lúc với session :))
+    
     //random music
     let isRandom = JSON.parse(localStorage.getItem('isRandom')) || false;
     document.addEventListener('DOMContentLoaded', () => {

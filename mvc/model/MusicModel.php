@@ -43,6 +43,40 @@ class MusicModel extends DB
         return mysqli_query($this->con, $sql);
     }
 
+    public function Category()
+    {
+        $sql = "SELECT * FROM Category";
+        $stmt = $this->con->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $Category = [];
+        while ($row = $result->fetch_assoc()) {
+            $Category[] = $row;
+        }
+        return $Category;
+    }
+    public function getCategory()
+    {
+        $IdCategory = htmlspecialchars($_GET['id']);
+        $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory, storemusic.NameImageMusic
+            FROM song_artist
+            JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
+            JOIN category ON song_artist.IdCategory = category.IdCategory
+            JOIN artist ON song_artist.IdArtist = artist.IdArtist
+            WHERE category.IdCategory=?
+            GROUP BY storemusic.IdMusic, storemusic.NameMusic,category.NameCategory, storemusic.NameImageMusic";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param('i', $IdCategory);
+        $stmt->execute();
+        $result = $stmt->get_result(); // Lấy kết quả từ câu truy vấn
+
+        if ($result) {
+            return $result->fetch_all(MYSQLI_ASSOC); // Trả về tất cả kết quả dưới dạng mảng liên kết
+        } else {
+            return [];
+        }
+    }
     public function getall()
     {
         $idList = isset($_GET['idList']) ? htmlspecialchars($_GET['idList']) : null;

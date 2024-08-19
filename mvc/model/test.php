@@ -51,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitAddArtist'])) {
 // Hàm xử lý form
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitList'])) {
-    // Khởi tạo controller và gọi hàm xử lý 
+
     $controller = new Home();
     $controller->createList($_GET['nameList']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitAlbum'])) {
-    // Khởi tạo controller và gọi hàm xử lý 
+
     $controller = new MusicModel();
     $controller->AddAlbum($_GET['nameAlbum']);
 }

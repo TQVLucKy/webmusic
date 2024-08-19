@@ -9,8 +9,6 @@
     <div class="list-music row">
         <div class="items col">
             <?php
-            //use ajax control $all
-            // tiến hành thêm các bài hát vào db
             // chỉnh sửa khi phóng to (làm sau cùng)
             foreach ($data["MS"] as $print) {
                 // if ($count <= 20 || $all) {

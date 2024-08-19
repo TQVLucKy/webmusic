@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -10,6 +10,17 @@
     <div class="back-next">
         <button onclick="back()" class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
         <button onclick="next()" class="btn btncont"><i class="fa fa-chevron-right"></i></button>
+    </div>
+
+    <div class="category-list">
+        <button id="showCategoryBtn">Thể Loại</button>
+        <div id="CategoryList" class="hidden">
+            <?php foreach ($data['Category'] as $print): ?>
+                <div class="CategoryItem" data-id="<?php echo $print['IdCategory']; ?>">
+                    <?php echo htmlspecialchars($print['NameCategory']); ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     <form class="header-search">
         <div class="input-group h">
@@ -63,6 +74,18 @@
 <div id="overlay"></div>
 
 <script>
+    document.getElementById('showCategoryBtn').addEventListener('click', function() {
+        document.getElementById('CategoryList').classList.toggle('hidden');
+    })
+
+    const categoryItems= document.querySelectorAll('.CategoryItem');
+    categoryItems.forEach(item =>{
+        item.addEventListener('click',function(){
+            const id=item.getAttribute('data-id');
+            window.location.href=`Category?id=${id}`;
+        })
+    })
+
     var overlay = document.getElementById('overlay');
     overlay.addEventListener('click', function() {
         document.querySelectorAll('.musicForm').forEach(function(form) {
