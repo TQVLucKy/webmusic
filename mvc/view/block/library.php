@@ -131,7 +131,6 @@
             e.preventDefault();
             var formData = $(this).serialize();
             formData += '&submitAlbum=' + encodeURIComponent('submitAlbum');
-            alert(formData);
             $.ajax({
                 type: 'GET',
                 url: './model/test', 
@@ -152,14 +151,12 @@
             e.preventDefault();
             var formData = $(this).serialize();
             formData += '&submitList=' + encodeURIComponent('submitList');
-            alert(formData);
             $.ajax({
                 type: 'GET',
                 url: './model/test', 
                 data: formData,
                 success: function(response) {
                     window.Location.href="";
-
                 },
                 error: function() {
                     console.log('Có lỗi xảy ra');
@@ -182,7 +179,6 @@
                 contentType: false, 
                 processData: false,
                 success: function(response) {
-                    alert("Thêm thành công");
                     window.Location.href="";
                 },
                 error: function(xhr, status, error) {
@@ -248,7 +244,6 @@
                 contentType: false, 
                 processData: false, 
                 success: function(response) {
-                    alert("Thêm ca sĩ thành công");
                     console.log('Kết quả:', response);
                 },
                 error: function(xhr, status, error) {

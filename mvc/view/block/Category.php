@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="test/css" href="../public/css/Category.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/Category.css">
     <script type="test/javascript" src="../public/js/Category.js"></script>
 </head>
 <h2><?php echo $data['getCategory'][0]['NameCategory']; ?></h2>
@@ -17,3 +17,13 @@
         ?>
     </div>
 </div>
+<script>
+    var clickableItems = document.querySelectorAll('.clickable');
+
+    clickableItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            window.location.href = './Play?id=' + id;
+        });
+    });
+</script>

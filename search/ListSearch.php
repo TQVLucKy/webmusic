@@ -25,10 +25,11 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
         GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, 
         category.NameCategory
     FROM listmusic 
-    JOIN song_artist_category on listmusic.IdMusic=song_artist_category.IdMusic
-    JOIN storemusic ON song_artist_category.IdMusic = storemusic.IdMusic
-    JOIN category ON song_artist_category.IdCategory = category.IdCategory
-    JOIN artist ON song_artist_category.IdArtist = artist.IdArtist
+    JOIN song_artist on listmusic.IdMusic=song_artist.IdMusic
+    JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
+    JOIN song_category on song_artist.IdMusic= song_category.IdMusic
+    JOIN category ON song_category.IdCategory = category.IdCategory
+    JOIN artist ON song_artist.IdArtist = artist.IdArtist
     WHERE listmusic.IdList = ?
     GROUP BY storemusic.IdMusic, storemusic.NameMusic, category.NameCategory
     ) AS subquery

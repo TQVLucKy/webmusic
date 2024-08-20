@@ -42,7 +42,6 @@
                 "page"=>"List",
                 "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
-                "g"=> $this->a->getall(),
                 "getlist" => $this->a->getListMusic(),
                 "Album"=> $this->a->Album(),
                 "getalbum" => $this->a->getAlbumMusic(),
@@ -53,6 +52,13 @@
         function Artist(){
             $this->view("master1",[
                 "page"=>"Artist",
+                "Lib"=> $this->a->Library(),
+                "Category"=> $this->a->Category()
+            ]);
+        }
+        function Album(){
+            $this->view("master1",[
+                "page"=>"Album",
                 "Lib"=> $this->a->Library(),
                 "Category"=> $this->a->Category()
             ]);

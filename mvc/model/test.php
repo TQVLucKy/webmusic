@@ -157,6 +157,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
         echo json_encode($artistAll, JSON_UNESCAPED_UNICODE);
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
+    if ($_GET['action'] == "getAlbumhHasArtist") {
+        $controler = new MusicModel();
+        $songHasArtist = $controler->getAlbumhHasArtist($_GET["idArtist"]);
+        echo json_encode($songHasArtist, JSON_UNESCAPED_UNICODE);
+    }
+}
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
     if ($_GET["action"] == "Play") {
         $controler = new MusicModel();

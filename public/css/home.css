@@ -1,3 +1,6 @@
+.menu {
+  overflow: hidden;
+}
 .menu .list-music {
   overflow-y: scroll;
   max-height: 600px;

@@ -52,12 +52,14 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
         echo " onclick=updateFavorite()>";
         echo "<i class='fa fa-heart'></i></button>";
         ?>
-        <button class="material-icons" onclick=showLibrary()>add</button>
+        <button class="material-icons" <?php if (isset($_SESSION['loginedin'])){if(!empty($data["Lib"])) echo "onclick=showLibrary()";
+                                        else echo 'onclick="addList()"';}
+                                        else echo 'onclick="showLogin()"'; ?>>add</button>
         <div id="list" style="display: none;">
             <?php
             foreach ($data["Lib"] as $print) {
-                echo '<div class="items-list" id="idList" onclick="addToLibrary(' . $print['IdList'] . ')">';
-                echo $print['NameList'];
+                echo '<div class="items-list" id="idList" onclick="addToLibrary(' . $print['Id'] . ')">';
+                echo $print['Name'];
                 echo '</div>';
             }
             ?>
@@ -242,7 +244,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                 idMusic: <?php echo $_GET["id"] ?>
             },
             success: function(response) {
-                alert("Thêm vào thành công");
+                alert(response);
             }
         });
     }
@@ -450,7 +452,7 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
 
     // xem lại db và tách ra thành các bảng cho phù hợp
 
-    
+
     //random music
     let isRandom = JSON.parse(localStorage.getItem('isRandom')) || false;
     document.addEventListener('DOMContentLoaded', () => {

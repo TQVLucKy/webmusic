@@ -1,7 +1,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../public/css/home.css">
 </head>
-<div class="menu col-md-12">
+<div class="col-md-12">
     <div class="top d-flex justify-content-between mt-2">
         <h2>Danh sách</h2>
         <p class="text-secondary">Hiện tất cả</p>
@@ -24,17 +24,12 @@
     </div>
 </div>
 <script>
-    // Chọn tất cả các div có class "clickable"
     var clickableItems = document.querySelectorAll('.clickable');
 
-    // Lặp qua từng div và thêm sự kiện click
     clickableItems.forEach(function(item) {
         item.addEventListener('click', function() {
-            // Lấy ID từ thuộc tính data-id
             var id = this.getAttribute('data-id');
-            // Chuyển hướng người dùng đến trang khác với ID
 
-            //xem lại cái nhảy trang
             window.location.href = './Play?id=' + id;
         });
     });

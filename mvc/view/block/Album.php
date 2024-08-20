@@ -1,0 +1,1 @@
+đây là phần album. tối mai về sẽ làm.

@@ -3,10 +3,11 @@ class MusicModel extends DB
 {
     public function Music()
     {
-        $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory, storemusic.NameImageMusic
+        $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(DISTINCT artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory, storemusic.NameImageMusic
             FROM song_artist
             JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
-            JOIN category ON song_artist.IdCategory = category.IdCategory
+            JOIN song_category ON song_artist.IdMusic  = song_category.IdMusic
+            JOIN category on song_category.IdCategory=category.IdCategory
             JOIN artist ON song_artist.IdArtist = artist.IdArtist
             GROUP BY storemusic.IdMusic, storemusic.NameMusic,category.NameCategory, storemusic.NameImageMusic";
         return mysqli_query($this->con, $sql);
@@ -39,7 +40,7 @@ class MusicModel extends DB
 
     public function Album()
     {
-        $sql = "SELECT * FROM Album";
+        $sql = "SELECT IdAlbum as Id, NameAlbum as Name FROM Album";
         return mysqli_query($this->con, $sql);
     }
 
@@ -62,7 +63,8 @@ class MusicModel extends DB
         $sql = "SELECT storemusic.IdMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, category.NameCategory, storemusic.NameImageMusic
             FROM song_artist
             JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
-            JOIN category ON song_artist.IdCategory = category.IdCategory
+            JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
+            JOIN category ON song_category.IdCategory = category.IdCategory
             JOIN artist ON song_artist.IdArtist = artist.IdArtist
             WHERE category.IdCategory=?
             GROUP BY storemusic.IdMusic, storemusic.NameMusic,category.NameCategory, storemusic.NameImageMusic";
@@ -150,15 +152,16 @@ class MusicModel extends DB
     // get list from library
     public function getListMusic()
     {
-        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,artist.NameArtist,category.NameCategory,GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist
+        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,category.NameCategory,GROUP_CONCAT(DISTINCT artist.NameArtist SEPARATOR ' x ') AS NameArtist
         FROM song_artist join artist on song_artist.IdArtist= artist.IdArtist
-		join category on song_artist.IdCategory=category.IdCategory
+		JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
+        join category on song_category.IdCategory=category.IdCategory
         join storemusic on song_artist.IdMusic=storemusic.IdMusic
         JOIN listmusic on song_artist.IdMusic=listmusic.IdMusic
         join library on listmusic.IdList=library.IdList
         join account_library on library.IdList= account_library.IdList
         WHERE IdAccount=? And listmusic.IdList=?
-        GROUP BY storemusic.IdMusic,storemusic.IdMusic,artist.NameArtist,category.NameCategory";
+        GROUP BY storemusic.IdMusic,storemusic.IdMusic,category.NameCategory";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('ii', $_SESSION['userid'], $_GET['id']);
         $stmt->execute();
@@ -183,15 +186,16 @@ class MusicModel extends DB
     // get list album from library
     public function getAlbumMusic()
     {
-        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,artist.NameArtist,category.NameCategory,GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtist 
+        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,category.NameCategory,GROUP_CONCAT(DISTINCT artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist 
         FROM song_artist join artist on song_artist.IdArtist= artist.IdArtist
-		join category on song_artist.IdCategory=category.IdCategory
+		JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
+        join category on song_category.IdCategory=category.IdCategory
         join storemusic on song_artist.IdMusic=storemusic.IdMusic
         join album_song on song_artist.IdMusic=album_song.IdMusic
         join album on album_song.IdAlbum=album.IdAlbum
         join account_album on album.IdAlbum=account_album.IdAlbum
         WHERE account_album.IdAccount=? and album_song.IdAlbum=?
-         GROUP BY storemusic.IdMusic,storemusic.IdMusic,artist.NameArtist,category.NameCategory";
+        GROUP BY storemusic.IdMusic,category.NameCategory,category.NameCategory";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("ii", $_SESSION['userid'], $_GET['id']);
         $stmt->execute();
@@ -253,6 +257,7 @@ class MusicModel extends DB
                 // Thực hiện lệnh INSERT vào cơ sở dữ liệu
                 $sql = "INSERT INTO listmusic (IdList, IdMusic) VALUES ('$IdList', '$IdMusic')";
                 mysqli_query($this->con, $sql);
+                echo "Thêm thành công";
             }
         } else {
             echo "da ton tai IdMusic";
@@ -265,7 +270,11 @@ class MusicModel extends DB
         //chỉnh sửa khi thêm music và xem lại add music
         //làm view show library
         // Kiểm tra xem IdList và IdMusic đã tồn tại chưa
-        $query = "SELECT COUNT(*) AS count FROM album_song WHERE IdAlbum = '$IdAlbum' AND IdMusic = '$IdMusic'";
+        $userId = $_SESSION['userid'];
+        $query = "SELECT COUNT(*) AS count
+        FROM album_song 
+        JOIN account_album on album_song.IdAlbum=account_album.IdAlbum
+        WHERE album_song.IdAlbum = '$IdAlbum' AND IdMusic = '$IdMusic' AND IdAccount='$userId'";
         $result = mysqli_query($this->con, $query);
 
         if ($result) {
@@ -279,9 +288,6 @@ class MusicModel extends DB
             } else {
                 // Thực hiện lệnh INSERT vào cơ sở dữ liệu
                 $sql = "INSERT INTO album_song(IdAlbum, IdMusic) VALUES ('$IdAlbum', '$IdMusic')";
-                mysqli_query($this->con, $sql);
-                $IdAccount = $_SESSION['userid'];
-                $sql = "INSERT INTO account_album(IdAccount, IdAlbum) VALUES ('$IdAccount', '$IdAlbum')";
                 mysqli_query($this->con, $sql);
             }
         } else {
@@ -303,7 +309,7 @@ class MusicModel extends DB
     // xóa nhạc khỏi album
     public function deleteMusicFromAlbum($IdAlbum, $IdMusic)
     {
-        $sql = "DELETE FROM album_song_account
+        $sql = "DELETE FROM album_song
         WHERE IdAlbum=? and IdMusic=?";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("ii", $IdAlbum, $IdMusic);
@@ -326,6 +332,7 @@ class MusicModel extends DB
         $stmt->bind_param("ss", $val, $val);
         $stmt->execute();
         $result = $stmt->get_result();
+        $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = [
                 'IdMusic' => $row['IdMusic'],
@@ -529,7 +536,8 @@ class MusicModel extends DB
         FROM song_artist
             JOIN artist ON song_artist.IdArtist = artist.IdArtist
             JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
-            JOIN category ON song_artist.IdCategory = category.IdCategory
+            JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
+            JOIN category ON song_category.IdCategory = category.IdCategory
         WHERE storemusic.IdMusic=? AND artist.IdArtist=? AND category.IdCategory=?";
         $stmt_select = $this->con->prepare($sql_select);
         $stmt_select->bind_param("iii", $IdMusic, $IdArtist, $IdCategory);
@@ -626,7 +634,10 @@ class MusicModel extends DB
     {
         // $user_ratings = $this->getUserRatings($user_id);
         // $other_user_ratings = $this->getOtherUserRatings($user_id);
-        $sql = "SELECT IdCategory, IdArtist FROM song_artist WHERE IdMusic = ?";
+        $sql = "SELECT IdCategory, IdArtist
+        FROM song_artist 
+        JOIN song_category on song_artist.IdMusic=song_category.IdMusic
+        WHERE song_artist.IdMusic = ?";
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("i", $song_id);
         $stmt->execute();
@@ -637,16 +648,18 @@ class MusicModel extends DB
 
         // Lấy các bài hát gợi ý dựa trên thể loại và ca sĩ
         $sql = "SELECT IdMusic, NameImageMusic, NameMusic, NameArtists, View
-                FROM (SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist SEPARATOR ' x ') AS NameArtists,storemusic.View
-                FROM song_artist 
-                JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
-                JOIN artist ON song_artist.IdArtist = artist.IdArtist
-                WHERE (song_artist.IdCategory = ? OR song_artist.IdArtist = ?) AND storemusic.IdMusic != ?
-                GROUP BY storemusic.IdMusic
-                ORDER BY RAND()
-                LIMIT 5
-                ) AS result
-                ORDER BY View DESC"; // Giới hạn 10 bài hát gợi ý
+        FROM (
+        SELECT storemusic.IdMusic, storemusic.NameImageMusic, storemusic.NameMusic, GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtists, storemusic.View
+        FROM song_artist
+        JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
+        JOIN artist ON song_artist.IdArtist = artist.IdArtist
+        JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
+        WHERE (song_category.IdCategory = ? OR song_artist.IdArtist = ?) AND storemusic.IdMusic != ?
+        GROUP BY storemusic.IdMusic
+        ORDER BY RAND()
+        LIMIT 5
+    ) AS result
+    ORDER BY View DESC;"; // Giới hạn 10 bài hát gợi ý
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param("iii", $IdCategory, $IdArtist, $song_id);
         $stmt->execute();
@@ -684,7 +697,7 @@ class MusicModel extends DB
                 'IdMusic' => $row['IdMusic'],
                 'NameImageMusic' => $row['NameImageMusic'],
                 'NameMusic' => $row['NameMusic'],
-                'NameArtists' => $row['NameArtists'],
+                'NameArtists' => $row['NameArtists'] ?? "Unknown Artist",
                 'View' => $row['View']
             ];
         }
@@ -753,6 +766,28 @@ class MusicModel extends DB
         return $artistAll;
     }
 
+    public function getAlbumhHasArtist($IdArtist)
+    {
+        $sql = "SELECT album.IdAlbum, album.NameAlbum, artist.NameArtist
+        FROM album_song
+        JOIN album on album_song.IdAlbum=album.IdAlbum
+        JOIN song_artist ON album_song.IdMusic=song_artist.IdMusic
+        JOIN artist on song_artist.IdArtist= artist.IdArtist
+        WHERE artist.IdArtist=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("i", $IdArtist);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $album[] = [
+                'IdAlbum' => $row['IdAlbum'],
+                'NameAlbum' => $row['NameAlbum'],
+                'NameArtist' => $row['NameArtist']
+
+            ];
+        }
+        return $album;
+    }
 
     public function increaseViews($IdMusic)
     {

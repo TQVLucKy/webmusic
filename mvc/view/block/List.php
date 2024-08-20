@@ -7,8 +7,8 @@
         <!-- danh sách phát -->
         <div class="header-list">
             <h1>Danh sách <?php foreach ($data["Lib"] as $print) {
-                                if ($print['IdList'] == $_GET['id']) {
-                                    echo $print['NameList'];
+                                if ($print['Id'] == $_GET['id']) {
+                                    echo $print['Name'];
                                     break;
                                 }
                             } ?></h1>
@@ -64,8 +64,8 @@
         <!-- album -->
         <div class="header-list">
             <h1>Danh sách <?php foreach ($data["Album"] as $print) {
-                                if ($print['IdAlbum'] == $_GET['id']) {
-                                    echo $print['NameAlbum'];
+                                if ($print['Id'] == $_GET['id']) {
+                                    echo $print['Name'];
                                     break;
                                 }
                             } ?></h1>
@@ -76,9 +76,10 @@
         </div>
         <div class="search">
             <input type="text" class="search-form" placeholder="search...">
+            <div class="result"></div>
         </div>
         <div class="list-library">
-            <table>
+            <table id="song-album">
                 <tr>
                     <th>STT</th>
                     <th>Tên</th>
@@ -98,8 +99,8 @@
                         echo $print['NameArtist'];
                         echo '</td><td>';
                         echo $print['NameCategory'];
-                        echo '</tb><td><button onclick=PlayMusic(this) data-idMusic="' . $print['IdMusic'] . '" >Play</button>';
-                        echo '<button onclick=DeleteMusicFromAlbum(this) data-idMusic="' . $print['IdMusic'] . '">Remove</button></td>';
+                        echo '</tb><td><button onclick=playMusic(this) data-idMusic="' . $print['IdMusic'] . '" >Play</button>';
+                        echo '<button onclick=deleteMusicFromAlbum(this) data-idMusic="' . $print['IdMusic'] . '">Remove</button></td>';
                         echo '</tr>';
                         $stt++;
                     }
@@ -109,9 +110,10 @@
                 ?>
             </table>
         </div>
+    <?php endif; ?>
 </div>
 <!-- danh sách phát -->
-<div id="addmusictoDanhSachPhat" style="display:none;">
+<div id="addMusicToDanhSachPhat" style="display:none;">
     <div class="header-list">
         <h1>Danh sách các bài nhạc</h1>
         <button id="buttonToAddList2">Trở lại danh sách phát</button>
@@ -121,7 +123,7 @@
         <div class="result"></div>
     </div>
     <div class="list-library">
-        <table id="song-all">
+        <table id="song-all-list">
             <tr>
                 <th>STT</th>
                 <th>Tên</th>
@@ -158,9 +160,10 @@
     </div>
     <div class="search">
         <input type="text" class="search-form" placeholder="Search...">
+        <div class="result"></div>
     </div>
     <div class="list-library">
-        <table>
+        <table id="song-all-album">
             <tr>
                 <th>STT</th>
                 <th>Tên</th>
@@ -189,8 +192,6 @@
     </div>
 </div>
 
-<?php endif; ?>
-
 <script>
     $(document).ready(function() {
         var idList = "<?php echo $_GET['id']; ?>";
@@ -216,7 +217,29 @@
 
     $(document).ready(function() {
         var idList = "<?php echo $_GET['id']; ?>";
-        var originalContent = $("#song-all").html(); //Lưu nội dung ban đầu của danh sách
+        var originalContent = $("#song-album").html(); //Lưu nội dung ban đầu của danh sách
+        $('.search input[type="text"]').on("keyup input", function() {
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if (inputVal.length) {
+                $.get("../search/ListSearch.php", {
+                    term: inputVal,
+                    idList: idList
+                }).done(function(data) {
+                    // Display the returned data in browser
+                    $("#song-album").find("tr:gt(0)").remove();
+                    $("#song-album").append(data);
+                });
+            } else {
+                $("#song-album").html(originalContent);
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        var idList = "<?php echo $_GET['id']; ?>";
+        var originalContent = $("#song-all-list").html(); //Lưu nội dung ban đầu của danh sách
         $('.search input[type="text"]').on("keyup input", function() {
             var inputVal = $(this).val();
             var resultDropdown = $(this).siblings(".result");
@@ -226,11 +249,33 @@
                     idList: idList
                 }).done(function(data) {
                     // Display the returned data in browser
-                    $("#song-all").find("tr:gt(0)").remove();
-                    $("#song-all").append(data);
+                    $("#song-all-list").find("tr:gt(0)").remove();
+                    $("#song-all-list").append(data);
                 });
             } else {
-                $("#song-all").html(originalContent);
+                $("#song-all-list").html(originalContent);
+            }
+        });
+
+    });
+
+    $(document).ready(function() {
+        var idList = "<?php echo $_GET['id']; ?>";
+        var originalContent = $("#song-all-album").html(); //Lưu nội dung ban đầu của danh sách
+        $('.search input[type="text"]').on("keyup input", function() {
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if (inputVal.length) {
+                $.get("../search/SearchAll.php", {
+                    term: inputVal,
+                    idList: idList
+                }).done(function(data) {
+                    // Display the returned data in browser
+                    $("#song-all-album").find("tr:gt(0)").remove();
+                    $("#song-all-album").append(data);
+                });
+            } else {
+                $("#song-all-album").html(originalContent);
             }
         });
 
@@ -349,8 +394,6 @@
             }
         })
     }
-    //Mai làm thêm nhạc vào danh sách phát và xóa nhạc trong danh sách phát.
-    // Chuyển qua lại giữa 2 bảng danh sách và thêm.
     //danh sách phát
 
 
@@ -359,11 +402,11 @@
         if (<?php echo $_SESSION['userid']; ?> != 1) {
             document.querySelector('#buttonToAddList1').addEventListener("click", () => {
                 document.getElementById('list').style.display = 'none';
-                document.getElementById('addmusictoDanhSachPhat').style.display = 'block';
+                document.getElementById('addMusicToDanhSachPhat').style.display = 'block';
             });
             document.querySelector('#buttonToAddList2').addEventListener("click", () => {
                 document.getElementById('list').style.display = 'block';
-                document.getElementById('addmusictoDanhSachPhat').style.display = 'none';
+                document.getElementById('addMusicToDanhSachPhat').style.display = 'none';
                 window.location.reload();
             });
         } else {
