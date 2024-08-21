@@ -59,7 +59,9 @@
         function Album(){
             $this->view("master1",[
                 "page"=>"Album",
+                "MS" => $this->a->Music(),
                 "Lib"=> $this->a->Library(),
+                "getalbum" => $this->a->getAlbumMusic(),
                 "Category"=> $this->a->Category()
             ]);
         }

@@ -13,19 +13,33 @@ class UserModel extends DB
 
     public function checkUsername($username, $password)
     {
-        $sql = "select IdAccount from account where username=? and password=?";
+        $sql = "select IdAccount, Password from account where username=?";
         $stmt = mysqli_prepare($this->con, $sql);
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+            mysqli_stmt_bind_param($stmt, "s", $username);
             mysqli_stmt_execute($stmt);
-            mysqli_stmt_bind_result($stmt, $idAccount);
+            mysqli_stmt_bind_result($stmt, $idAccount, $hashedPassword);
             mysqli_stmt_fetch($stmt);
             mysqli_stmt_close($stmt);
-            return $idAccount;
+            if (password_verify($password, $hashedPassword))
+                return $idAccount;
+            else 
+                return "mật khẩu sai";
         } else {
             false;
         }
-        // return mysqli_query($this->con,$sql);
+    }
+
+    public function signUp($UserName, $Password)
+    {
+        //Mã hóa mật khẩu
+        $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO account (UserName, Password) VALUES ('$UserName', '$hashedPassword')";
+        if (mysqli_query($this->con, $sql)) {
+            echo "Đăng ký thành công!";
+        } else {
+            echo "Lỗi: " . $sql . "<br>" . $this->con->error;
+        }
     }
 
     // đổi mật khẩu đã được nhưng những trường hợp báo lỗi thì chưa làm.
@@ -38,7 +52,7 @@ class UserModel extends DB
         $stmt->execute();
         $stmt->bind_result($Password);
         $stmt->fetch();
-        if ($PassOld ==($Password??'')) {
+        if ($PassOld == ($Password ?? '')) {
             if ($PassNew1 == $PassNew2) {
                 $sql = "UPDATE account
             SET Password=?
@@ -50,7 +64,6 @@ class UserModel extends DB
                 else
                     echo "Error: " . $stmt1->error;
             } else echo "Mật khẩu mới không giống nhau";
-        }
-        else echo "Mật khẩu cũ không trùng khớp";
+        } else echo "Mật khẩu cũ không trùng khớp";
     }
 }

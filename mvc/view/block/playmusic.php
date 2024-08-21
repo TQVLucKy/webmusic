@@ -497,13 +497,19 @@ thêm lượt xem và dựa vào lượt xem sửa lại đề xuất một chú
                             IdMusic: currentSongId,
                             action: "randomsong"
                         })
-                    }).then(response => response.json())
-                    .then(data => {
+                    }).then(response => response.text())
+                    .then(text => {
+                    try {
+                        const data = JSON.parse(text);
                         if (data.success) {
                             let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + data.song.IdMusic;
                             window.location.href = newUrl;
                         }
-                    });
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        console.error('Response text:', text);
+                    }
+                });
             }
         });
     })

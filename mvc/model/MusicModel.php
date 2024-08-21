@@ -186,7 +186,7 @@ class MusicModel extends DB
     // get list album from library
     public function getAlbumMusic()
     {
-        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,category.NameCategory,GROUP_CONCAT(DISTINCT artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist 
+        $sql = "SELECT storemusic.IdMusic,storemusic.NameMusic,storemusic.NameImageMusic,category.NameCategory,GROUP_CONCAT(DISTINCT artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist,album.NameAlbum
         FROM song_artist join artist on song_artist.IdArtist= artist.IdArtist
 		JOIN song_category ON song_artist.IdMusic = song_category.IdMusic
         join category on song_category.IdCategory=category.IdCategory
@@ -194,10 +194,12 @@ class MusicModel extends DB
         join album_song on song_artist.IdMusic=album_song.IdMusic
         join album on album_song.IdAlbum=album.IdAlbum
         join account_album on album.IdAlbum=account_album.IdAlbum
-        WHERE account_album.IdAccount=? and album_song.IdAlbum=?
+        WHERE album_song.IdAlbum=?
+        -- WHERE account_album.IdAccount=? and album_song.IdAlbum=?
         GROUP BY storemusic.IdMusic,category.NameCategory,category.NameCategory";
         $stmt = $this->con->prepare($sql);
-        $stmt->bind_param("ii", $_SESSION['userid'], $_GET['id']);
+        // $stmt->bind_param("ii", $_SESSION['userid'], $_GET['id']);
+        $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $result = $stmt->get_result();
         $AlbumMusic = array();
@@ -206,8 +208,10 @@ class MusicModel extends DB
                 $album = array(
                     "IdMusic" => $row["IdMusic"],
                     "NameMusic" => $row["NameMusic"],
+                    "NameImageMusic"=> $row["NameImageMusic"],
                     "NameArtist" => $row["NameArtist"],
-                    "NameCategory" => $row["NameCategory"]
+                    "NameCategory" => $row["NameCategory"],
+                    "NameAlbum" => $row["NameAlbum"]
                 );
                 array_push($AlbumMusic, $album);
             }
@@ -842,11 +846,12 @@ class MusicModel extends DB
 
     public function getRandomMusic($IdMusic)
     {
-        $sql = "SELECT 
+        $sql = "SELECT*,
         GROUP_CONCAT(DISTINCT IdArtist) as artists, 
         GROUP_CONCAT(DISTINCT IdCategory) as categories 
-    FROM song_artist 
-    WHERE IdMusic = ?";
+        FROM song_artist
+        JOIN song_category on song_artist.IdMusic= song_category.IdMusic
+        WHERE song_artist.IdMusic = ?";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bind_param('i', $IdMusic);
@@ -859,10 +864,11 @@ class MusicModel extends DB
             $categories = $musicData['categories']; // Chuỗi các IdCategory, ngăn cách bởi dấu phẩy
 
             // Truy vấn để tìm bài nhạc ngẫu nhiên dựa trên IdArtist và IdCategory
-            $sql = "SELECT IdMusic
+            $sql = "SELECT song_artist.IdMusic
             FROM song_artist
-            WHERE IdMusic != ? 
-            AND (FIND_IN_SET(IdArtist, ?) OR FIND_IN_SET(IdCategory, ?))
+            JOIN song_category on song_artist.IdMusic= song_category.IdMusic
+            WHERE song_artist.IdMusic != ? 
+            AND (FIND_IN_SET(song_artist.IdArtist, ?) OR FIND_IN_SET(song_category.IdCategory, ?))
             ORDER BY RAND()
             LIMIT 1";
 

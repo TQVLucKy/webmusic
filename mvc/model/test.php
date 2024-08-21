@@ -29,6 +29,11 @@ if (isset($_POST['submitLogin'])) {
     } else  echo "false";
 }
 
+if(isset($_POST['submitSignUp'])){
+    $userModel= new UserModel();
+    $userModel->signUp($_POST['name'],$_POST['password']);
+}
+
 if (isset($_GET["logout"])) {
     session_unset();
 }

@@ -60,13 +60,16 @@
     </form>
 </div>
 <!-- làm tiếp register và sau đó tối ưu lại đn, đk, đx.  -->
-<div class="musicForm sign-up" id="signUp" style="display:none">
+<div class="musicForm sign-up" id="signUp" style="display:none" onsubmit="return checkPasswordMatch()">
     <h2 class="text-center">Register my website</h2>
     <form id="signUpForm" method="POST">
         <label for="signUpName">Tên đăng nhập:</label>
-        <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập"></br>
-        <laber for="signUpPassWord">Nhập mật khẩu:</laber>
-        <input type="password" name="signUpPassWord" placeholder="Nhập mật khẩu">
+        <input type="text"  name="signUpName"  placeholder="Nhập tên đăng nhập"></br>
+        <label for="signUpPassWord">Nhập mật khẩu:</label>
+        <input type="password" id="password" name="signUpPassWord" placeholder="Nhập mật khẩu" required><br>
+        <label for="confirmPassword">Xác nhận mật khẩu:</label>
+        <input type="password" id="confirmPassword" oninput="checkPasswordMatch()" name="confirmPassword"  placeholder="Nhập lại mật khẩu" required>
+        <span id="message" class="error"></span><br><br>
         <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
     </form>
 </div>
@@ -78,11 +81,11 @@
         document.getElementById('CategoryList').classList.toggle('hidden');
     })
 
-    const categoryItems= document.querySelectorAll('.CategoryItem');
-    categoryItems.forEach(item =>{
-        item.addEventListener('click',function(){
-            const id=item.getAttribute('data-id');
-            window.location.href=`Category?id=${id}`;
+    const categoryItems = document.querySelectorAll('.CategoryItem');
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const id = item.getAttribute('data-id');
+            window.location.href = `Category?id=${id}`;
         })
     })
 
@@ -124,6 +127,7 @@
                 },
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
+                    // console.log(response);
                     window.location.href = "";
                 },
                 error: function(xhr, status, error) {
@@ -135,9 +139,58 @@
         });
     });
 
-    function Sign() {
+    function checkPasswordMatch() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        var message = document.getElementById("message");
 
+        if (password === confirmPassword) {
+            message.style.color = "green";
+            message.innerHTML = "Mật khẩu khớp.";
+            return true;
+        } else {
+            message.style.color = "red";
+            message.innerHTML = "Mật khẩu không khớp.";
+            return false;
+        }
     }
+
+    function signUp() {
+        var form = document.getElementById("signUp");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            overlay.style.display = 'block';
+        } else {
+            form.style.display = "none";
+        }
+    }
+    // đăng ký
+    $(document).ready(function() {
+        $('#signUpForm').submit(function(event) {
+            event.preventDefault();
+            var name = $('input[name="signUpName"]').val();
+            var password = $('input[name="signUpPassWord"]').val();
+            $.ajax({
+                type: 'POST',
+                url: './model/test',
+                data: {
+                    name: name,
+                    password: password,
+                    submitSignUp: 'submitSignUp'
+                },
+                success: function(response) {
+                    alert(response);
+                    // Xử lý kết quả trả về từ server
+                    window.location.href = "";
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi (nếu có)
+                    console.error(xhr.responseText);
+                    alert('Đăng nhập thất bại. Vui lòng thử lại!');
+                }
+            });
+        });
+    });
     //đổi mật khẩu
     function FormChangePassword() {
         let formchangepassword = document.createElement("form");
