@@ -20,18 +20,18 @@ if (isset($_GET['action'])) {
 if (isset($_POST['submitLogin'])) {
     $userModel = new UserModel();
     $result = $userModel->checkUsername($_POST['name'], $_POST['password']);
-    //sử dụng session để kiểm tra và trả về trang chủ.
-    // unset($_SESSION);
-    if ($result) {
+    if ($result !== false) {
         $_SESSION["loginedin"] = true;
         $_SESSION["username"] = $_POST['name'];
         $_SESSION['userid'] = $result;
-    } else  echo "false";
+    } else {
+        echo "Tên đăng nhập hoặc mật khẩu không đúng";
+    }
 }
 
-if(isset($_POST['submitSignUp'])){
-    $userModel= new UserModel();
-    $userModel->signUp($_POST['name'],$_POST['password']);
+if (isset($_POST['submitSignUp'])) {
+    $userModel = new UserModel();
+    $userModel->signUp($_POST['name'], $_POST['password']);
 }
 
 if (isset($_GET["logout"])) {

@@ -21,10 +21,11 @@ class UserModel extends DB
             mysqli_stmt_bind_result($stmt, $idAccount, $hashedPassword);
             mysqli_stmt_fetch($stmt);
             mysqli_stmt_close($stmt);
-            if (password_verify($password, $hashedPassword))
+            if (password_verify($password, $hashedPassword)){
                 return $idAccount;
+            }
             else 
-                return "mật khẩu sai";
+                return false;
         } else {
             false;
         }

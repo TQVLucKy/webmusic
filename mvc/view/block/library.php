@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/library.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/library.css">
     <!-- <script type="text/javascript" src="../public/js/library.js"></script> -->
 </head>
 
@@ -65,44 +65,66 @@
 </div>
 
 <!-- show create music -->
-<form class="musicForm add-music" id="showCreate" style="display:none;" method="post" enctype="multipart/form-data">
-    <label for="musicName">Tên bài hát:</label>
-    <input type="text" name="musicName"><br>
-    <label for="music">Chọn nhạc:</label>
-    <input type="file" name="music"></br>
-    <label for="image">Chọn hình ảnh:</label>
-    <input type="file" name="image"></br>
-    <label for="category">Thể loại:</label>
-    <input type="text" name="category"></br>
-    <button type="button" id="addArtistButton">Thêm ca sĩ</button><br>
-    <div id="artistContainer">
-        <label for="artist">Tên ca sĩ:</label>
-        <input type="text" name="artist[]"><br>
-    </div>
-    <input type="submit" name="submitMusic" value="Tải lên">
-</form>
-
+<div class="musicForm add-music" id="showCreate" style="display:none;">
+    <h2 class="text-center">Tải bài hát lên</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="input-group">
+            <label for="musicName">Tên bài hát:</label><br>
+            <input type="text" name="musicName" placeholder="Nhập tên bài hát"><br>
+        </div>
+        <div class="input-group">
+            <label for="music">Chọn nhạc:</label><br>
+            <input type="file" name="music"><br>
+        </div>
+        <div class="input-group">
+            <label for="image">Chọn hình ảnh:</label><br>
+            <input type="file" name="image"><br>
+        </div>
+        <div class="input-group">
+            <label for="category">Thể loại:</label><br>
+            <input type="text" name="category" placeholder="Nhập thể loại"><br>
+        </div>
+        <button type="button" id="addArtistButton">Thêm ca sĩ</button><br>
+        <div id="artistContainer">
+            <div class="input-group">
+                <label for="artist">Tên ca sĩ:</label><br>
+                <input type="text" name="artist[]" placeholder="Nhập tên ca sĩ"><br>
+            </div>
+        </div>
+        <input type="submit" class="login-button" name="submitMusic" value="tải lên"></input>
+    </form>
+</div>
 <!-- show list -->
 <form class="musicForm add-list" id="showList" style="display:none;" method="get" data-target="#musicForm1">
-    <label for="nameList">Tên danh sách:</label>
-    <input type="text" name="nameList">
+    <h2 class="text-center">Thêm danh sách</h2>
+    <div class="input-group">
+        <label for="nameList">Tên danh sách:</label>
+        <input type="text" name="nameList">
+    </div>
     <input type="submit" name="submitList" value="Tạo">
 </form>
 
 <!-- show album -->
 <form class="musicForm add-album" id="showAlbum" style="display:none;" method="get">
-    <label for="nameAlbum">Tên Album:</label>
-    <input type="text" name="nameAlbum">
-
+    <h2 class="text-center">Thêm album</h2>
+    <div class="input-group">
+        <label for="nameAlbum">Tên Album:</label>
+        <input type="text" name="nameAlbum">
+    </div>
     <input type="submit" name="submitAlbum" value="Tạo">
 </form>
 
 <!-- show add artist -->
 <form class="musicForm add-artist" id="showAddArtist" style="display: none;" method="Post">
-    <label for="nameArtist">Tên ca sĩ:</label>
-    <input type="text" name="nameArtist"></br>
-    <label for="imageArtist">Chọn ảnh đại diện:</label>
-    <input type="file" name="imageArtist"></br>
+    <h2 class="text-center">Thêm ca sĩ</h2>
+    <div class="input-group">
+        <label for="nameArtist">Tên ca sĩ:</label></br>
+        <input type="text" name="nameArtist"></br>
+    </div>
+    <div class="input-group">
+        <label for="imageArtist">Chọn ảnh đại diện:</label></br>
+        <input type="file" name="imageArtist"></br>
+    </div>
     <input type="submit" name="submitAddArtist" value="Thêm">
 </form>
 
@@ -133,10 +155,10 @@
             formData += '&submitAlbum=' + encodeURIComponent('submitAlbum');
             $.ajax({
                 type: 'GET',
-                url: './model/test', 
+                url: './model/test',
                 data: formData,
                 success: function(response) {
-                    window.Location.href="";
+                    window.Location.href = "";
                 },
                 error: function() {
                     console.log('Có lỗi xảy ra');
@@ -153,10 +175,10 @@
             formData += '&submitList=' + encodeURIComponent('submitList');
             $.ajax({
                 type: 'GET',
-                url: './model/test', 
+                url: './model/test',
                 data: formData,
                 success: function(response) {
-                    window.Location.href="";
+                    window.Location.href = "";
                 },
                 error: function() {
                     console.log('Có lỗi xảy ra');
@@ -169,17 +191,17 @@
     // xử lý create music
     $(document).ready(function() {
         $('#showCreate').on('submit', function(e) {
-            e.preventDefault(); 
-            var formData = new FormData(this); 
+            e.preventDefault();
+            var formData = new FormData(this);
             formData.append('submitMusic', 'submitMusic');
             $.ajax({
                 type: 'POST',
-                url: './model/test', 
+                url: './model/test',
                 data: formData,
-                contentType: false, 
+                contentType: false,
                 processData: false,
                 success: function(response) {
-                    window.Location.href="";
+                    window.Location.href = "";
                 },
                 error: function(xhr, status, error) {
                     // Xử lý lỗi ở đây
@@ -192,10 +214,11 @@
     document.getElementById('addArtistButton').addEventListener('click', function() {
         var artistContainer = document.getElementById('artistContainer');
 
-        // Tạo phần tử div mới
+        // Create a new div element with the class 'new-artist-group'
         var newArtistDiv = document.createElement('div');
+        newArtistDiv.classList.add('input-group');
 
-        // Tạo nhãn và phần nhập tên ca sĩ mới
+        // Create a new label and input for the artist's name
         var newLabel = document.createElement('label');
         newLabel.setAttribute('for', 'artist');
         newLabel.textContent = 'Tên ca sĩ:';
@@ -203,15 +226,19 @@
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'text');
         newInput.setAttribute('name', 'artist[]');
+        newInput.setAttribute('placeholder', 'Nhập tên ca sĩ');
 
-        // Thêm nhãn và phần nhập vào div mới
+        // Add a line break
+        var lineBreak = document.createElement('br');
+
+        // Append the label, input, and line break to the new div
         newArtistDiv.appendChild(newLabel);
+        newArtistDiv.appendChild(lineBreak);
         newArtistDiv.appendChild(newInput);
 
-        // Thêm div mới vào container
+        // Append the new div to the artist container
         artistContainer.appendChild(newArtistDiv);
     });
-
     document.getElementById('showCreate').addEventListener('submit', function(e) {
         e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
 
@@ -234,15 +261,15 @@
     $(document).ready(function() {
         $('#showAddArtist').on('submit', function(e) {
             e.preventDefault();
-            var formData = new FormData(this); 
+            var formData = new FormData(this);
 
             formData.append('submitAddArtist', 'submitAddArtist');
             $.ajax({
                 type: 'POST',
-                url: './model/test', 
+                url: './model/test',
                 data: formData,
-                contentType: false, 
-                processData: false, 
+                contentType: false,
+                processData: false,
                 success: function(response) {
                     console.log('Kết quả:', response);
                 },

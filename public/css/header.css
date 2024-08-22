@@ -8,21 +8,6 @@
   padding: 5px;
   background-color: rgb(17, 17, 17);
 }
-.header .back-next .btn {
-  width: 40px;
-  height: 40px;
-  background: gray;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-top: 5px;
-  color: white;
-  margin-left: 5px;
-}
-.header .back-next .btn:hover {
-  background-color: blue;
-  opacity: 0.5;
-  transition: 1s;
-}
 .header .category-list {
   position: relative;
 }
@@ -76,6 +61,8 @@
 .header .account-login {
   border: 3px solid white;
   border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
 .header .account-login .account-info {
   background-color: gray;
@@ -145,42 +132,64 @@
   color: white;
 }
 
-.login {
+.login,
+.sign-up {
   position: absolute;
+  border-radius: 5px;
   color: white;
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
+  background-color: rgb(17, 17, 17);
   left: 0;
   right: 0;
-  width: 500px;
-  padding: 50px;
+  width: 350px;
+  padding: 40px;
   margin: 0 auto;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.login input {
-  margin-top: 10px;
+.login .input-group,
+.sign-up .input-group {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
 }
-.login .login-button {
-  display: block;
-  margin: 0 auto;
-  margin-top: 20px;
+.login .input-group label,
+.sign-up .input-group label {
+  font-size: 0.8em;
+}
+.login .input-group input,
+.sign-up .input-group input {
+  width: 100%;
+  padding: 5px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  outline: none;
+  background-color: #000;
+  color: #fff;
+  transition: outline 0.3s ease-in-out;
+}
+.login .input-group input:focus,
+.sign-up .input-group input:focus {
+  outline: 2px solid white;
+}
+.login .login-button,
+.sign-up .login-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.login .login-button:hover,
+.sign-up .login-button:hover {
+  background-color: rgb(136, 176, 231);
 }
 
 .form-change-password {
-  display: block;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 600px;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.musicForm {
   display: block;
   position: fixed;
   top: 50%;

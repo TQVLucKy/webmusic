@@ -8,37 +8,40 @@
     padding: 5px;
     background-color: rgb(17, 17, 17);
 
-    .back-next {
-        .btn {
-            width: 40px;
-            height: 40px;
-            background: gray;
-            border-radius: 50%;
-            cursor: pointer;
-            margin-top: 5px;
-            color: white;
-            margin-left: 5px;
+    // .back-next {
+    //     .btn {
+    //         width: 40px;
+    //         height: 40px;
+    //         background: gray;
+    //         border-radius: 50%;
+    //         cursor: pointer;
+    //         margin-top: 5px;
+    //         color: white;
+    //         margin-left: 5px;
 
-            &:hover {
-                background-color: blue;
-                opacity: 0.5;
-                transition: 1s;
-            }
-        }
-    }
+    //         &:hover {
+    //             background-color: blue;
+    //             opacity: 0.5;
+    //             transition: 1s;
+    //         }
+    //     }
+    // }
 
     .category-list {
         position: relative;
-        #showCategoryBtn{
+
+        #showCategoryBtn {
             border-radius: 5px;
             background-color: gray;
             border: none;
             color: inherit;
             font-size: 1.1em;
-            &:hover{
+
+            &:hover {
                 background-color: inherit;
             }
         }
+
         #CategoryList {
             position: absolute;
             top: 35px;
@@ -47,15 +50,17 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            background-color:#ccc;
+            background-color: #ccc;
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+
             .CategoryItem {
                 padding: 10px;
-                background-color: rgba(17, 17, 17,0.8);
+                background-color: rgba(17, 17, 17, 0.8);
                 text-align: center;
-                &:hover{
+
+                &:hover {
                     background-color: rgb(17, 17, 17);
                 }
             }
@@ -86,6 +91,8 @@
     .account-login {
         border: 3px solid white;
         border-radius: 50%;
+        width: 50px;
+        height: 50px;
 
         .account-info {
             background-color: gray;
@@ -166,25 +173,62 @@
 }
 
 
-.login {
+.login,
+.sign-up {
     position: absolute;
+    border-radius: 5px;
     color: white;
-    backdrop-filter: blur(3px);
+    background-color: rgb(17, 17, 17);
+    // backdrop-filter: blur(3px);
     left: 0;
     right: 0;
-    width: 500px;
-    padding: 50px;
+    width: 350px;
+    padding: 40px;
     margin: 0 auto;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    input {
-        margin-top: 10px;
+    .input-group {
+        width: 100%;
+        margin-bottom: 20px;
+        position: relative;
+
+        label {
+            font-size: 0.8em;
+        }
+
+        input {
+
+            width: 100%;
+            padding: 5px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            outline: none;
+            background-color: #000;
+            color: #fff;
+            transition: outline 0.3s ease-in-out;
+
+            &:focus {
+                outline: 2px solid white;
+            }
+        }
     }
 
     .login-button {
-        display: block;
-        margin: 0 auto;
-        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background: #333;
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+            background-color: rgb(136, 176, 231);
+        }
     }
 }
 
@@ -201,18 +245,18 @@
     z-index: 1000;
 }
 
-.musicForm {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 600px;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    backdrop-filter: blur(3px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
+// .musicForm {
+//     display: block;
+//     position: fixed;
+//     top: 50%;
+//     left: 50%;
+//     width: 300px;
+//     transform: translate(-50%, -50%);
+//     padding: 20px;
+//     backdrop-filter: blur(3px);
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//     z-index: 1000;
+// }
 
 #overlay {
     display: none;

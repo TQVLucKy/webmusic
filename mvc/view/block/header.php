@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.scss">
+    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
     <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
     <script type="text/javascript" src="../search/search.js"></script>
 </head>
@@ -7,10 +7,10 @@
     <div class="header-title">
         <a class="h1" href="../Home/">Music</a>
     </div>
-    <div class="back-next">
+    <!-- <div class="back-next">
         <button onclick="back()" class="btn btnprev"><i class="fa fa-chevron-left"></i></button>
         <button onclick="next()" class="btn btncont"><i class="fa fa-chevron-right"></i></button>
-    </div>
+    </div> -->
 
     <div class="category-list">
         <button id="showCategoryBtn">Thể Loại</button>
@@ -38,7 +38,7 @@
             ?> -->
     <!-- kiểm tra lại login và hiển thị khi đã login, làm đăng xuất,đăng ký -->
     <div class="account" style="<?php if (!empty($_SESSION['loginedin'])) { ?>  display: none; <?php } ?>">
-        <button class="dang-ky btn btn-secondary" onclick="signUp()">Đăng Ký</button>
+        <!-- <button class="dang-ky btn btn-secondary" onclick="signUp()">Đăng Ký</button> -->
         <button class="dang-nhap btn btn-secondary" onclick="showLogin()">Đăng Nhập</button>
     </div>
     <div class="account-login" style="<?php if (empty($_SESSION['loginedin'])) { ?> display: none; <?php } ?>">
@@ -49,7 +49,45 @@
         </div>
     </div>
 </div>
-<div class="musicForm login" id="login" style="display:none">
+<div class="container">
+    <div class="musicForm login" id="login" style="display:none">
+        <h2 class="text-center">Đăng nhập</h2>
+        <form id="loginForm" method="POST">
+            <div class="input-group">
+                <label for="loginName">Tên đăng nhập:</label><br>
+                <input type="text" name="loginName" placeholder="Nhập tên đăng nhập"><br>
+            </div>
+            <div class="input-group">
+                <label for="loginPassword">Nhập mật khẩu:</label><br>
+                <input type="password" name="loginPassword" placeholder="Nhập mật khẩu"><br>
+            </div>
+            <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
+        </form>
+        <p class="switch-form">Chưa có tài khoản? <a href="#" id="show-register">Đăng Ký</a></p>
+    </div>
+    <div class="musicForm sign-up" id="signUp" style="display:none" onsubmit="return checkPasswordMatch()">
+        <h2 class="text-center">Đăng ký</h2>
+        <form id="signUpForm" method="POST">
+            <div class="input-group">
+                <label for="signUpName">Tên đăng nhập:</label>
+                <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập"><br>
+            </div>
+            <div class="input-group">
+                <label for="signUpPassWord">Nhập mật khẩu:</label>
+                <input type="password" id="password" name="signUpPassWord" placeholder="Nhập mật khẩu" required><br>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">Xác nhận mật khẩu:</label>
+                <input type="password" id="confirmPassword" oninput="checkPasswordMatch()" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+            </div>
+            <span id="message" class="error"></span><br><br>
+            <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
+        </form>
+        <p class="switch-form">Đã có tài khoản? <a href="#" id="show-login">Đăng Nhập</a></p>
+    </div>
+</div>
+
+<!-- <div class="musicForm login" id="login" style="display:none">
     <h2 class="text-center">Login my website</h2>
     <form id="loginForm" method="POST">
         <label for="loginName">Tên đăng nhập:</label>
@@ -59,20 +97,20 @@
         <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
     </form>
 </div>
-<!-- làm tiếp register và sau đó tối ưu lại đn, đk, đx.  -->
+
 <div class="musicForm sign-up" id="signUp" style="display:none" onsubmit="return checkPasswordMatch()">
     <h2 class="text-center">Register my website</h2>
     <form id="signUpForm" method="POST">
         <label for="signUpName">Tên đăng nhập:</label>
-        <input type="text"  name="signUpName"  placeholder="Nhập tên đăng nhập"></br>
+        <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập"></br>
         <label for="signUpPassWord">Nhập mật khẩu:</label>
         <input type="password" id="password" name="signUpPassWord" placeholder="Nhập mật khẩu" required><br>
         <label for="confirmPassword">Xác nhận mật khẩu:</label>
-        <input type="password" id="confirmPassword" oninput="checkPasswordMatch()" name="confirmPassword"  placeholder="Nhập lại mật khẩu" required>
+        <input type="password" id="confirmPassword" oninput="checkPasswordMatch()" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
         <span id="message" class="error"></span><br><br>
         <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
     </form>
-</div>
+</div> -->
 
 <div id="overlay"></div>
 
@@ -98,6 +136,16 @@
         document.getElementById('create').style.display = "none";
     });
 
+    document.getElementById('show-register').addEventListener('click', function() {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('signUp').style.display = 'block';
+    });
+
+    document.getElementById('show-login').addEventListener('click', function() {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('signUp').style.display = 'none';
+    });
+
     function showLogin() {
         var form = document.getElementById("login");
         if (form.style.display === "none") {
@@ -115,7 +163,7 @@
             event.preventDefault();
             // Lấy dữ liệu từ form
             var name = $('input[name="loginName"]').val();
-            var password = $('input[name="loginName"]').val();
+            var password = $('input[name="loginPassword"]').val();
             // Gửi dữ liệu lên server bằng AJAX
             $.ajax({
                 type: 'POST',
@@ -127,8 +175,9 @@
                 },
                 success: function(response) {
                     // Xử lý kết quả trả về từ server
-                    // console.log(response);
-                    window.location.href = "";
+                    if (response !== "Tên đăng nhập hoặc mật khẩu không đúng")
+                        window.location.href = "";
+                    else alert(response);
                 },
                 error: function(xhr, status, error) {
                     // Xử lý lỗi (nếu có)
@@ -346,13 +395,13 @@
         });
     }
     //back and next
-    function back() {
-        window.history.back();
-    }
+    // function back() {
+    //     window.history.back();
+    // }
 
-    function next() {
-        window.history.next();
-    }
+    // function next() {
+    //     window.history.next();
+    // }
 
     // function info() {
     //     var form = document.getElementById("info");
