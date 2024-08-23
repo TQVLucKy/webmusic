@@ -133,7 +133,8 @@
 }
 
 .login,
-.sign-up {
+.sign-up,
+.form-change-password {
   position: absolute;
   border-radius: 5px;
   color: white;
@@ -143,23 +144,26 @@
   width: 350px;
   padding: 40px;
   margin: 0 auto;
-  z-index: 1;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .login .input-group,
-.sign-up .input-group {
+.sign-up .input-group,
+.form-change-password .input-group {
   width: 100%;
   margin-bottom: 20px;
   position: relative;
 }
 .login .input-group label,
-.sign-up .input-group label {
+.sign-up .input-group label,
+.form-change-password .input-group label {
   font-size: 0.8em;
 }
 .login .input-group input,
-.sign-up .input-group input {
+.sign-up .input-group input,
+.form-change-password .input-group input {
   width: 100%;
   padding: 5px;
   border: 2px solid #333;
@@ -170,11 +174,13 @@
   transition: outline 0.3s ease-in-out;
 }
 .login .input-group input:focus,
-.sign-up .input-group input:focus {
+.sign-up .input-group input:focus,
+.form-change-password .input-group input:focus {
   outline: 2px solid white;
 }
 .login .login-button,
-.sign-up .login-button {
+.sign-up .login-button,
+.form-change-password .login-button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -185,7 +191,8 @@
   transition: 0.3s;
 }
 .login .login-button:hover,
-.sign-up .login-button:hover {
+.sign-up .login-button:hover,
+.form-change-password .login-button:hover {
   background-color: rgb(136, 176, 231);
 }
 
@@ -197,10 +204,9 @@
   width: 600px;
   transform: translate(-50%, -50%);
   padding: 20px;
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  background-color: rgb(17, 17, 17);
 }
 
 #overlay {

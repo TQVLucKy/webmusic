@@ -86,16 +86,5 @@
                 "Category"=> $this->a->Category()
             ]);
         }
-        public function createList($name) {
-            // Gọi model để xử lý dữ liệu
-            $listModel = new MusicModel();
-            $listModel->addList($name);
-        }
-
-        public function uploadMusic($files) {
-            // Gọi model để xử lý tải lên
-            $musicModel = new MusicModel();
-            $musicModel->saveMusic($_POST['musicName'],$files['music'], $files['image'], $_POST['artist'],$_POST['category']);
-        }
     }
 ?>

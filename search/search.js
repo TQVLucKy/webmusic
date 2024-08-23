@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.input-group input[type="text"]').on("keyup input", function () {
+    $('.header-search-input input[type="text"]').on("keyup input", function () {
         /* Get input value on change */
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
@@ -10,7 +10,6 @@ $(document).ready(function () {
                 data: { term: inputVal },
                 success: function (data) {
                     // Hiển thị dữ liệu trả về trong trình duyệt
-                    console.log(data);
                     resultDropdown.html(data);
                 },
                 error: function (xhr, status, error) {

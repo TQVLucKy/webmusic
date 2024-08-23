@@ -174,7 +174,8 @@
 
 
 .login,
-.sign-up {
+.sign-up,
+.form-change-password{
     position: absolute;
     border-radius: 5px;
     color: white;
@@ -185,7 +186,7 @@
     width: 350px;
     padding: 40px;
     margin: 0 auto;
-    z-index: 1;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -216,7 +217,7 @@
         }
     }
 
-    .login-button {
+    button {
         width: 100%;
         padding: 10px;
         border: none;
@@ -232,7 +233,7 @@
     }
 }
 
-.form-change-password {
+.form-change-password{
     display: block;
     position: fixed;
     top: 50%;
@@ -240,9 +241,10 @@
     width: 600px;
     transform: translate(-50%, -50%);
     padding: 20px;
-    backdrop-filter: blur(3px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    background-color: rgb(17, 17, 17);
+ 
 }
 
 // .musicForm {

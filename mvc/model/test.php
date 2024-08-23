@@ -1,195 +1,126 @@
 <?php
 include 'C:\xampp\htdocs\webmusic\mvc\model\UserModel.php';
+// include 'C:\xampp\htdocs\webmusic\mvc\model\MusicModel.php';
 
-
-if (isset($_GET['action'])) {
-    $favoriteModel = new MusicModel();
+$musicModel = new MusicModel();
+$userModel = new UserModel();
+//  GET 
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
     $action = trim($_GET['action']);
-    if ($action == "updateFavorite") {
-        $favoriteModel->updateFavorite($_GET["id"]);
-    }
-}
-if (isset($_GET['action'])) {
-    $musicModel =  new MusicModel();
-    $action = trim($_GET['action']);
-    if ($action == "addMusicToLibrary") {
-        $musicModel->addMusicToLibrary($_GET["idList"], $_GET["idMusic"]);
+    switch ($action) {
+        case "getAll":
+            echo json_encode($data["g"]);
+            break;
+        case "updateFavorite":
+            $musicModel->updateFavorite($_GET["id"]);
+            break;
+        case "addMusicToLibrary":
+            $musicModel->addMusicToLibrary($_GET["idList"], $_GET["idMusic"]);
+            break;
+        case "getRecommendations":
+            $recommendations = $musicModel->getRecommendations($_GET["song_id"]);
+            echo json_encode($recommendations, JSON_UNESCAPED_UNICODE);
+            break;
+        case "getRecommendedByArtist":
+            $idArtist = $musicModel->getArtist($_GET["song_id"]);
+            $recommendedByArtist = $idArtist ? $musicModel->getRecommendedByArtist($idArtist['IdArtists'], $_GET["song_id"]) : [];
+            echo json_encode($recommendedByArtist, JSON_UNESCAPED_UNICODE);
+            break;
+        case "getArtists":
+            $getArtists = $musicModel->getArtists($_GET["song_id"]);
+            echo json_encode($getArtists, JSON_UNESCAPED_UNICODE);
+            break;
+        case "getArtistAll":
+            $artistAll = $musicModel->getArtistAll($_GET["idArtist"]);
+            echo json_encode($artistAll, JSON_UNESCAPED_UNICODE);
+            break;
+        case "getAlbumhHasArtist":
+            $albumHasArtist = $musicModel->getAlbumhHasArtist($_GET["idArtist"]);
+            echo json_encode($albumHasArtist, JSON_UNESCAPED_UNICODE);
+            break;
+        case "albumOrList":
+            $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
+            echo json_encode(['userId' => $userId]);
+            break;
+        case "Play":
+            $songs = isset($_GET['idList'])
+                ? $musicModel->getSongFromList($_GET['id'], $_GET['idList'])
+                : $musicModel->getSongFromList($_GET['id']);
+            echo json_encode($songs, JSON_UNESCAPED_UNICODE);
+            break;
+        case 'increaseViews':
+            $musicModel->increaseViews($_GET['currentSongId']);
+            break;
     }
 }
 
-if (isset($_POST['submitLogin'])) {
-    $userModel = new UserModel();
-    $result = $userModel->checkUsername($_POST['name'], $_POST['password']);
-    if ($result !== false) {
-        $_SESSION["loginedin"] = true;
-        $_SESSION["username"] = $_POST['name'];
-        $_SESSION['userid'] = $result;
-    } else {
-        echo "Tên đăng nhập hoặc mật khẩu không đúng";
+//  POST 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['submitLogin'])) {
+        $result = $userModel->checkUsername($_POST['name'], $_POST['password']);
+        if ($result !== false) {
+            $_SESSION["loginedin"] = true;
+            $_SESSION["username"] = $_POST['name'];
+            $_SESSION['userid'] = $result;
+        } else {
+            echo "Tên đăng nhập hoặc mật khẩu không đúng";
+        }
+    } elseif (isset($_POST['submitSignUp'])) {
+        $userModel->signUp($_POST['name'], $_POST['password']);
+    } elseif (isset($_POST['submitChangePassword'])) {
+        $userName = isset($_SESSION["username"]) ? $_SESSION["username"] : -1;
+        $userModel->ChangePassword($userName, $_POST['passOld'], $_POST['passNew1'], $_POST['passNew2']);
+    } elseif (isset($_POST['submitMusic'])) {
+        $musicModel->saveMusic($_POST['musicName'], $_FILES['music'], $_FILES['image'], $_POST['artist'], $_POST['category']);
+    } elseif (isset($_POST['submitAddArtist'])) {
+        $musicModel->addArtist($_POST['nameArtist'], $_FILES['imageArtist']);
+    } elseif (isset($_POST['action'])) {
+        $action = $_POST['action'];
+        switch ($action) {
+            case 'deleteMusic':
+                $musicModel->DeleteMusic($_POST['idMusic'], $_POST['idArtist'], $_POST['idCategory']);
+                break;
+            case 'delDanhSachPhat':
+                $musicModel->delDanhSachPhat($_POST['idList']);
+                break;
+            case 'delAlbum':
+                $musicModel->DelAlbum($_POST['idList']);
+                break;
+            case 'addMusicToDanhSachPhat':
+                $musicModel->AddMusicToLibrary($_POST["idList"], $_POST["idMusic"]);
+                break;
+            case 'deleteMusicFromDanhSachPhat':
+                $musicModel->deleteMusicFromLibrary($_POST["idList"], $_POST["idMusic"]);
+                break;
+            case 'addMusicToAlbum':
+                $musicModel->addMusicToAlbum($_POST["idAlbum"], $_POST["idMusic"]);
+                break;
+            case 'deleteMusicFromAlbum':
+                $musicModel->deleteMusicFromAlbum($_POST["idAlbum"], $_POST["idMusic"]);
+                break;
+        }
+    }
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['action']) && $data['action'] == "randomsong") {
+        $musicModel->getRandomMusic($data["IdMusic"]);
     }
 }
 
-if (isset($_POST['submitSignUp'])) {
-    $userModel = new UserModel();
-    $userModel->signUp($_POST['name'], $_POST['password']);
-}
-
+//  logout
 if (isset($_GET["logout"])) {
     session_unset();
 }
 
-if (isset($_POST['submitChangePassword'])) {
-    $controler = new UserModel();
-    $controler->ChangePassword($_POST['userName'], $_POST['passOld'], $_POST['passNew1'], $_POST['passNew2']);
-}
-// need fix: it not work t think isset($_POST['submitmusic']) complete
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitMusic'])) {
-    $controller = new Home();
-    $controller->uploadMusic($_FILES);
-}
-
-// điều hướng vào model xử lý
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitAddArtist'])) {
-    $controller = new MusicModel();
-    $controller->addArtist($_POST['nameArtist'], $_FILES['imageArtist']);
-}
-// Hàm xử lý form
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitList'])) {
-
-    $controller = new Home();
-    $controller->createList($_GET['nameList']);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['submitAlbum'])) {
-
-    $controller = new MusicModel();
-    $controller->AddAlbum($_GET['nameAlbum']);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $action = $_POST['action'];
-
-    if ($action === 'deleteMusic') {
-        $controller = new MusicModel();
-        $controller->DeleteMusic($_POST['idMusic'], $_POST['idArtist'], $_POST['idCategory']);
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['submitList'])) {
+        $musicModel->addList($_GET['nameList']);
+    } elseif (isset($_GET['submitAlbum'])) {
+        $musicModel->AddAlbum($_GET['nameAlbum']);
     }
 }
-//search theo val
+
+// search 
 if (isset($_GET['InputVal'])) {
-    $musicModel =  new MusicModel();
     $musicList = $musicModel->SearchText($_GET["InputVal"]);
     echo json_encode($musicList, JSON_UNESCAPED_UNICODE);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] === "delDanhSachPhat") {
-        $controller = new MusicModel();
-        $controller->delDanhSachPhat($_POST['idList']);
-    }
-}
-//xóa album
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] === "delAlbum") {
-        $controller = new MusicModel();
-        $controller->DelAlbum($_POST['idList']);
-    }
-}
-//Thêm nhạc vào danh sách phát
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] == "addMusicToDanhSachPhat") {
-        $controller = new MusicModel();
-        $controller->AddMusicToLibrary($_POST["idList"], $_POST["idMusic"]);
-    }
-}
-// Xóa nhạc khỏi danh sách phát
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] == "deleteMusicFromDanhSachPhat") {
-        $controller = new MusicModel();
-        $controller->deleteMusicFromLibrary($_POST["idList"], $_POST["idMusic"]);
-    }
-}
-//Thêm nhạc vào album
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] == "addMusicToAlbum") {
-        $controller = new MusicModel();
-        $controller->addMusicToAlbum($_POST["idAlbum"], $_POST["idMusic"]);
-    }
-}
-// Xóa nhạc khỏi album
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] == "deleteMusicFromAlbum") {
-        $controller = new MusicModel();
-        $controller->deleteMusicFromAlbum($_POST["idAlbum"], $_POST["idMusic"]);
-    }
-}
-
-//
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET['action'] == "getRecommendations") {
-        $controler = new MusicModel();
-        $recommendations = $controler->getRecommendations($_GET["user_id"], $_GET["song_id"]);
-        echo json_encode($recommendations, JSON_UNESCAPED_UNICODE);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET['action'] == "getRecommendedByArtist") {
-        $controler = new MusicModel();
-        $idArtist = $controler->getArtist($_GET["song_id"]);
-
-        if ($idArtist !== null && !empty($idArtist)) {
-            $recommendedByArtist = $controler->getRecommendedByArtist($idArtist['IdArtists'], $_GET["song_id"]);
-            echo json_encode($recommendedByArtist, JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode([], JSON_UNESCAPED_UNICODE); // Trả về mảng rỗng nếu không tìm thấy nghệ sĩ
-        }
-    }
-}
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET['action'] == "getArtists") {
-        $controler = new MusicModel();
-        $getArtists = $controler->getArtists($_GET["song_id"]);
-        echo json_encode($getArtists, JSON_UNESCAPED_UNICODE);
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET['action'] == "getArtistAll") {
-        $controler = new MusicModel();
-        $artistAll = $controler->getArtistAll($_GET["idArtist"]);
-        echo json_encode($artistAll, JSON_UNESCAPED_UNICODE);
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET['action'] == "getAlbumhHasArtist") {
-        $controler = new MusicModel();
-        $songHasArtist = $controler->getAlbumhHasArtist($_GET["idArtist"]);
-        echo json_encode($songHasArtist, JSON_UNESCAPED_UNICODE);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["action"])) {
-    if ($_GET["action"] == "Play") {
-        $controler = new MusicModel();
-        if (!isset($_GET['idList']))
-            $songs = $controler->getSongFromList($_GET['id']);
-        else
-            $songs = $controler->getSongFromList($_GET['id'], $_GET['idList']);
-        echo json_encode($songs, JSON_UNESCAPED_UNICODE);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
-    if ($_GET['action'] == 'increaseViews') {
-        $controler = new MusicModel();
-        $controler->increaseViews($_GET['currentSongId']);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    if (isset($data['action']) && $data['action'] == "randomsong") {
-        $controller = new MusicModel();
-        $controller->getRandomMusic($data["IdMusic"]);
-    }
 }
