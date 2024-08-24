@@ -1,5 +1,5 @@
 <?php
-include 'C:\xampp\htdocs\webmusic\mvc\model\UserModel.php';
+include './mvc/model/UserModel.php';
 // include 'C:\xampp\htdocs\webmusic\mvc\model\MusicModel.php';
 
 $musicModel = new MusicModel();
