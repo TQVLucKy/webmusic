@@ -1,8 +1,9 @@
 
-document.getElementById('showCategoryBtn').addEventListener('click', function () {
-    document.getElementById('CategoryList').classList.toggle('hidden');
-})
-
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('showCategoryBtn').addEventListener('click', function () {
+        document.getElementById('CategoryList').classList.toggle('hidden');
+    });
+});
 const categoryItems = document.querySelectorAll('.CategoryItem');
 categoryItems.forEach(item => {
     item.addEventListener('click', function () {
@@ -28,6 +29,26 @@ document.getElementById('show-register').addEventListener('click', function () {
 document.getElementById('show-login').addEventListener('click', function () {
     document.getElementById('login').style.display = 'block';
     document.getElementById('signUp').style.display = 'none';
+});
+document.getElementById('showPasswordLogin').addEventListener('change', function () {
+    var passwordField = document.getElementById('loginPassword');
+    if (this.checked) {
+        passwordField.type = 'text';
+    } else {
+        passwordField.type = 'password';
+    }
+});
+document.getElementById('showPassworSignUp').addEventListener('change', function () {
+    var password = document.getElementById('password');
+    var confirmPassword = document.getElementById('confirmPassword');
+
+    if (this.checked) {
+        password.type = 'text';
+        confirmPassword.type = 'text';
+    } else {
+        password.type = 'password';
+        confirmPassword.type = 'password';
+    }
 });
 
 function showLogin() {
@@ -87,7 +108,21 @@ function checkPasswordMatch() {
         return false;
     }
 }
+function checkChangePassword() {
+    var password = document.getElementById("passNew1").value;
+    var confirmPassword = document.getElementById("passNew2").value;
+    var message = document.getElementById("messageChangePassword");
 
+    if (password === confirmPassword) {
+        message.style.color = "green";
+        message.innerHTML = "Mật khẩu khớp.";
+        return true;
+    } else {
+        message.style.color = "red";
+        message.innerHTML = "Mật khẩu không khớp.";
+        return false;
+    }
+}
 function signUp() {
     var form = document.getElementById("signUp");
     if (form.style.display === "none") {
@@ -133,16 +168,21 @@ function FormChangePassword() {
             <div class="change-password-body">
                 <div class="input-group">
                     <label>Mật khẩu cũ</label>
-                    <input type="password" class="form-control" name="passOld">
+                    <input type="password" id="passOld" class="form-control" name="passOld" required>
                 </div>
                 <div class="input-group">
                     <label>Mật khẩu mới:</label>
-                    <input type="password" class="form-control" name="passNew1">
+                    <input type="password" class="form-control" id="passNew1" name="passNew1"  required>
                 </div>
                 <div class="input-group">
                     <label>Nhập lại mật khẩu mới:</label>
-                    <input type="password" class="form-control" name="passNew2">
+                    <input type="password" class="form-control" id="passNew2" name="passNew2" oninput="checkChangePassword()" name="confirmPassword" required>
+                    <div class="password-toggle">
+                    <label class="show-password" for="showPassword">Hiển thị mật khẩu</label>
+                    <input type="checkbox" id="showChangePassword">
+                    </div>
                 </div>
+                <span id="messageChangePassword" class="error"></span><br><br>
                 <button type="submit">Đổi mật khẩu</button>
             </div>
         </div>
@@ -151,7 +191,20 @@ function FormChangePassword() {
 
     document.body.appendChild(formchangepassword);
     // Gán sự kiện submit cho form
-
+    document.getElementById('showChangePassword').addEventListener('change', function () {
+        var passOld = document.getElementById('passOld');
+        var passNew1 = document.getElementById('passNew1');
+        var passNew2 = document.getElementById('passNew2');
+        if (this.checked) {
+            passOld.type = 'text';
+            passNew1.type = 'text';
+            passNew2.type = 'text';
+        } else {
+            passOld.type = 'password';
+            passNew1.type = 'password';
+            passNew2.type = 'password';
+        }
+    });
     overlay.addEventListener('click', function () {
         formchangepassword.remove();
         overlay.style.display = 'none';
@@ -174,7 +227,7 @@ function FormChangePassword() {
                     submitChangePassword: 'submitChangePassword'
                 },
                 success: function (response) {
-                    // alert(response);
+                    console.log(response);
                     formchangepassword.remove();
                     overlay.style.display = 'none';
                 }

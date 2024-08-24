@@ -156,10 +156,26 @@
   margin-bottom: 20px;
   position: relative;
 }
-.login .input-group label,
-.sign-up .input-group label,
-.form-change-password .input-group label {
-  font-size: 0.8em;
+.login .input-group .password-toggle,
+.sign-up .input-group .password-toggle,
+.form-change-password .input-group .password-toggle {
+  display: flex;
+}
+.login .input-group .password-toggle .show-password,
+.sign-up .input-group .password-toggle .show-password,
+.form-change-password .input-group .password-toggle .show-password {
+  margin: 0 10px 0 0;
+  padding: 0;
+}
+.login .input-group .password-toggle input,
+.sign-up .input-group .password-toggle input,
+.form-change-password .input-group .password-toggle input {
+  width: 15px;
+}
+.login .input-group .password-toggle input[type=checkbox],
+.sign-up .input-group .password-toggle input[type=checkbox],
+.form-change-password .input-group .password-toggle input[type=checkbox] {
+  margin-right: 5px;
 }
 .login .input-group input,
 .sign-up .input-group input,
@@ -178,9 +194,9 @@
 .form-change-password .input-group input:focus {
   outline: 2px solid white;
 }
-.login .login-button,
-.sign-up .login-button,
-.form-change-password .login-button {
+.login button,
+.sign-up button,
+.form-change-password button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -190,19 +206,16 @@
   cursor: pointer;
   transition: 0.3s;
 }
-.login .login-button:hover,
-.sign-up .login-button:hover,
-.form-change-password .login-button:hover {
+.login button:hover,
+.sign-up button:hover,
+.form-change-password button:hover {
   background-color: rgb(136, 176, 231);
 }
 
 .form-change-password {
-  display: block;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 600px;
-  transform: translate(-50%, -50%);
+  top: 30%;
+  left: 10%;
+  margin: 0 auto;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;

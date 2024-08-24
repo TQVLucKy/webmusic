@@ -1,6 +1,5 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../public/css/Category.css">
-    <script type="test/javascript" src="../public/js/Category.js"></script>
 </head>
 <h2><?php echo $data['getCategory'][0]['NameCategory']; ?></h2>
 <div class="list-music row">
@@ -17,3 +16,4 @@
         ?>
     </div>
 </div>
+<script type="text/javascript" src="../public/js/Category.js"></script>

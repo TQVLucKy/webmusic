@@ -1,5 +1,4 @@
 <link rel="stylesheet" type="text/css" href="../public/css/List.scss">
-<script type="text/javascript" src="../public/js/List.js"></script>
 
 <div id="list">
     <?php if ($_SESSION['userid'] != 1): ?>
@@ -191,3 +190,4 @@
         </table>
     </div>
 </div>
+<script type="text/javascript" src="../public/js/List.js"></script>

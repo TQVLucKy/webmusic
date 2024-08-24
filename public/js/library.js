@@ -50,7 +50,15 @@ function addArtist() {
     overlay.style.display = 'block';
 
 }
-
+function validateForm() {
+    var imageAddMusic = document.getElementById("imageAddMusic");
+    var musicAddMusic = document.getElementById("musicAddMusic");
+    if (imageAddMusic.files.length === 0 || musicAddMusic.files.length === 0) {
+      alert("Vui lòng chọn một tệp.");
+      return false;
+    }
+    return true;
+}
 $(document).ready(function() {
     $('#showAlbum').on('submit', function(e) {
         e.preventDefault();
@@ -99,10 +107,10 @@ $(document).ready(function() {
 
 // xử lý create music
 $(document).ready(function() {
-    $('#showCreate').on('submit', function(e) {
+    $('#addMusicToDB').on('submit', function(e) {
         e.preventDefault();
-        var userConfirmation = confirm("bạn có chắn chắn muốn thêm bài nhạc này không?");
-        if (userConfirmation) {
+        // var userConfirmation = confirm("bạn có chắn chắn muốn thêm bài nhạc này không?");
+        // if (userConfirmation) {
             var formData = new FormData(this);
             formData.append('submitMusic', 'submitMusic');
             $.ajax({
@@ -112,6 +120,7 @@ $(document).ready(function() {
                 contentType: false,
                 processData: false,
                 success: function(response) {
+                    alert(response);
                     window.location.reload();
                 },
                 error: function(xhr, status, error) {
@@ -119,7 +128,7 @@ $(document).ready(function() {
                     console.log('Có lỗi xảy ra:', xhr.responseText);
                 }
             });
-        }
+        // }
     });
 });
 
@@ -151,23 +160,23 @@ document.getElementById('addArtistButton').addEventListener('click', function() 
     // Append the new div to the artist container
     artistContainer.appendChild(newArtistDiv);
 });
-document.getElementById('showCreate').addEventListener('submit', function(e) {
-    e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
+// document.getElementById('showCreate').addEventListener('submit', function(e) {
+//     e.preventDefault(); // Ngăn không cho form submit theo cách thông thường
 
-    var formData = new FormData(this);
+//     var formData = new FormData(this);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', './model/test', true);
-    xhr.setRequestHeader('X-Requested-With', 'application/x-www-form-urlencoded'); // Đặt header để xác định là AJAX request
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('POST', './model/test', true);
+//     xhr.setRequestHeader('X-Requested-With', 'application/x-www-form-urlencoded'); // Đặt header để xác định là AJAX request
 
-    xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-        }
-    };
+//     xhr.onreadystatechange = function() {
+//         if (this.readyState === 4 && this.status === 200) {
+//             console.log(this.responseText);
+//         }
+//     };
 
-    xhr.send(formData);
-});
+//     xhr.send(formData);
+// });
 
 //xử lý thêm artist vào db
 $(document).ready(function() {

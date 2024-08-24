@@ -1,7 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="../public/css/header.css">
-    <!-- <script type="text/javascript" src="../public/js/header.js"></script> -->
-    <script type="text/javascript" src="../search/search.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/css/header.css?v=1.1">
 </head>
 <div class="header">
     <div class="header-title">
@@ -55,11 +53,15 @@
         <form id="loginForm" method="POST">
             <div class="input-group">
                 <label for="loginName">Tên đăng nhập:</label><br>
-                <input type="text" name="loginName" placeholder="Nhập tên đăng nhập"><br>
+                <input type="text" name="loginName" placeholder="Nhập tên đăng nhập" required><br>
             </div>
             <div class="input-group">
                 <label for="loginPassword">Nhập mật khẩu:</label><br>
-                <input type="password" name="loginPassword" placeholder="Nhập mật khẩu"><br>
+                <input type="password" id="loginPassword" name="loginPassword" placeholder="Nhập mật khẩu" required><br>
+                <div class="password-toggle">
+                    <label class="show-password" for="showPassword">Hiển thị mật khẩu</label>
+                    <input type="checkbox" id="showPasswordLogin">
+                </div>
             </div>
             <button type="submit" class="login-button" name="submitLogin">Đăng Nhập</button>
         </form>
@@ -70,15 +72,20 @@
         <form id="signUpForm" method="POST">
             <div class="input-group">
                 <label for="signUpName">Tên đăng nhập:</label>
-                <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập"><br>
+                <input type="text" name="signUpName" placeholder="Nhập tên đăng nhập" required><br>
             </div>
             <div class="input-group">
                 <label for="signUpPassWord">Nhập mật khẩu:</label>
                 <input type="password" id="password" name="signUpPassWord" placeholder="Nhập mật khẩu" required><br>
+                
             </div>
             <div class="input-group">
                 <label for="confirmPassword">Xác nhận mật khẩu:</label>
                 <input type="password" id="confirmPassword" oninput="checkPasswordMatch()" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                <div class="password-toggle">
+                    <label class="show-password" for="showPassword">Hiển thị mật khẩu</label>
+                    <input type="checkbox" id="showPassworSignUp">
+                </div>
             </div>
             <span id="message" class="error"></span><br><br>
             <button type="submit" class="login-button" name="submitSignUp">Đăng Ký</button>
@@ -87,4 +94,5 @@
     </div>
 </div>
 <div id="overlay"></div>
-
+<script type="text/javascript" src="../public/js/header.js"></script>
+<script type="text/javascript" src="../public/js/search.js"></script>

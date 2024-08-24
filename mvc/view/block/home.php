@@ -1,6 +1,5 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../public/css/home.css">
-    <script type="test/javascript" src="../public/js/home.js"></script>
 </head>
 <div class="col-md-12">
     <div class="top d-flex justify-content-between mt-2">
@@ -21,3 +20,4 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../public/js/home.js"></script>

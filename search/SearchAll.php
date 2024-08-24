@@ -1,17 +1,9 @@
 
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-    server with default setting (user 'root' with no password) */
-$HOSTNAME = 'localhost';
-$USERNAME = 'root';
-$PASSWORD = '';
-$DATABASE = 'music';
+include '../mvc/code/DB.php';
 
-$link = mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);
+$db = new DB();
 
-if ($link === false) {
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
 
 if (isset($_GET["term"]) && isset($_GET["idList"])) {
     $term = $_GET["term"];
@@ -21,7 +13,7 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
     SELECT 
         storemusic.IdMusic, 
         storemusic.NameMusic, 
-        GROUP_CONCAT(artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, 
+        GROUP_CONCAT(DISTINCT artist.NameArtist ORDER BY artist.IdArtist SEPARATOR ' x ') AS NameArtist, 
         category.NameCategory
     FROM song_artist
     JOIN storemusic ON song_artist.IdMusic = storemusic.IdMusic
@@ -35,7 +27,7 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
         OR subquery.NameCategory LIKE ? 
         OR subquery.NameArtist LIKE ?";
 
-    if ($stmt = $link->prepare($sql)) {
+    if ($stmt = $db->con->prepare($sql)) {
         $param_term =  '%' . $term . '%';
         $stmt->bind_param("sss", $param_term, $param_term, $param_term);
 
@@ -61,5 +53,5 @@ if (isset($_GET["term"]) && isset($_GET["idList"])) {
         $stmt->close();
     }
 }
-$link->close();
+$db->con->close();
 ?>

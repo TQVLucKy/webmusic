@@ -16,7 +16,6 @@ function getArtistAll() {
             const getsongPopular = JSON.parse(data);
             let count = 1;
             artistName.innerHTML = getsongPopular[0]["NameArtists"];
-            document.querySelector('.has-artist').innerHTML = 'Có sự xuất hiện của ' + getsongPopular[0]["NameArtists"];
             getsongPopular.forEach(function (item) {
                 $('#songPopular').append(`
                     <a class="artist-all-item" href="./Play?id=${item['IdMusic']}">
@@ -48,10 +47,10 @@ function getAlbumhHasArtist() {
             idArtist: idArtist
         },
         success: function (data) {
-            console.log(data);
             const albumData = JSON.parse(data);
             let count = 1;
-            artistName.innerHTML = albumData[0]["NameArtist"];
+            if (albumData.length > 0)
+                document.querySelector('.has-artist').innerHTML = 'Có sự xuất hiện của ' + albumData[0]["NameArtist"];
             albumData.forEach(function (item) {
                 $('#songHasArtist').append(`
                     <a class="artist-all-item" href="./Album?id=${item['IdAlbum']}">

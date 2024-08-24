@@ -1,24 +1,12 @@
 
     <?php
-    /* Attempt MySQL server connection. Assuming you are running MySQL
-    server with default setting (user 'root' with no password) */
-    $HOSTNAME='localhost';
-    $USERNAME='root';
-    $PASSWORD='';
-    $DATABASE='music';
-
-    $link=mysqli_connect($HOSTNAME,$USERNAME,$PASSWORD,$DATABASE);
-    
-    // Check connection
-    if($link === false){
-        die("ERROR: Could not connect. " . mysqli_connect_error());
-    }
-    
+    include '../mvc/code/DB.php';
+    $db=new DB();
     if(isset($_REQUEST["term"])){
         // Prepare a select statement
         $sql = "SELECT * FROM storemusic WHERE NameMusic LIKE ?";
         
-        if($stmt = mysqli_prepare($link, $sql)){
+        if($stmt = mysqli_prepare($db->con, $sql)){
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_term);
             
@@ -48,5 +36,5 @@
     }
     
     // close connection
-    mysqli_close($link);
+    mysqli_close($db->con);
     ?>

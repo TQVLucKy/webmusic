@@ -1,3 +1,4 @@
+
 let currentSong = 1;
 const music = document.querySelector('#audio');
 const seekbar = document.querySelectorAll('.seek-bar');
@@ -15,7 +16,6 @@ const volumeSlider = document.querySelectorAll('.volume-slider');
 const volumeButton = document.querySelectorAll('.volume-button');
 const volumeIcon = document.querySelectorAll('.volume-icon');
 var songId = new URLSearchParams(window.location.search).get('id');
-
 
 
 // artist list
@@ -52,7 +52,6 @@ function getRecommendations() {
             song_id: songId
         },
         success: function(data) {
-            console.log(data);
             const recommendations = JSON.parse(data);
             recommendations.forEach(function(item) {
                 $('#recommendations').append(`<a class="recommendation-item" href="./Play?id=${item['IdMusic']}">
@@ -80,7 +79,6 @@ function getRecommendedByArtist() {
             song_id: songId
         },
         success: function(data) {
-            console.log("Kiem tra:" + data);
             const recommendedByArtist = JSON.parse(data);
             if (recommendedByArtist && Array.isArray(recommendedByArtist)) {
                 if (recommendedByArtist[0]['NameArtists']) {
@@ -316,22 +314,6 @@ music.addEventListener('ended', () => {
 });
 
 
-// setInterval(() => {
-//     seekbar[0].value = music.currentTime;
-//     currenttimes.innerHTML = formatTimes(music.currentTime)
-//     if (Math.floor(music.currentTime) == Math.floor(seekbar[0].max))
-//         btnnext.click();
-// }, 500);
-// seekbar[0].addEventListener('change', () => {
-//     music.currentTime = seekbar[0].value;
-// })
-
-// const PlayMusic = () => {
-//     music.play();
-//     btnplay.classList.remove('pause');
-//     boxdisk.classList.add('play');
-// }
-
 //Next and PreView
 
 
@@ -438,19 +420,16 @@ let isMuted = false;
 
 function updateVolumeIcon(volume) {
     volumeIcon.forEach(icon => {
+        icon.classList.remove('fa-volume-mute', 'fa-volume-low', 'fa-volume-high');
         if (volume >= 0.5) {
-            icon.classList.remove('fa-volume-mute', 'fa-volume-low');
             icon.classList.add('fa-volume-high');
         } else if (volume > 0) {
-            icon.classList.remove('fa-volume-mute', 'fa-volume-high');
             icon.classList.add('fa-volume-low');
         } else {
-            icon.classList.remove('fa-volume-low', 'fa-volume-high');
             icon.classList.add('fa-volume-mute');
         }
-    })
+    });
 }
-
 volumeSlider.forEach(slider => {
     slider.addEventListener('input', function() {
         music.volume = slider.value / 100;

@@ -1,6 +1,5 @@
 <link rel="stylesheet" type="text/css" href="../public/css/playmusic.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><!-- <script type="text/javascript" src="../public/js/playmusic.js"></script> -->
-<script type="text/javascript" src="../public/js/playmusic.js"></script>
 
 
 
@@ -90,7 +89,6 @@
     <div class="recommendation">
         <h2>Recommended</h2>
         <div id="recommendations"></div>
-        <script src="../public/js/playmusic.js"></script>
     </div>
     <div class="popular-music-artist">
     </div>
@@ -99,5 +97,7 @@
 $jsonData = json_encode($data["g"]);
 ?>
 <script>
-    window.songs = <?php echo $jsonData ?>;
+    window.songs = <?php echo $jsonData ?>; 
+</script>
+<script type="text/javascript" src="../public/js/playmusic.js">
 </script>

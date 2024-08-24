@@ -8,25 +8,6 @@
     padding: 5px;
     background-color: rgb(17, 17, 17);
 
-    // .back-next {
-    //     .btn {
-    //         width: 40px;
-    //         height: 40px;
-    //         background: gray;
-    //         border-radius: 50%;
-    //         cursor: pointer;
-    //         margin-top: 5px;
-    //         color: white;
-    //         margin-left: 5px;
-
-    //         &:hover {
-    //             background-color: blue;
-    //             opacity: 0.5;
-    //             transition: 1s;
-    //         }
-    //     }
-    // }
-
     .category-list {
         position: relative;
 
@@ -175,7 +156,7 @@
 
 .login,
 .sign-up,
-.form-change-password{
+.form-change-password {
     position: absolute;
     border-radius: 5px;
     color: white;
@@ -196,8 +177,20 @@
         margin-bottom: 20px;
         position: relative;
 
-        label {
-            font-size: 0.8em;
+        .password-toggle {
+            display: flex;
+            .show-password{
+                margin: 0 10px 0 0;
+                padding: 0;
+            }
+            input{
+                width: 15px;
+            }
+
+        }
+
+        .password-toggle input[type="checkbox"] {
+            margin-right: 5px;
         }
 
         input {
@@ -233,32 +226,18 @@
     }
 }
 
-.form-change-password{
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 600px;
-    transform: translate(-50%, -50%);
+.form-change-password {
+    top: 30%;
+    left: 10%;
+    margin: 0 auto;
+
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     background-color: rgb(17, 17, 17);
- 
+
 }
 
-// .musicForm {
-//     display: block;
-//     position: fixed;
-//     top: 50%;
-//     left: 50%;
-//     width: 300px;
-//     transform: translate(-50%, -50%);
-//     padding: 20px;
-//     backdrop-filter: blur(3px);
-//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-//     z-index: 1000;
-// }
 
 #overlay {
     display: none;

@@ -21,10 +21,9 @@ class UserModel extends DB
             mysqli_stmt_bind_result($stmt, $idAccount, $hashedPassword);
             mysqli_stmt_fetch($stmt);
             mysqli_stmt_close($stmt);
-            if (password_verify($password, $hashedPassword)){
+            if (password_verify($password, $hashedPassword)) {
                 return $idAccount;
-            }
-            else 
+            } else
                 return false;
         } else {
             false;
@@ -47,24 +46,41 @@ class UserModel extends DB
     //Đổi mật khẩu
     public function ChangePassword($UserName, $PassOld, $PassNew1, $PassNew2)
     {
-        $sql = "SELECT Password from account WHERE UserName=?";
+        // Lấy mật khẩu hash từ cơ sở dữ liệu
+        $sql = "SELECT Password FROM account WHERE UserName=?";
         $stmt = $this->con->prepare($sql);
+        if (!$stmt) {
+            die("Prepare failed: " . $this->con->error);
+        }
         $stmt->bind_param("s", $UserName);
         $stmt->execute();
-        $stmt->bind_result($Password);
+        $stmt->bind_result($PasswordHash);
         $stmt->fetch();
-        if ($PassOld == ($Password ?? '')) {
-            if ($PassNew1 == $PassNew2) {
-                $sql = "UPDATE account
-            SET Password=?
-            WHERE Password=? and UserName=?";
-                $stmt1 = $this->con->prepare($sql);
-                $stmt1->bind_param("sss", $PassNew1, $PassOld, $UserName);
-                if ($stmt1->execute())
+        $stmt->close();
+        // Kiểm tra mật khẩu cũ
+        if (password_verify($PassOld, $PasswordHash)) {
+            if ($PassNew1 === $PassNew2) {
+                $NewPasswordHash = password_hash($PassNew1, PASSWORD_DEFAULT);
+
+                $sql = "UPDATE account SET Password=? WHERE UserName=?";
+                $stmt = $this->con->prepare($sql);
+                if (!$stmt) {
+                    die("Prepare lỗi: " . $this->con->error);
+                }
+                $stmt->bind_param("ss", $NewPasswordHash, $UserName);
+
+                if ($stmt->execute()) {
                     echo "Đổi mật khẩu thành công";
-                else
-                    echo "Error: " . $stmt1->error;
-            } else echo "Mật khẩu mới không giống nhau";
-        } else echo "Mật khẩu cũ không trùng khớp";
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Mật khẩu mới không giống nhau";
+            }
+        } else {
+            echo "Mật khẩu cũ không trùng khớp";
+        }
     }
 }

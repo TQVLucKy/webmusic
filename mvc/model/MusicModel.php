@@ -361,6 +361,9 @@ class MusicModel extends DB
 
     public function saveMusic($namemusic, $music, $image, $artists, $category)
     {
+        if (empty($namemusic) || empty($music) || empty($image) || empty($artists) || empty($category)) {
+            return "Please fill in all required fields.";
+        }
         // $msName = addslashes($_FILES["music"]["name"]);
         // $msData = addslashes(file_get_contents($_FILES["music"]["tmp_name"]));
         // $folder_m = 'music/';
@@ -431,8 +434,12 @@ class MusicModel extends DB
                 echo "artistid:" . $artistId;
             }
             //Thêm nhạc vào bảng song_artist
-            $stmt = $this->con->prepare("INSERT INTO song_artist (IdMusic,IdArtist,IdCategory) VALUES (?,?,?)");
-            $stmt->bind_param("iii", $musicId, $artistId, $categoryId);
+            $stmt = $this->con->prepare("INSERT INTO song_artist (IdMusic,IdArtist) VALUES (?,?)");
+            $stmt->bind_param("ii", $musicId, $artistId);
+            $stmt->execute();
+            //Thêm nhạc vào bảng song_category
+            $stmt = $this->con->prepare("INSERT INTO song_category (IdMusic,IdCategory) VALUES (?,?)");
+            $stmt->bind_param("ii", $musicId, $categoryId);
             $stmt->execute();
         }
         echo "Bài hát thêm thành công";
@@ -687,6 +694,7 @@ class MusicModel extends DB
         $stmt->bind_param("i", $IdArtist);
         $stmt->execute();
         $result = $stmt->get_result();
+        $album = [];
         while ($row = $result->fetch_assoc()) {
             $album[] = [
                 'IdAlbum' => $row['IdAlbum'],

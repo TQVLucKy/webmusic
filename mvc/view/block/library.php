@@ -1,6 +1,5 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../public/css/library.css">
-    <!-- <script type="text/javascript" src="../public/js/library.js"></script> -->
 </head>
 
 <div class="container-fluid library col-md-2 pt-1">
@@ -65,41 +64,41 @@
 </div>
 
 <!-- show create music -->
-<div class="musicForm add-music" id="showCreate" style="display:none;">
+<div class="musicForm add-music" id="showCreate" style="display:none;" >
     <h2 class="text-center">Tải bài hát lên</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" id="addMusicToDB" enctype="multipart/form-data" onsubmit="return validateForm();">
         <div class="input-group">
             <label for="musicName">Tên bài hát:</label><br>
-            <input type="text" name="musicName" placeholder="Nhập tên bài hát"><br>
+            <input type="text" name="musicName" placeholder="Nhập tên bài hát" required><br>
         </div>
         <div class="input-group">
             <label for="music">Chọn nhạc:</label><br>
-            <input type="file" name="music"><br>
+            <input type="file" name="music" id="musicAddMusic"><br>
         </div>
         <div class="input-group">
             <label for="image">Chọn hình ảnh:</label><br>
-            <input type="file" name="image"><br>
+            <input type="file" name="image" id="imageAddMusic"><br>
         </div>
         <div class="input-group">
             <label for="category">Thể loại:</label><br>
-            <input type="text" name="category" placeholder="Nhập thể loại"><br>
+            <input type="text" name="category" placeholder="Nhập thể loại"required><br>
         </div>
         <button type="button" id="addArtistButton">Thêm ca sĩ</button><br>
         <div id="artistContainer">
             <div class="input-group">
                 <label for="artist">Tên ca sĩ:</label><br>
-                <input type="text" name="artist[]" placeholder="Nhập tên ca sĩ"><br>
+                <input type="text" name="artist[]" placeholder="Nhập tên ca sĩ" required><br>
             </div>
         </div>
         <input type="submit" class="login-button" name="submitMusic" value="tải lên"></input>
     </form>
 </div>
 <!-- show list -->
-<form class="musicForm add-list" id="showList" style="display:none;" method="get">
+<form class="musicForm add-list" id="showList" style="display:none;" method="get" >
     <h2 class="text-center">Thêm danh sách</h2>
     <div class="input-group">
         <label for="nameList">Tên danh sách:</label>
-        <input type="text" name="nameList">
+        <input type="text" name="nameList" required>
     </div>
     <input type="submit" name="submitList" value="Tạo">
 </form>
@@ -109,7 +108,7 @@
     <h2 class="text-center">Thêm album</h2>
     <div class="input-group">
         <label for="nameAlbum">Tên Album:</label>
-        <input type="text" name="nameAlbum">
+        <input type="text" name="nameAlbum" required>
     </div>
     <input type="submit" name="submitAlbum" value="Tạo">
 </form>
@@ -119,7 +118,7 @@
     <h2 class="text-center">Thêm ca sĩ</h2>
     <div class="input-group">
         <label for="nameArtist">Tên ca sĩ:</label></br>
-        <input type="text" name="nameArtist"></br>
+        <input type="text" name="nameArtist" required></br>
     </div>
     <div class="input-group">
         <label for="imageArtist">Chọn ảnh đại diện:</label></br>
@@ -130,3 +129,4 @@
 
 
 <div id="overlay"></div>
+<script type="text/javascript" src="../public/js/library.js"></script>
